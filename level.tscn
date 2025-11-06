@@ -1,0 +1,10 @@
+[gd_scene format=3 uid="uid://cpma7du425iag"]
+
+[node name="Level" type="Node2D"]
+
+[node name="ColorRect" type="ColorRect" parent="."]
+offset_left = -960.0
+offset_top = -540.0
+offset_right = 960.0
+offset_bottom = 540.0
+color = Color(0.19563031, 0.14629066, 0.123078145, 1)
