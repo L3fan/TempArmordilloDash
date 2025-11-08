@@ -18,16 +18,20 @@ public partial class Player : CharacterBody2D
     private bool bounced = false;
     private Vector2 lastVelocity = Vector2.Zero;
     private float prevRot = 0;
+    private AnimationPlayer animationPlayer;
 
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
     {
         GD.Print("Player is ready");
-        Vector2 vecA = new Vector2(0, 10);
+        /*Vector2 vecA = new Vector2(0, 10);
         Vector2 vecB = new Vector2(0, -1);
         Vector2 projNV = vecA.Normalized() * vecB / Mathf.Pow(vecB.Length(), 2) * vecB;
         Vector2 c = vecA.Normalized() - projNV;
-        GD.Print(vecA.Slide(projNV + c));
+        GD.Print(vecA.Slide(projNV + c));*/
+        GD.Print("Scale: " + Scale);
+        animationPlayer = GetNode<AnimationPlayer>("CanvasGroup/BufferA/Sprite/AnimationPlayer");
+        animationPlayer.Play("Idle");
     }
 
     // Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -51,6 +55,7 @@ public partial class Player : CharacterBody2D
                 }
             }
         }
+        
         if(!IsOnFloor())
             Velocity += new Vector2(0, 983.4f * mass * (float)delta);
 
@@ -72,6 +77,13 @@ public partial class Player : CharacterBody2D
 
         if (!pressingJump && !IsOnFloor() && Velocity.Y < 0)
             Velocity = new Vector2(Velocity.X, 0);
+        
+        if ((lastVelocity.X > 0 && Velocity.X < 0) || (lastVelocity.X < 0 && Velocity.X > 0))
+        {
+            Scale = new Vector2(-Scale.X, Scale.Y);
+        }
+        
+        UpdateSprite();
         
         lastVelocity = Velocity;
 
@@ -121,5 +133,26 @@ public partial class Player : CharacterBody2D
     {
         float radiansAngle = Mathf.Acos(vec1.Dot(vec2) / (vec1.Length() * vec2.Length()));
         return radiansAngle * 180 / Mathf.Pi;
+    }
+
+    private void UpdateSprite()
+    {
+        if (Velocity.X != 0)
+        {
+            if (lastVelocity.X == 0)
+            {
+                animationPlayer.Play("Roll");
+            }
+
+            animationPlayer.SpeedScale = Mathf.Abs(Velocity.X) / maxSpeed * 5;
+        }
+        else
+        {
+            if (lastVelocity.X != 0)
+            {
+                animationPlayer.Play("Idle");
+                animationPlayer.SpeedScale = 1;
+            }
+        }
     }
 }

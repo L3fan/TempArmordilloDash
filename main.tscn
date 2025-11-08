@@ -1,38 +1,15 @@
-[gd_scene load_steps=6 format=3 uid="uid://bafyf3hli7yop"]
+[gd_scene load_steps=4 format=3 uid="uid://bafyf3hli7yop"]
 
 [ext_resource type="PackedScene" uid="uid://cpma7du425iag" path="res://level.tscn" id="1_ig7tw"]
-[ext_resource type="PackedScene" uid="uid://dvy5rqygiv6v4" path="res://wall.tscn" id="2_h2yge"]
 [ext_resource type="PackedScene" uid="uid://do84eyf6vw5rv" path="res://player.tscn" id="3_1bvp3"]
 [ext_resource type="Script" uid="uid://bf2an2yo1wkfa" path="res://DebugScreen.cs" id="4_1bvp3"]
-[ext_resource type="PackedScene" uid="uid://b73h7t8t7tous" path="res://direction_changer.tscn" id="5_lquwl"]
 
 [node name="Main" type="Node2D"]
 
 [node name="Level" parent="." instance=ExtResource("1_ig7tw")]
 
 [node name="Camera2D" type="Camera2D" parent="."]
-
-[node name="Wall_Bottom" parent="." instance=ExtResource("2_h2yge")]
-offset_left = -600.0
-offset_top = 287.0
-offset_right = -560.0
-offset_bottom = 327.0
-scale = Vector2(30, 2)
-
-[node name="Wall_Right" parent="." instance=ExtResource("2_h2yge")]
-offset_left = 576.0
-offset_top = -324.0
-offset_right = 616.0
-offset_bottom = -284.0
-scale = Vector2(2, 15.51)
-
-[node name="Wall_Left" parent="." instance=ExtResource("2_h2yge")]
-offset_left = -616.0
-offset_top = -324.0
-offset_right = -576.0
-offset_bottom = -284.0
-scale = Vector2(2, 15.51)
-pivot_offset = Vector2(40, 0)
+zoom = Vector2(0.76, 0.76)
 
 [node name="Player" parent="." instance=ExtResource("3_1bvp3")]
 position = Vector2(1, 0)
@@ -48,14 +25,3 @@ offset_top = -285.0
 offset_right = 102.0
 offset_bottom = -181.0
 text = "Velocity: "
-
-[node name="Direction Changer" parent="." instance=ExtResource("5_lquwl")]
-position = Vector2(507.00006, 136.00002)
-scale = Vector2(6.68, 15.025)
-direction = Vector2(-1, 0)
-onNextBounce = true
-
-[node name="Direction Changer2" parent="." instance=ExtResource("5_lquwl")]
-position = Vector2(-509.00006, 136.00002)
-scale = Vector2(6.68, 15.025)
-onNextBounce = true
