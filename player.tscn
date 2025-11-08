@@ -1,8 +1,7 @@
-[gd_scene load_steps=10 format=3 uid="uid://do84eyf6vw5rv"]
+[gd_scene load_steps=9 format=3 uid="uid://do84eyf6vw5rv"]
 
 [ext_resource type="Texture2D" uid="uid://d0jifiae7afp7" path="res://Assets/Dylan/armadillo_roll_sprite_sheet.png" id="1_4flbx"]
 [ext_resource type="Script" uid="uid://fhwxvpl6q6db" path="res://Player.cs" id="1_onrkg"]
-[ext_resource type="Material" uid="uid://f522mtx3vtk6" path="res://Assets/Materials/PlayerCharacterMat.tres" id="2_hqtel"]
 [ext_resource type="Texture2D" uid="uid://lyr5doodjoy3" path="res://Assets/arrow.png" id="3_i3pqv"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_wtcfe"]
@@ -95,36 +94,18 @@ arrow = NodePath("Arrow")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_wtcfe")
 
-[node name="CanvasGroup" type="CanvasGroup" parent="."]
-material = ExtResource("2_hqtel")
-
-[node name="BufferA" type="SubViewport" parent="CanvasGroup"]
-
-[node name="Sprite" type="Sprite2D" parent="CanvasGroup/BufferA"]
-scale = Vector2(0.2, 0.2)
+[node name="Sprite" type="Sprite2D" parent="."]
 texture = ExtResource("1_4flbx")
 hframes = 4
 vframes = 2
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="CanvasGroup/BufferA/Sprite"]
-libraries = {
-&"": SubResource("AnimationLibrary_0hol4")
-}
-
-[node name="BufferB" type="SubViewport" parent="CanvasGroup"]
-
-[node name="Sprite" type="Sprite2D" parent="CanvasGroup/BufferB"]
-scale = Vector2(0.2, 0.2)
-texture = ExtResource("1_4flbx")
-hframes = 4
-vframes = 2
-
-[node name="AnimationPlayer" type="AnimationPlayer" parent="CanvasGroup/BufferB/Sprite"]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Sprite"]
 libraries = {
 &"": SubResource("AnimationLibrary_0hol4")
 }
 
 [node name="Arrow" type="TextureRect" parent="."]
+visible = false
 anchors_preset = 4
 anchor_top = 0.5
 anchor_bottom = 0.5
