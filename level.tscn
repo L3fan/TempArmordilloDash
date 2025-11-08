@@ -1,6 +1,10 @@
-[gd_scene load_steps=2 format=3 uid="uid://cpma7du425iag"]
+[gd_scene load_steps=4 format=3 uid="uid://cpma7du425iag"]
 
 [ext_resource type="PackedScene" uid="uid://dvy5rqygiv6v4" path="res://wall.tscn" id="1_u52ul"]
+[ext_resource type="Texture2D" uid="uid://cejsqnowxtnbm" path="res://Assets/Ramp.png" id="2_vonw3"]
+
+[sub_resource type="ConvexPolygonShape2D" id="ConvexPolygonShape2D_oi3di"]
+points = PackedVector2Array(0, 172, 172, 172, 172, 0)
 
 [node name="Level" type="Node2D"]
 
@@ -39,3 +43,17 @@ offset_right = -920.0
 offset_bottom = -500.0
 scale = Vector2(2, 26)
 pivot_offset = Vector2(40, 0)
+
+[node name="TextureRect" type="TextureRect" parent="."]
+offset_left = 850.99994
+offset_top = 326.0
+offset_right = 1022.99994
+offset_bottom = 498.0
+scale = Vector2(0.76, 1)
+texture = ExtResource("2_vonw3")
+expand_mode = 1
+
+[node name="StaticBody2D" type="StaticBody2D" parent="TextureRect"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TextureRect/StaticBody2D"]
+shape = SubResource("ConvexPolygonShape2D_oi3di")

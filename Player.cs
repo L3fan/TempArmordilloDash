@@ -19,6 +19,7 @@ public partial class Player : CharacterBody2D
     private Vector2 lastVelocity = Vector2.Zero;
     private float prevRot = 0;
     private AnimationPlayer animationPlayer;
+    private bool isOnSlope = false;
 
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
@@ -30,7 +31,7 @@ public partial class Player : CharacterBody2D
         Vector2 c = vecA.Normalized() - projNV;
         GD.Print(vecA.Slide(projNV + c));*/
         GD.Print("Scale: " + Scale);
-        animationPlayer = GetNode<AnimationPlayer>("CanvasGroup/BufferA/Sprite/AnimationPlayer");
+        animationPlayer = GetNode<AnimationPlayer>("Sprite/AnimationPlayer");
         animationPlayer.Play("Idle");
     }
 
@@ -43,21 +44,34 @@ public partial class Player : CharacterBody2D
     {
         if (lastVelocity != Vector2.Zero)
         {
+            isOnSlope = false;
             for (int i = 0; i < GetSlideCollisionCount(); i++)
             {
                 Vector2 collisionNormal = GetSlideCollision(i).GetNormal();
                 //GD.Print("Rotation of " + lastVelocity + " and " + collisionNormal + " = " + RotationOfVectors(lastVelocity, collisionNormal));
-                if (RotationOfVectors(direction, collisionNormal) > 130f)
+                float collisionAngle = RotationOfVectors(direction, collisionNormal);
+                if (collisionAngle > 160f)
                 {
                     Velocity = lastVelocity.Bounce(collisionNormal);
                     //GD.Print(Velocity);
                     direction.X *= -1;
                 }
+                else
+                {
+                    Velocity = lastVelocity.Slide(collisionNormal);
+                }
+
+                if (collisionAngle < 150)
+                    isOnSlope = true;
             }
         }
+
+        float slopeMod = 1.0f;
+        if (isOnSlope)
+            slopeMod = 0.1f;
         
         if(!IsOnFloor())
-            Velocity += new Vector2(0, 983.4f * mass * (float)delta);
+            Velocity += new Vector2(0, 983.4f * mass * slopeMod * (float)delta);
 
         if (Velocity.X < 0.5f && Velocity.X > -0.5f)
             Velocity = new Vector2(0, Velocity.Y);
@@ -137,22 +151,24 @@ public partial class Player : CharacterBody2D
 
     private void UpdateSprite()
     {
-        if (Velocity.X != 0)
+        if (Mathf.Abs(Velocity.X) > 0)
         {
-            if (lastVelocity.X == 0)
-            {
+            if(Mathf.Abs(lastVelocity.X) <= 0)
                 animationPlayer.Play("Roll");
-            }
 
-            animationPlayer.SpeedScale = Mathf.Abs(Velocity.X) / maxSpeed * 5;
+            if (Mathf.Abs(Velocity.X) >= 200 && Mathf.Abs(lastVelocity.X) < 200)
+                GetNode<Sprite2D>("Sprite").Frame = 4;
+            
+            if (Mathf.Abs(Velocity.X) < 200 && Mathf.Abs(lastVelocity.X) >= 200)
+                GetNode<Sprite2D>("Sprite").Frame = 0;
         }
-        else
+        else if(Mathf.Abs(lastVelocity.X) > 0)
         {
-            if (lastVelocity.X != 0)
-            {
-                animationPlayer.Play("Idle");
-                animationPlayer.SpeedScale = 1;
-            }
+            animationPlayer.Play("Idle");
+            animationPlayer.SpeedScale = 1;
         }
+        
+        if(Mathf.Abs(Velocity.X) > 0)
+            animationPlayer.SpeedScale = Mathf.Abs(Velocity.X) / maxSpeed * 5;
     }
 }
