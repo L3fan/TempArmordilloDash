@@ -3,23 +3,23 @@ using System;
 using System.Diagnostics;
 using System.Net;
 
-public partial class Player : CharacterBody2D
+public partial class Player : RigidBody2D
 {
-    [Export] public float mass = 1;
-    [Export] public float speed = 100f;
+    [Export] public float speed = 10f;
     [Export] public float maxSpeed = 3000;
-    [Export] public float jumpForce = 3000;
-    [Export] public float friction = 0.05f;
+    [Export] public float jumpForce = 600;
+    [Export] public float slowDown = 0.05f;
+    [Export] public float verticalBounceReduction = 0.25f;
     [Export] public Control arrow;
-    private Vector2 direction = new Vector2(1, 0);
-    private Vector2 forwardDir = new Vector2(1, 0);
+    private Vector2 direction = new Vector2(1, 1);
     private bool pressingForward = false;
     private bool pressingJump = false;
     private bool bounced = false;
     private Vector2 lastVelocity = Vector2.Zero;
     private float prevRot = 0;
+    private Node2D spriteParent;
+    private Sprite2D sprite;
     private AnimationPlayer animationPlayer;
-    private bool isOnSlope = false;
 
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
@@ -31,8 +31,12 @@ public partial class Player : CharacterBody2D
         Vector2 c = vecA.Normalized() - projNV;
         GD.Print(vecA.Slide(projNV + c));*/
         GD.Print("Scale: " + Scale);
-        animationPlayer = GetNode<AnimationPlayer>("Sprite/AnimationPlayer");
+        animationPlayer = GetNode<AnimationPlayer>("Sprite Parent/Sprite/AnimationPlayer");
         animationPlayer.Play("Idle");
+        ContactMonitor = true;
+        MaxContactsReported = 4;
+        spriteParent = GetNode<Node2D>("Sprite Parent");
+        sprite = GetNode<Sprite2D>("Sprite Parent/Sprite");
     }
 
     // Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -42,7 +46,7 @@ public partial class Player : CharacterBody2D
 
     public override void _PhysicsProcess(double delta)
     {
-        if (lastVelocity != Vector2.Zero)
+        /*if (lastVelocity != Vector2.Zero)
         {
             isOnSlope = false;
             for (int i = 0; i < GetSlideCollisionCount(); i++)
@@ -50,15 +54,15 @@ public partial class Player : CharacterBody2D
                 Vector2 collisionNormal = GetSlideCollision(i).GetNormal();
                 //GD.Print("Rotation of " + lastVelocity + " and " + collisionNormal + " = " + RotationOfVectors(lastVelocity, collisionNormal));
                 float collisionAngle = RotationOfVectors(direction, collisionNormal);
-                if (collisionAngle > 160f)
+                if (collisionAngle > 150f)
                 {
-                    Velocity = lastVelocity.Bounce(collisionNormal);
-                    //GD.Print(Velocity);
+                    LinearVelocity = lastVelocity.Bounce(collisionNormal);
+                    //GD.Print(LinearVelocity);
                     direction.X *= -1;
                 }
                 else
                 {
-                    Velocity = lastVelocity.Slide(collisionNormal);
+                    LinearVelocity = lastVelocity.Slide(collisionNormal);
                 }
 
                 if (collisionAngle < 150)
@@ -71,38 +75,50 @@ public partial class Player : CharacterBody2D
             slopeMod = 0.1f;
         
         if(!IsOnFloor())
-            Velocity += new Vector2(0, 983.4f * mass * slopeMod * (float)delta);
+            LinearVelocity += new Vector2(0, 983.4f * mass * slopeMod * (float)delta);
 
-        if (Velocity.X < 0.5f && Velocity.X > -0.5f)
-            Velocity = new Vector2(0, Velocity.Y);
+        if (LinearVelocity.X < 0.5f && LinearVelocity.X > -0.5f)
+            LinearVelocity = new Vector2(0, LinearVelocity.Y);*/
 
-        float forwardForce = speed * 10 * (float)delta * (maxSpeed - Mathf.Abs(Velocity.X)) / maxSpeed;
-        //GD.Print(forwardForce);
 
+        //MoveAndSlide();
+    }
+
+    public override void _IntegrateForces(PhysicsDirectBodyState2D state)
+    {
+        bool isOnFloor = state.GetContactCount() > 0 && (int)state.GetContactColliderPosition(0).Y >= (int)GlobalPosition.Y;
+        GD.Print(pressingJump + " " + isOnFloor);
+
+        if (pressingJump && isOnFloor)
+            LinearVelocity += new Vector2(0, -jumpForce*5 / Mass);
+        
         //Input
+        float forwardForce = speed * (maxSpeed - Mathf.Abs(LinearVelocity.X)) / maxSpeed;
+        
         if (pressingForward)
-            Velocity += forwardForce * direction;
+            LinearVelocity += forwardForce * direction;
 
-        if (!pressingForward)
-            Velocity -= new Vector2(friction * Velocity.X, 0);
-
-        if (pressingJump && IsOnFloor())
-            Velocity += new Vector2(0, -jumpForce * 10 * (float)delta);
-
-        if (!pressingJump && !IsOnFloor() && Velocity.Y < 0)
-            Velocity = new Vector2(Velocity.X, 0);
+        if (!pressingForward && isOnFloor)
+            LinearVelocity -= new Vector2(slowDown * LinearVelocity.X, 0);
         
-        if ((lastVelocity.X > 0 && Velocity.X < 0) || (lastVelocity.X < 0 && Velocity.X > 0))
+        //GD.Print("Velocity: " + LinearVelocity + " // last Vel: " + lastVelocity);
+        if ((lastVelocity.X > 0 && LinearVelocity.X <= 0) || (lastVelocity.X < 0 && LinearVelocity.X >= 0))
         {
-            Scale = new Vector2(-Scale.X, Scale.Y);
+            direction *= new Vector2(-1, 1);
+            spriteParent.Scale *= new Vector2(-1, 1);
         }
-        
+
+        if (lastVelocity.Y > 0 && LinearVelocity.Y <= 0)
+        {
+            LinearVelocity *= new Vector2(1, verticalBounceReduction);
+        }
+
         UpdateSprite();
         
-        lastVelocity = Velocity;
-
-
-        MoveAndSlide();
+        if(Mathf.IsEqualApprox(LinearVelocity.Y, 0, 0.1f))
+            LinearVelocity = new Vector2(LinearVelocity.X, 0);
+        
+        lastVelocity = LinearVelocity;
     }
 
     private bool AboutSameVector(Vector2 vec1, Vector2 vec2, float errorAngle)
@@ -151,16 +167,16 @@ public partial class Player : CharacterBody2D
 
     private void UpdateSprite()
     {
-        if (Mathf.Abs(Velocity.X) > 0)
+        if (Mathf.Abs(LinearVelocity.X) > 0)
         {
             if(Mathf.Abs(lastVelocity.X) <= 0)
                 animationPlayer.Play("Roll");
 
-            if (Mathf.Abs(Velocity.X) >= 200 && Mathf.Abs(lastVelocity.X) < 200)
-                GetNode<Sprite2D>("Sprite").Frame = 4;
+            if (animationPlayer.SpeedScale >= 2 && sprite.Frame != 4)
+                sprite.Frame = 4;
             
-            if (Mathf.Abs(Velocity.X) < 200 && Mathf.Abs(lastVelocity.X) >= 200)
-                GetNode<Sprite2D>("Sprite").Frame = 0;
+            if (animationPlayer.SpeedScale < 2 && sprite.Frame != 0)
+                sprite.Frame = 0;
         }
         else if(Mathf.Abs(lastVelocity.X) > 0)
         {
@@ -168,7 +184,7 @@ public partial class Player : CharacterBody2D
             animationPlayer.SpeedScale = 1;
         }
         
-        if(Mathf.Abs(Velocity.X) > 0)
-            animationPlayer.SpeedScale = Mathf.Abs(Velocity.X) / maxSpeed * 5;
+        if(Mathf.Abs(LinearVelocity.X) > 0)
+            animationPlayer.SpeedScale = Mathf.Abs(LinearVelocity.X) / maxSpeed;
     }
 }
