@@ -1,6 +1,7 @@
-[gd_scene load_steps=4 format=3 uid="uid://bafyf3hli7yop"]
+[gd_scene load_steps=5 format=3 uid="uid://bafyf3hli7yop"]
 
 [ext_resource type="PackedScene" uid="uid://cpma7du425iag" path="res://level.tscn" id="1_ig7tw"]
+[ext_resource type="Script" uid="uid://blaqne3byfy6l" path="res://CameraMovement.cs" id="2_1bvp3"]
 [ext_resource type="PackedScene" uid="uid://do84eyf6vw5rv" path="res://player.tscn" id="3_1bvp3"]
 [ext_resource type="Script" uid="uid://bf2an2yo1wkfa" path="res://DebugScreen.cs" id="4_1bvp3"]
 
@@ -8,20 +9,23 @@
 
 [node name="Level" parent="." instance=ExtResource("1_ig7tw")]
 
-[node name="Camera2D" type="Camera2D" parent="."]
+[node name="Camera2D" type="Camera2D" parent="." node_paths=PackedStringArray("player")]
 zoom = Vector2(0.76, 0.76)
+script = ExtResource("2_1bvp3")
+player = NodePath("../Player")
+bufferZone = Vector2(640, 980)
 
-[node name="Player" parent="." instance=ExtResource("3_1bvp3")]
-position = Vector2(1, 0)
-
-[node name="Debug Screen" type="Node" parent="." node_paths=PackedStringArray("velocityDisplay", "player")]
+[node name="Debug Screen" type="Node2D" parent="Camera2D" node_paths=PackedStringArray("velocityDisplay", "player")]
 script = ExtResource("4_1bvp3")
 velocityDisplay = NodePath("Velocity")
-player = NodePath("../Player")
+player = NodePath("../../Player")
 
-[node name="Velocity" type="TextEdit" parent="Debug Screen"]
+[node name="Velocity" type="TextEdit" parent="Camera2D/Debug Screen"]
 offset_left = -100.0
 offset_top = -285.0
 offset_right = 102.0
 offset_bottom = -181.0
 text = "Velocity: "
+
+[node name="Player" parent="." instance=ExtResource("3_1bvp3")]
+position = Vector2(1, 0)
