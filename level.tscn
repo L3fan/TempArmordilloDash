@@ -45,10 +45,10 @@ scale = Vector2(2, 26)
 pivot_offset = Vector2(40, 0)
 
 [node name="TextureRect" type="TextureRect" parent="."]
-offset_left = 1626.0
-offset_top = 285.0
-offset_right = 1798.0
-offset_bottom = 457.0
+offset_left = 850.99994
+offset_top = 326.0
+offset_right = 1022.99994
+offset_bottom = 498.0
 scale = Vector2(0.76, 1)
 texture = ExtResource("2_vonw3")
 expand_mode = 1
