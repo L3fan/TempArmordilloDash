@@ -18,47 +18,46 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -6750.0
 offset_top = 500.0
-offset_right = -6710.0
-offset_bottom = 540.0
-grow_horizontal = 2
-grow_vertical = 2
-scale = Vector2(338, 2)
+offset_bottom = 900.0
+scale = Vector2(35, 1)
 
 [node name="Wall_Right" parent="." instance=ExtResource("1_u52ul")]
-offset_left = 6750.0
-offset_top = -540.0
-offset_right = 6790.0
-offset_bottom = -500.0
-scale = Vector2(2, 26)
-
-[node name="Wall_Left" parent="." instance=ExtResource("1_u52ul")]
-offset_left = -6750.0
-offset_top = -540.0
-offset_right = -6710.0
-offset_bottom = -500.0
-scale = Vector2(2, 26)
-pivot_offset = Vector2(40, 0)
-
-[node name="Wall_Bottom2" parent="." instance=ExtResource("1_u52ul")]
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = 5891.0
-offset_top = -66.0
-offset_right = 5931.0
-offset_bottom = -26.0
-grow_horizontal = 2
-grow_vertical = 2
-scale = Vector2(48, 2)
+offset_left = 6750.0
+offset_right = 7150.0
+scale = Vector2(1, 5)
+
+[node name="Wall_Left" parent="." instance=ExtResource("1_u52ul")]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -7136.0
+offset_right = -6736.0
+scale = Vector2(1, 5)
+
+[node name="Wall_Right2" parent="." instance=ExtResource("1_u52ul")]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 5396.0
+offset_top = -982.0
+offset_right = 5796.0
+offset_bottom = -582.0
+scale = Vector2(0.5, 5)
 
 [node name="TextureRect" type="TextureRect" parent="."]
-offset_left = 6579.0
+offset_left = 6578.0
 offset_top = 329.0
-offset_right = 6751.0
+offset_right = 6750.0
 offset_bottom = 501.0
 texture = ExtResource("2_vonw3")
 expand_mode = 1
@@ -81,20 +80,6 @@ expand_mode = 1
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="TextureRect2/StaticBody2D"]
 polygon = PackedVector2Array(172, 0, 172, 172, 0, 172, 44.517, 166.139, 86, 148.956, 121.622, 121.622, 148.956, 86, 166.139, 44.517)
-
-[node name="Wall_Bottom3" parent="." instance=ExtResource("1_u52ul")]
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = 4611.0
-offset_top = 219.0
-offset_right = 4651.0
-offset_bottom = 259.0
-grow_horizontal = 2
-grow_vertical = 2
-scale = Vector2(48, 2)
 
 [node name="TextureRect3" type="TextureRect" parent="."]
 offset_left = 5868.0
@@ -124,23 +109,38 @@ expand_mode = 1
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="TextureRect4/StaticBody2D"]
 polygon = PackedVector2Array(172, 0, 172, 172, 0, 172, 44.517, 166.139, 86, 148.956, 121.622, 121.622, 148.956, 86, 166.139, 44.517)
 
-[node name="Wall_Right2" parent="." instance=ExtResource("1_u52ul")]
-offset_left = 5618.0
-offset_top = -816.0
-offset_right = 5658.0
-offset_bottom = -776.0
-scale = Vector2(2, 26)
-
-[node name="Wall_Bottom4" parent="." instance=ExtResource("1_u52ul")]
+[node name="Wall_Right3" parent="." instance=ExtResource("1_u52ul")]
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = 5419.0005
-offset_top = -325.0
-offset_right = 5459.0005
-offset_bottom = -285.0
-grow_horizontal = 2
-grow_vertical = 2
-scale = Vector2(48, 2)
+offset_left = 5796.0005
+offset_top = 38.0
+offset_right = 6196.0005
+offset_bottom = 438.0
+scale = Vector2(2.5, 0.1)
+
+[node name="Wall_Right4" parent="." instance=ExtResource("1_u52ul")]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 6150.0
+offset_top = -206.0
+offset_right = 6550.0
+offset_bottom = 194.0
+scale = Vector2(2, 0.1)
+
+[node name="Wall_Right5" parent="." instance=ExtResource("1_u52ul")]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 6020.0
+offset_top = -464.0
+offset_right = 6420.0
+offset_bottom = -64.0
+scale = Vector2(2.65, 0.1)

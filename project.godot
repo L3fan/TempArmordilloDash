@@ -51,6 +51,11 @@ forward={
 ]
 }
 
+[physics]
+
+common/max_physics_steps_per_frame=16
+2d/physics_engine="GodotPhysics2D"
+
 [rendering]
 
 renderer/rendering_method="gl_compatibility"
