@@ -5,6 +5,7 @@ public partial class DebugScreen : Node
 {
 	[Export] public TextEdit velocityDisplay;
 	[Export] public Player player;
+	[Export] public TextEdit parameterDisplay;
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
@@ -14,5 +15,6 @@ public partial class DebugScreen : Node
 	public override void _Process(double delta)
 	{
 		velocityDisplay.Text = "Velocity: \nX: " + player.Velocity.X + "\nY: " + player.Velocity.Y;
+		parameterDisplay.Text = "Dash Cooldown: " + player.GetDashCooldown();
 	}
 }

@@ -10,19 +10,36 @@ public partial class Player : CharacterBody2D
     [Export] public float mass = 1;
     [Export] public float speed = 200f;
     [Export] public float maxSpeed = 3000;
-    [Export] public float jumpForce = 3000;
+    [Export] public float jumpForce = 3;
+    [Export] public float dashForce = 3;
     [Export] public float friction = 0.05f;
     [Export] public float bounciness = 1.0f;
-    [Export] public Control arrow;
+
     private Vector2 direction = new Vector2(1, 0);
     private Vector2 forwardDir = new Vector2(1, 0);
+    private Vector2 lastVelocity = Vector2.Zero;
+
+    private float dashCooldown = 0f;
+    private float dashTime = 0f;
+    private bool isDashing = false;
+    private Vector2 dashDir = Vector2.Zero;
+    private bool dashSlowdown = false;
+    private float timeSlow = 3f;
+    private bool inSlowDown = false;
+    private bool mustRecharge = false;
+    private bool dashed = false;
+
     private bool pressingRight = false;
     private bool pressingLeft = false;
-    private bool pressingJump = false;
-    private Vector2 lastVelocity = Vector2.Zero;
+    private bool pressingUp = false;
+    private bool pressingDown = false;
+    private bool pressingDash = false;
+
     private float prevRot = 0;
-    private AnimationPlayer animationPlayer;
+
     private Sprite2D sprite;
+    private AnimationPlayer animationPlayer;
+
     private String velocityInfo;
 
     // Called when the node enters the scene tree for the first time.
@@ -32,7 +49,7 @@ public partial class Player : CharacterBody2D
         animationPlayer = GetNode<AnimationPlayer>("Sprite/AnimationPlayer");
         animationPlayer.Play("Idle");
         GD.Print(Mathf.Max(-2000, -5000));
-        
+
         GD.Print("Player is ready");
     }
 
@@ -43,81 +60,226 @@ public partial class Player : CharacterBody2D
 
     public override void _PhysicsProcess(double delta)
     {
+        if (dashCooldown > 0f)
+            dashCooldown -= (float)delta;
+        if (dashCooldown <= 0f)
+            dashCooldown = 0f;
+        
+        if(dashed)
+            dashed = !IsOnFloor();
+
         velocityInfo = "";
-        float floorAngle = 0;
-        if (lastVelocity != Vector2.Zero)
+
+        CollisionCalc();
+
+        //Gravity
+        Velocity += new Vector2(0, 983.4f * mass * (float)delta);
+        velocityInfo += "Post Gravity: " + Velocity + "\n";
+
+        //Zero setter for anything between 0.5 and -0.5, cause speed reduction takes too long to go from 0.5 to 0
+        if (Velocity.X is < 0.5f and > -0.5f)
+            Velocity = new Vector2(0, Velocity.Y);
+
+        //Reset Slowdown if timeSlow has reached 0 and set mustRecharge = true, only allowing the player to dash again when it has recharged fully
+        if (timeSlow <= 0f || !pressingDash)
         {
-            String collisions = "";
-            for (int i = 0; i < GetSlideCollisionCount(); i++)
+            mustRecharge = true;
+            SetSlowDown(false);
+        }
+
+        //recharge timeSlow when not in Slowdown
+        if (!inSlowDown && timeSlow < 1.5f)
+            timeSlow = Mathf.Min(timeSlow + (float)delta * 0.5f, 1.5f);
+        
+        
+        //allow Dashing when fully recharged after depleting entire timeSlow
+        if(timeSlow >= 1.5f && mustRecharge)
+            mustRecharge = false;
+
+        InputCalculations((float)delta);
+
+        //GD.Print(velocityInfo);
+
+        UpdateSprite();
+
+        lastVelocity = Velocity;
+
+        MoveAndSlide();
+    }
+
+    private void CollisionCalc()
+    {
+        //Get the horizontal Vector or the normalized Vector of the last Velocity
+        Vector2 toCompare = (lastVelocity * Vector2.Right).Normalized();
+        if (dashCooldown >= 0.6f)
+            toCompare = lastVelocity.Normalized();
+
+        //if the Vector is (0, 0) we cant calculate an angle and we are also not moving, so skip
+        if (toCompare == Vector2.Zero)
+            return;
+
+        String collisions = "";
+        for (int i = 0; i < GetSlideCollisionCount(); i++)
+        {
+            Vector2 collisionNormal = GetSlideCollision(i).GetNormal();
+            float collisionAngle = RotationOfVectors(toCompare, collisionNormal);
+            
+            //if angle of collision is smaller than 15°, bounce, else slide on surface
+            if (collisionAngle > 170f || (dashCooldown > 0.6f && collisionAngle < 135f))
             {
-                Vector2 collisionNormal = GetSlideCollision(i).GetNormal();
-                float collisionAngle = RotationOfVectors(direction, collisionNormal);
-                if (collisionAngle < 15f)
+                Velocity = lastVelocity.Bounce(collisionNormal) * bounciness;
+                velocityInfo += "Post Bounce Calc (" + ((Node)GetSlideCollision(i).GetCollider()).GetParent().Name +
+                                "): " + Velocity + " " + collisionNormal + "\n";
+
+                if (dashDir != Vector2.Zero)
                 {
-                    Velocity = lastVelocity.Bounce(collisionNormal) * bounciness;
-                    velocityInfo += "Post Bounce Calc (" + ((Node)GetSlideCollision(i).GetCollider()).GetParent().Name + "): " + Velocity +"\n";
+                    dashDir = dashDir.Bounce(collisionNormal);
                 }
-                else
-                {
-                    Velocity = lastVelocity.Slide(collisionNormal);
-                    velocityInfo += "Post Slide Calc (" + ((Node)GetSlideCollision(i).GetCollider()).GetParent().Name + "): " + Velocity + " " + collisionNormal +"\n";
-                }
-                
-                float floorAngle2 = GetSlideCollision(i).GetAngle() * 180 / Mathf.Pi;
-                collisions += ((Node)GetSlideCollision(i).GetCollider()).GetParent().Name + ": " + floorAngle2 + " // " + collisionNormal + "\n";
-                if(floorAngle2 < 15)
+            }
+            else
+            {
+                Velocity = lastVelocity.Slide(collisionNormal);
+                velocityInfo += "Post Slide Calc (" + ((Node)GetSlideCollision(i).GetCollider()).GetParent().Name +
+                                "): " + Velocity + " " + collisionNormal + "\n";
+            }
+
+            //keep Velocity horizontal on flat ground, prevents unusual hops while rolling from bounce calc, stemming from bad normal calcs
+            if (dashCooldown <= 0.6f)
+            {
+                float floorAngle = GetSlideCollision(i).GetAngle() * 180 / Mathf.Pi;
+                collisions += ((Node)GetSlideCollision(i).GetCollider()).GetParent().Name + ": " + floorAngle +
+                              " // " + collisionNormal + "\n";
+                if (floorAngle < 15)
                 {
                     Velocity *= Vector2.Right;
                 }
             }
         }
-        
-        Velocity += new Vector2(0, 983.4f * mass * (float)delta);
-        velocityInfo += "Post Gravity: " + Velocity + "\n";
+    }
 
-        if (Velocity.X is < 0.5f and > -0.5f)
-            Velocity = new Vector2(0, Velocity.Y);
+    private void InputCalculations(float delta)
+    {
+        if (pressingDash && (dashCooldown == 0f || dashCooldown > 1f) && !mustRecharge && !dashed)
+        {
+            if (timeSlow > 0 && dashCooldown == 0)
+            {
+                timeSlow -= delta;
+                SetSlowDown(true);
+            }
 
-        float forwardForce = 0;
+            InputDash(delta);
+        }
+        else
+        {
+            InputJumpCalc(delta);
 
-        //Input
-        if (pressingJump && IsOnFloor())
+            InputHorizontalCalc(delta);
+
+            SlowdownCalc();
+        }
+
+        if (dashSlowdown)
+        {
+            if (Velocity.Length() >= maxSpeed || dashCooldown >= 0.6f)
+            {
+                if(Velocity.Length() > maxSpeed * 0.75f)
+                    Velocity *= 0.95f;
+                if(Velocity.Y < -1000)
+                    Velocity *= new Vector2(1f, 0.9f);
+            } else
+            {
+                if(lastVelocity.Length() > maxSpeed)
+                    Velocity = Velocity.Normalized() * maxSpeed;
+                dashSlowdown = false;
+            }
+        }
+
+        if (isDashing)
+        {
+            if (!dashSlowdown)
+            {
+                float force = dashForce * 100000 * delta;
+                Velocity *= 0.1f;
+                Velocity += force * dashDir;
+                isDashing = false;
+                dashSlowdown = true;
+                dashTime = 0.25f;
+            }
+
+            if (dashTime > 0f)
+                dashTime -= delta;
+            if (dashTime <= 0f)
+            {
+                dashTime = 0f;
+                isDashing = false;
+            }
+        }
+    }
+
+    private void InputDash(float delta)
+    {
+        dashDir = Vector2.Zero;
+
+        if (pressingDown)
+            dashDir += Vector2.Down;
+        if (pressingRight)
+            dashDir += Vector2.Right;
+        if (pressingLeft)
+            dashDir += Vector2.Left;
+        if (pressingUp)
+            dashDir += Vector2.Up;
+
+        dashDir = dashDir.Normalized() * new Vector2(1.0f, 0.5f);
+
+        if (dashDir != Vector2.Zero && dashCooldown == 0f)
+        {
+            isDashing = true;
+            dashTime = 0.25f;
+            dashCooldown = 1.2f;
+            SetSlowDown(false);
+            dashed = true;
+        }
+    }
+
+    private void InputJumpCalc(float delta)
+    {
+        if (pressingUp && IsOnFloor())
         {
             Velocity *= Vector2.Right;
-            Velocity += new Vector2(0, -jumpForce * 10 * (float)delta);
+            Velocity += new Vector2(0, -jumpForce * 200);
         }
 
         velocityInfo += "Post Jump: " + Velocity + "\n";
-        
+    }
+
+    private void InputHorizontalCalc(float delta)
+    {
         Vector2 addedForce = Vector2.Zero;
-        
+
         if (pressingRight)
         {
-            forwardForce = speed * 10 * (float)delta * Mathf.Min(maxSpeed - Velocity.X, maxSpeed) / maxSpeed;
+            float forwardForce = speed * 10 * delta * Mathf.Min(maxSpeed - Velocity.X, maxSpeed) / maxSpeed;
             addedForce = forwardForce * Vector2.Right;
         }
-        
+
         if (pressingLeft)
         {
-            forwardForce = speed * 10 * (float)delta * Mathf.Abs(Mathf.Max(-maxSpeed - Velocity.X, -maxSpeed)) / maxSpeed;
+            float forwardForce =
+                speed * 10 * delta * Mathf.Abs(Mathf.Max(-maxSpeed - Velocity.X, -maxSpeed)) / maxSpeed;
             addedForce = forwardForce * Vector2.Left;
         }
-        
+
         Velocity += addedForce;
         velocityInfo += "Post Force Add: " + Velocity + "\n";
+    }
 
-        if (!(pressingRight &&  Velocity.X > 0 || pressingLeft &&  Velocity.X < 0) && IsOnFloor())
+    private void SlowdownCalc()
+    {
+        //Slowdown when no Left/Right Input
+        if (!(pressingRight && Velocity.X > 0 || pressingLeft && Velocity.X < 0) && IsOnFloor())
             Velocity -= new Vector2(friction * Velocity.X, 0);
-        
-        velocityInfo += "Post Jump: " + Velocity + "\n";
-        
-        //GD.Print(velocityInfo);
-        
-        UpdateSprite();
-        
-        lastVelocity = Velocity;
 
-        MoveAndSlide();
+        velocityInfo += "Post Jump: " + Velocity + "\n";
     }
 
     private bool AboutSameVector(Vector2 vec1, Vector2 vec2, float errorAngle)
@@ -144,15 +306,25 @@ public partial class Player : CharacterBody2D
         else if (@event.IsActionReleased("right"))
             pressingRight = false;
 
-        if (@event.IsActionPressed("jump"))
-            pressingJump = true;
-        else if (@event.IsActionReleased("jump"))
-            pressingJump = false;
-
         if (@event.IsActionPressed("left"))
             pressingLeft = true;
-        else if(@event.IsActionReleased("left"))
+        else if (@event.IsActionReleased("left"))
             pressingLeft = false;
+
+        if (@event.IsActionPressed("up"))
+            pressingUp = true;
+        else if (@event.IsActionReleased("up"))
+            pressingUp = false;
+
+        if (@event.IsActionPressed("down"))
+            pressingDown = true;
+        else if (@event.IsActionReleased("down"))
+            pressingDown = false;
+
+        if (@event.IsActionPressed("dash"))
+            pressingDash = true;
+        else if (@event.IsActionReleased("dash"))
+            pressingDash = false;
     }
 
     public void SetDirection(Vector2 vec)
@@ -169,38 +341,51 @@ public partial class Player : CharacterBody2D
     private void UpdateSprite()
     {
         //GD.Print("Press Right: " + pressingRight + " // Press Left: " + pressingLeft);
-        if(Velocity.X > 0 && sprite.Scale.X < 0)
+        if (Velocity.X > 0 && sprite.Scale.X < 0)
             sprite.Scale = new Vector2(Mathf.Abs(sprite.Scale.X), sprite.Scale.Y);
-        else if(Velocity.X < 0 && sprite.Scale.X > 0)
+        else if (Velocity.X < 0 && sprite.Scale.X > 0)
             sprite.Scale = new Vector2(-Mathf.Abs(sprite.Scale.X), sprite.Scale.Y);
-        
-        if (Mathf.Abs(Velocity.X) > 0)
-        {
-            if(Mathf.Abs(lastVelocity.X) <= 0)
-                animationPlayer.Play("Roll");
 
-            switch (Mathf.Abs(Velocity.X))
+        float givenForce = Mathf.Abs(Velocity.X);
+        if (isDashing)
+            givenForce = Velocity.Length();
+
+        if (givenForce > 0)
+        {
+            if (!isDashing)
             {
-                case float n when (n < 800):
+                if (Mathf.Abs(lastVelocity.X) <= 0)
+                    animationPlayer.Play("Roll");
+            }
+            else
+            {
+                if (animationPlayer.CurrentAnimation != "Roll")
+                    animationPlayer.Play("Roll");
+            }
+
+            switch (givenForce)
+            {
+                case var n when (n < 800):
                     GetNode<Sprite2D>("Sprite").Frame = 0;
                     break;
-                
-                case float n when (n >= 800 && n < 1600):
+
+                case var n when (n >= 800 && n < 1600):
                     GetNode<Sprite2D>("Sprite").Frame = 3;
                     break;
-                
-                case float n when (n >= 1600 && n < 3200):
+
+                case var n when (n >= 1600 && n < 3200):
                     GetNode<Sprite2D>("Sprite").Frame = 4;
                     break;
-                
-                case float n when (n >= 3200):
+
+                case var n when (n >= 3200):
                     GetNode<Sprite2D>("Sprite").Frame = 5;
                     break;
             }
 
-            animationPlayer.SpeedScale = Velocity.X / maxSpeed * 5;
+            float orientation = sprite.Scale.X / Mathf.Abs(sprite.Scale.X);
+            animationPlayer.SpeedScale = givenForce * orientation / maxSpeed * 5;
         }
-        else if(Mathf.Abs(lastVelocity.X) > 0)
+        else if (Mathf.Abs(lastVelocity.X) > 0)
         {
             animationPlayer.Play("Idle");
             animationPlayer.SpeedScale = 1;
@@ -209,8 +394,42 @@ public partial class Player : CharacterBody2D
 
     private float ValueFurtherFromZero(float val1, float val2)
     {
-        if(Mathf.Abs(val1) > Mathf.Abs(val2))
+        if (Mathf.Abs(val1) > Mathf.Abs(val2))
             return val1;
         return val2;
+    }
+
+    public float GetDashCooldown()
+    {
+        return dashCooldown;
+    }
+
+    private void SetSlowDown(bool slowDown)
+    {
+        if (slowDown)
+        {
+            Engine.TimeScale = 0.5f;
+        }
+        else
+        {
+            Engine.TimeScale = 1f;
+        }
+
+        inSlowDown = slowDown;
+    }
+
+    public bool IsInSlowDown()
+    {
+        return inSlowDown;
+    }
+
+    public bool IsDashing()
+    {
+        return dashCooldown >= 0.6f;
+    }
+
+    public Sprite2D GetSprite()
+    {
+        return sprite;
     }
 }

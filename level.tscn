@@ -1,16 +1,23 @@
-[gd_scene load_steps=3 format=3 uid="uid://cpma7du425iag"]
+[gd_scene load_steps=5 format=3 uid="uid://cpma7du425iag"]
 
 [ext_resource type="PackedScene" uid="uid://dvy5rqygiv6v4" path="res://wall.tscn" id="1_u52ul"]
 [ext_resource type="Texture2D" uid="uid://jo34hknve037" path="res://Assets/Round Ramp.png" id="2_vonw3"]
 
+[sub_resource type="Gradient" id="Gradient_vonw3"]
+colors = PackedColorArray(0.33374244, 0.1436351, 2.4065375e-08, 1, 0.11620868, 0.23988128, 0.20697212, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_oi3di"]
+gradient = SubResource("Gradient_vonw3")
+fill = 1
+
 [node name="Level" type="Node2D"]
 
-[node name="ColorRect" type="ColorRect" parent="."]
+[node name="TextureRect5" type="TextureRect" parent="."]
 offset_left = -6736.0
-offset_top = -540.0
-offset_right = 6771.0
-offset_bottom = 540.0
-color = Color(0.19563031, 0.14629066, 0.123078145, 1)
+offset_top = -3728.0
+offset_right = 9305.0
+offset_bottom = 2081.0
+texture = SubResource("GradientTexture2D_oi3di")
 
 [node name="Wall_Bottom" parent="." instance=ExtResource("1_u52ul")]
 anchors_preset = 8
