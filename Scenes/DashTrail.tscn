@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://cidk3io5cftic"]
 
-[ext_resource type="Script" uid="uid://c1fr22q6pjqgc" path="res://DashTrail.cs" id="1_8esw7"]
+[ext_resource type="Script" uid="uid://c1fr22q6pjqgc" path="res://Scripts/DashTrail.cs" id="1_8esw7"]
 
 [node name="DashTrail" type="Node2D"]
 script = ExtResource("1_8esw7")

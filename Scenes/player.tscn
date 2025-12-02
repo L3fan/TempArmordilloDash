@@ -1,10 +1,10 @@
 [gd_scene load_steps=8 format=3 uid="uid://do84eyf6vw5rv"]
 
 [ext_resource type="Texture2D" uid="uid://d0jifiae7afp7" path="res://Assets/Dylan/armadillo_roll_sprite_sheet.png" id="1_4flbx"]
-[ext_resource type="Script" uid="uid://fhwxvpl6q6db" path="res://Player.cs" id="1_onrkg"]
+[ext_resource type="Script" uid="uid://fhwxvpl6q6db" path="res://Scripts/Player.cs" id="1_onrkg"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_wtcfe"]
-radius = 55.0
+radius = 53.0
 
 [sub_resource type="Animation" id="Animation_0hol4"]
 resource_name = "Idle"

@@ -1,7 +1,8 @@
-[gd_scene load_steps=5 format=3 uid="uid://cpma7du425iag"]
+[gd_scene load_steps=6 format=3 uid="uid://cpma7du425iag"]
 
-[ext_resource type="PackedScene" uid="uid://dvy5rqygiv6v4" path="res://wall.tscn" id="1_u52ul"]
+[ext_resource type="PackedScene" uid="uid://dvy5rqygiv6v4" path="res://Scenes/wall.tscn" id="1_u52ul"]
 [ext_resource type="Texture2D" uid="uid://jo34hknve037" path="res://Assets/Round Ramp.png" id="2_vonw3"]
+[ext_resource type="PackedScene" uid="uid://biyduiebwd51t" path="res://Scenes/Spike.tscn" id="3_6phgx"]
 
 [sub_resource type="Gradient" id="Gradient_vonw3"]
 colors = PackedColorArray(0.33374244, 0.1436351, 2.4065375e-08, 1, 0.11620868, 0.23988128, 0.20697212, 1)
@@ -12,7 +13,8 @@ fill = 1
 
 [node name="Level" type="Node2D"]
 
-[node name="TextureRect5" type="TextureRect" parent="."]
+[node name="Background" type="TextureRect" parent="."]
+z_index = -10
 offset_left = -6736.0
 offset_top = -3728.0
 offset_right = 9305.0
@@ -151,3 +153,6 @@ offset_top = -464.0
 offset_right = 6420.0
 offset_bottom = -64.0
 scale = Vector2(2.65, 0.1)
+
+[node name="Spike" parent="." instance=ExtResource("3_6phgx")]
+position = Vector2(1165, 501)
