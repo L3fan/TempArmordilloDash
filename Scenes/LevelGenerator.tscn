@@ -1,0 +1,88 @@
+[gd_scene load_steps=8 format=3 uid="uid://cgs5nj5d584tx"]
+
+[ext_resource type="PackedScene" uid="uid://dvy5rqygiv6v4" path="res://Scenes/wall.tscn" id="1_taddq"]
+
+[sub_resource type="Gradient" id="Gradient_taddq"]
+colors = PackedColorArray(0.27604747, 5.2943824e-07, 0.15968642, 0.5411765, 0.20152658, 0.20152658, 0.20152658, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_4uk7y"]
+gradient = SubResource("Gradient_taddq")
+width = 16
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_dpvwn"]
+size = Vector2(27, 218)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_dyc7o"]
+size = Vector2(24, 218)
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_3ay3t"]
+radius = 11.0
+height = 42.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ufx6g"]
+size = Vector2(154, 20)
+
+[node name="LevelGenerator" type="Node2D"]
+
+[node name="Endpoint" type="Node2D" parent="."]
+position = Vector2(1000, 0)
+scale = Vector2(1, 2)
+
+[node name="Spawnpoint" type="Node2D" parent="."]
+position = Vector2(0, -718)
+
+[node name="ColorRect" type="ColorRect" parent="Spawnpoint"]
+offset_left = -102.0
+offset_top = -83.0
+offset_right = 104.0
+offset_bottom = 123.0
+color = Color(0.38881114, 0.48059767, 0.6947611, 1)
+
+[node name="ColorRect2" type="ColorRect" parent="Spawnpoint"]
+offset_left = -116.0
+offset_top = 92.0
+offset_right = 118.0
+offset_bottom = 135.0
+color = Color(0.38881114, 0.48059767, 0.6947611, 1)
+
+[node name="TextureRect" type="TextureRect" parent="Spawnpoint"]
+offset_left = -101.89343
+offset_top = 92.004395
+offset_right = -73.58008
+offset_bottom = 298.01053
+rotation = -1.5707964
+texture = SubResource("GradientTexture2D_4uk7y")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Spawnpoint"]
+position = Vector2(0, -83)
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Spawnpoint/StaticBody2D"]
+position = Vector2(90.5, 109)
+shape = SubResource("RectangleShape2D_dpvwn")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Spawnpoint/StaticBody2D"]
+position = Vector2(-90, 109)
+shape = SubResource("RectangleShape2D_dyc7o")
+
+[node name="CollisionShape2D3" type="CollisionShape2D" parent="Spawnpoint/StaticBody2D"]
+position = Vector2(-105, 196)
+shape = SubResource("CapsuleShape2D_3ay3t")
+
+[node name="CollisionShape2D4" type="CollisionShape2D" parent="Spawnpoint/StaticBody2D"]
+position = Vector2(107, 197)
+shape = SubResource("CapsuleShape2D_3ay3t")
+
+[node name="CollisionShape2D5" type="CollisionShape2D" parent="Spawnpoint/StaticBody2D"]
+shape = SubResource("RectangleShape2D_ufx6g")
+
+[node name="Wall" parent="." instance=ExtResource("1_taddq")]
+position = Vector2(0, 200)
+scale = Vector2(5, 1)
+
+[node name="Wall2" parent="." instance=ExtResource("1_taddq")]
+position = Vector2(-800, -400)
+scale = Vector2(1, 2)
+
+[node name="Wall3" parent="." instance=ExtResource("1_taddq")]
+position = Vector2(0, -1000)
+scale = Vector2(5, 1)

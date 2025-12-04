@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using System.Collections;
 using System.Diagnostics;
 using System.Net;
 using System.Numerics;
@@ -53,6 +54,8 @@ public partial class Player : CharacterBody2D
 
     private String velocityInfo;
 
+    private float count = 1;
+
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
     {
@@ -81,6 +84,8 @@ public partial class Player : CharacterBody2D
                 {
                     Position = respawnPoint;
                     Velocity = Vector2.Zero;
+                    animationPlayer.SpeedScale = 0;
+                    animationPlayer.Play("Idle");
                 }
             }
         } else if (fadeOutOfBlack)
@@ -92,6 +97,7 @@ public partial class Player : CharacterBody2D
                 if (respawnOnBlackScreen)
                 {
                     GD.Print("Enable Controls again");
+                    animationPlayer.SpeedScale = 1;
                     canControl = true;
                     reverse = false;
                     respawnOnBlackScreen = false;
@@ -103,6 +109,13 @@ public partial class Player : CharacterBody2D
 
     public override void _PhysicsProcess(double delta)
     {
+        if (gotHit)
+        {
+            Velocity = Vector2.Zero;
+            lastVelocity = Vector2.Zero;
+            return;
+        }
+
         if (dashCooldown > 0f)
             dashCooldown -= (float)delta;
         if (dashCooldown <= 0f)
@@ -376,6 +389,9 @@ public partial class Player : CharacterBody2D
             pressingDash = true;
         else if (@event.IsActionReleased("dash"))
             pressingDash = false;
+        
+        if(@event.IsActionPressed("playDeath"))
+            animationPlayer.Play("Death");
     }
 
     public void SetDirection(Vector2 vec)
@@ -501,21 +517,37 @@ public partial class Player : CharacterBody2D
             return;
         
         gotHit = true;
-        Engine.TimeScale = 0.001f;
-        PlayDeathAnim(source);
+        animationPlayer.SpeedScale = 0;
+        StartCoroutine(PlayDeathAnim());
     }
 
-    private async void PlayDeathAnim(Node2D source)
+    IEnumerable PlayDeathAnim()
     {
-        TimeSpan span = TimeSpan.FromSeconds(1f);
-        await Task.Delay(span);
-        Engine.TimeScale = 1;
+        while (count > 0)
+        {
+            count -= (float)GetProcessDeltaTime();
+            GD.Print("count: " + count);
+            yield return null;
+        }
+
+        count = 1;
         reverse = true;
         canControl = false;
-        GD.Print("X Distance between damage source and player: " + (source.Position.X - Position.X));
-        Velocity = new Vector2(250f, 0f) * (Position - source.Position).Normalized() + new Vector2(0, -500f);
-        GD.Print("Velocity: " + Velocity);
+        //GD.Print("X Distance between damage source and player: " + (source.Position.X - Position.X));
+        Velocity = Vector2.Zero;
+        animationPlayer.SpeedScale = 1;
+        animationPlayer.Play("Death");
+        //GD.Print("Velocity: " + Velocity);
         Respawn();
+    }
+
+    public static async void StartCoroutine(IEnumerable coroutine)
+    {
+        var mainLoopTree = Engine.GetMainLoop();
+        foreach (var _ in coroutine)
+        {
+            await mainLoopTree.ToSignal(mainLoopTree, SceneTree.SignalName.ProcessFrame);
+        }
     }
 
     private void Respawn()
