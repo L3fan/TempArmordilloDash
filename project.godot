@@ -15,6 +15,11 @@ run/main_scene="uid://bafyf3hli7yop"
 config/features=PackedStringArray("4.5", "C#", "GL Compatibility")
 config/icon="res://icon.svg"
 
+[autoload]
+
+Settings="*res://Scenes/Settings.tscn"
+LevelManager="*res://Scenes/LevelManager.tscn"
+
 [display]
 
 window/size/viewport_width=1440

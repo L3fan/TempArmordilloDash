@@ -1,5 +1,6 @@
-[gd_scene load_steps=7 format=3 uid="uid://cpma7du425iag"]
+[gd_scene load_steps=8 format=3 uid="uid://cpma7du425iag"]
 
+[ext_resource type="Script" uid="uid://b6c5alausgo8c" path="res://Scripts/Level.cs" id="1_anvtu"]
 [ext_resource type="PackedScene" uid="uid://dvy5rqygiv6v4" path="res://Scenes/wall.tscn" id="1_u52ul"]
 [ext_resource type="Texture2D" uid="uid://jo34hknve037" path="res://Assets/Round Ramp.png" id="2_vonw3"]
 [ext_resource type="PackedScene" uid="uid://biyduiebwd51t" path="res://Scenes/Spike.tscn" id="3_6phgx"]
@@ -12,7 +13,10 @@ colors = PackedColorArray(0.33374244, 0.1436351, 2.4065375e-08, 1, 0.11620868, 0
 gradient = SubResource("Gradient_vonw3")
 fill = 1
 
-[node name="Level" type="Node2D"]
+[node name="Level" type="Node2D" node_paths=PackedStringArray("spawnPoint")]
+script = ExtResource("1_anvtu")
+levelType = 1
+spawnPoint = NodePath("Spawnpoint")
 
 [node name="Background" type="TextureRect" parent="."]
 z_index = -10
@@ -114,3 +118,5 @@ scale = Vector2(0.5, 5)
 
 [node name="Goal" parent="." instance=ExtResource("4_0sylt")]
 position = Vector2(7268, -29)
+
+[node name="Spawnpoint" type="Node2D" parent="."]

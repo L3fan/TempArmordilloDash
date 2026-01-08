@@ -14,7 +14,7 @@ public partial class Player : CharacterBody2D
     [Export] public float maxSpeed = 3000;
     [Export] public float jumpForce = 3;
     [Export] public float dashForce = 3;
-    [Export] public float friction = 0.05f;
+    [Export] public float friction = 500f;
     [Export] public float bounciness = 1.0f;
 
     private Vector2 direction = new Vector2(1, 0);
@@ -59,8 +59,8 @@ public partial class Player : CharacterBody2D
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
     {
-        sprite = GetNode<Sprite2D>("Sprite");
-        animationPlayer = GetNode<AnimationPlayer>("Sprite/AnimationPlayer");
+        sprite = GetNode<Sprite2D>("SpritePixel");
+        animationPlayer = GetNode<AnimationPlayer>("SpritePixel/AnimationPlayer");
         animationPlayer.Play("Idle");
         GD.Print(Mathf.Max(-2000, -5000));
 
@@ -133,7 +133,7 @@ public partial class Player : CharacterBody2D
         velocityInfo += "Post Gravity: " + Velocity + "\n";
 
         //Zero setter for anything between 0.5 and -0.5, cause speed reduction takes too long to go from 0.5 to 0
-        if (Velocity.X is < 0.5f and > -0.5f)
+        if (Velocity.X is < 5f and > -5f)
             Velocity = new Vector2(0, Velocity.Y);
 
         //Reset Slowdown if timeSlow has reached 0 and set mustRecharge = true, only allowing the player to dash again when it has recharged fully
@@ -154,7 +154,7 @@ public partial class Player : CharacterBody2D
 
         InputCalculations((float)delta);
 
-        SlowdownCalc();
+        SlowdownCalc((float)delta);
 
         DashCalc((float)delta);
 
@@ -234,6 +234,9 @@ public partial class Player : CharacterBody2D
         }
         else
         {
+            if(inSlowDown)
+                SetSlowDown(false);
+            
             InputJumpCalc(delta);
 
             InputHorizontalCalc(delta);
@@ -297,11 +300,19 @@ public partial class Player : CharacterBody2D
         velocityInfo += "Post Force Add: " + Velocity + "\n";
     }
 
-    private void SlowdownCalc()
+    private void SlowdownCalc(float delta)
     {
         //Slowdown when no Left/Right Input
         if (!(pressingRight && Velocity.X > 0 || pressingLeft && Velocity.X < 0) && IsOnFloor())
-            Velocity -= new Vector2(friction * Velocity.X, 0);
+        {
+            float slowdownForce = friction * delta;
+            //only slow down to 0 X velocity
+            slowdownForce = Mathf.Min(slowdownForce, Mathf.Abs(Velocity.X));
+            //give it the opposite direction of the X velocity
+            if(Velocity.X != 0)
+                slowdownForce = slowdownForce * (Velocity.X / Mathf.Abs(Velocity.X));
+            Velocity -= new Vector2(slowdownForce, 0);
+        }
 
         velocityInfo += "Post Jump: " + Velocity + "\n";
     }
@@ -408,7 +419,7 @@ public partial class Player : CharacterBody2D
     private void UpdateSprite()
     {
         //GD.Print("Press Right: " + pressingRight + " // Press Left: " + pressingLeft);
-        if (Velocity.X >= 0 && sprite.Scale.X < 0)
+        if (Velocity.X > 0 && sprite.Scale.X < 0)
             sprite.Scale = new Vector2(Mathf.Abs(sprite.Scale.X), sprite.Scale.Y);
         else if (Velocity.X < 0 && sprite.Scale.X > 0)
             sprite.Scale = new Vector2(-Mathf.Abs(sprite.Scale.X), sprite.Scale.Y);
@@ -416,8 +427,10 @@ public partial class Player : CharacterBody2D
         if (reverse)
             sprite.Scale *= new Vector2(-1, 1);
 
-        float givenForce = Mathf.Abs(Velocity.X);
-        if (isDashing)
+        float givenForce;
+        if (IsOnFloor())
+            givenForce = (Velocity * Vector2.Right).Length();
+        else
             givenForce = Velocity.Length();
 
         if (givenForce > 0)
@@ -452,12 +465,9 @@ public partial class Player : CharacterBody2D
                     break;
             }
 
-            float orientation = sprite.Scale.X / Mathf.Abs(sprite.Scale.X);
-            if(reverse)
-                orientation *= -1;
-            animationPlayer.SpeedScale = givenForce * orientation / maxSpeed * 5;
+            animationPlayer.SpeedScale = givenForce / maxSpeed * 10;
         }
-        else if (Mathf.Abs(lastVelocity.X) > 0)
+        else if (animationPlayer.CurrentAnimation != "Idle")
         {
             animationPlayer.Play("Idle");
             animationPlayer.SpeedScale = 1;
