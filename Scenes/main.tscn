@@ -22,6 +22,7 @@ script = ExtResource("2_21xkr")
 bufferZone = Vector2(640, 405)
 
 [node name="Debug Screen" type="Node2D" parent="Camera2D" node_paths=PackedStringArray("velocityDisplay", "parameterDisplay")]
+visible = false
 script = ExtResource("3_6bp64")
 velocityDisplay = NodePath("Velocity")
 parameterDisplay = NodePath("Parameters")

@@ -55,6 +55,8 @@ public partial class Player : CharacterBody2D
     private String velocityInfo;
 
     private float count = 1;
+    
+    [Export] private Control radialProgress;
 
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
@@ -118,10 +120,22 @@ public partial class Player : CharacterBody2D
         }
 
         if (dashCooldown > 0f)
+        {
             dashCooldown -= (float)delta;
+            if (dashCooldown <= 0.25f)
+            {
+                //recalculate dashCooldown so when it goes from 0.25 to 0, the progress bar goes from 0 to 1.0
+                float progress = Mathf.Clamp(((dashCooldown / 0.25f * 2 - 1) * -1 + 1) / 2f, 0, 1);
+                radialProgress.Set("progress", progress);
+            }
+        }
+
         if (dashCooldown <= 0f)
+        {
             dashCooldown = 0f;
-        
+            radialProgress.Set("progress", 0);
+        }
+
         if(dashed)
             dashed = !IsOnFloor();
 
@@ -213,7 +227,6 @@ public partial class Player : CharacterBody2D
                 }
             }
         }
-        GD.Print("Finished Collision Calc");
     }
 
     private void InputCalculations(float delta)
