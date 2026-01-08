@@ -14,4 +14,12 @@ public partial class LevelSection : Node2D
 	public override void _Process(double delta)
 	{
 	}
+
+	public void _OnGoalBodyEntered(Node2D body)
+	{
+		if (body is not Player)
+			return;
+		
+		GameManager.Instance.GameOver(true);
+	}
 }

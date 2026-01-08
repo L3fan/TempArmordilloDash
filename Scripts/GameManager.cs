@@ -3,6 +3,8 @@ using System;
 
 public partial class GameManager : Node
 {
+	public static GameManager Instance { get; private set; }
+	
 	[Export] public Settings settings;
 	[Export] public LevelManager levelManager;
 	[Export] public bool debugLevel = false;
@@ -15,6 +17,9 @@ public partial class GameManager : Node
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
+		ProcessMode = ProcessModeEnum.Always;
+		Instance = this;
+		
 		if (debugLevel)
 		{
 			currentLevelScene = levelManager.GetLevelScene(LevelType.Debug);
@@ -41,11 +46,12 @@ public partial class GameManager : Node
 
 		if (!debugLevel)
 		{
-			player.Velocity = new Vector2(1000, 0);
+			player.Velocity = new Vector2(0, 1000);
 		}
 		
 		PackedScene trailScene = GD.Load<PackedScene>("res://Scenes/DashTrail.tscn");
 		var dashTrail = trailScene.Instantiate();
+		dashTrail.ProcessMode = ProcessModeEnum.Pausable;
 		AddChild(dashTrail);
 		((DashTrail)dashTrail).player = player;
 		
@@ -56,5 +62,11 @@ public partial class GameManager : Node
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override void _Process(double delta)
 	{
+	}
+
+	public void GameOver(bool won)
+	{
+		GetTree().Paused = true;
+		
 	}
 }

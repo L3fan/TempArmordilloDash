@@ -59,6 +59,7 @@ public partial class Player : CharacterBody2D
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
     {
+        ProcessMode = ProcessModeEnum.Pausable;
         sprite = GetNode<Sprite2D>("SpritePixel");
         animationPlayer = GetNode<AnimationPlayer>("SpritePixel/AnimationPlayer");
         animationPlayer.Play("Idle");
@@ -125,7 +126,7 @@ public partial class Player : CharacterBody2D
             dashed = !IsOnFloor();
 
         velocityInfo = "";
-
+        
         CollisionCalc();
 
         //Gravity
@@ -174,10 +175,6 @@ public partial class Player : CharacterBody2D
         if (dashCooldown >= dashCdMax/2f)
             toCompare = lastVelocity.Normalized();
 
-        //if the Vector is (0, 0) we cant calculate an angle and we are also not moving, so skip
-        if (toCompare == Vector2.Zero)
-            return;
-
         String collisions = "";
         for (int i = 0; i < GetSlideCollisionCount(); i++)
         {
@@ -185,16 +182,17 @@ public partial class Player : CharacterBody2D
             float collisionAngle = RotationOfVectors(toCompare, collisionNormal);
             
             //if angle of collision is smaller than 15°, bounce, else slide on surface
-            if (collisionAngle > 170f || (dashCooldown > dashCdMax/2f && collisionAngle > 135f))
+            if ((dashCooldown > dashCdMax/2f && collisionAngle > 135f))
             {
                 Velocity = lastVelocity.Bounce(collisionNormal) * bounciness;
-                velocityInfo += "Post Bounce Calc (" + ((Node)GetSlideCollision(i).GetCollider()).GetParent().Name +
-                                "): " + Velocity + " " + collisionNormal + "\n";
-
+                
                 if (dashDir != Vector2.Zero)
                 {
                     dashDir = dashDir.Bounce(collisionNormal);
                 }
+                
+                velocityInfo += "Post Bounce Calc (" + ((Node)GetSlideCollision(i).GetCollider()).GetParent().Name +
+                                "): " + Velocity + " " + collisionNormal + "\n";
             }
             else
             {
@@ -215,6 +213,7 @@ public partial class Player : CharacterBody2D
                 }
             }
         }
+        GD.Print("Finished Collision Calc");
     }
 
     private void InputCalculations(float delta)
