@@ -450,28 +450,19 @@ public partial class Player : CharacterBody2D
                 if (Mathf.Abs(lastVelocity.X) <= 0)
                     animationPlayer.Play("Roll");
             }
-            else
+            else if (animationPlayer.CurrentAnimation != "Roll")
             {
-                if (animationPlayer.CurrentAnimation != "Roll")
-                    animationPlayer.Play("Roll");
+                animationPlayer.Play("Roll");
             }
 
             switch (givenForce)
             {
-                case var n when (n < 800):
-                    GetNode<Sprite2D>("Sprite").Frame = 0;
+                case var n when n < 1600:
+                    animationPlayer.Play("Roll");
                     break;
 
-                case var n when (n >= 800 && n < 1600):
-                    GetNode<Sprite2D>("Sprite").Frame = 3;
-                    break;
-
-                case var n when (n >= 1600 && n < 3200):
-                    GetNode<Sprite2D>("Sprite").Frame = 4;
-                    break;
-
-                case var n when (n >= 3200):
-                    GetNode<Sprite2D>("Sprite").Frame = 5;
+                case var n when (n >= 1600):
+                    animationPlayer.Play("Roll2");
                     break;
             }
 

@@ -34,7 +34,7 @@ size = Vector2(2016, 376)
 
 [node name="LevelGenerator" type="Node2D" node_paths=PackedStringArray("endPointNode", "spawnPoint")]
 script = ExtResource("1_lmwb7")
-sectionCount = 0
+sectionCount = 10
 endSectionPath = "res://Scenes/EndLevelSection.tscn"
 endPointNode = NodePath("Endpoint")
 spawnPoint = NodePath("Spawnpoint")

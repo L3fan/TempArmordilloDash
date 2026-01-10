@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://do84eyf6vw5rv"]
+[gd_scene load_steps=16 format=3 uid="uid://do84eyf6vw5rv"]
 
 [ext_resource type="Texture2D" uid="uid://d0jifiae7afp7" path="res://Assets/Dylan/armadillo_roll_sprite_sheet.png" id="1_4flbx"]
 [ext_resource type="Script" uid="uid://fhwxvpl6q6db" path="res://Scripts/Player.cs" id="1_onrkg"]
@@ -205,20 +205,50 @@ tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
 tracks/1/path = NodePath(".:offset")
-tracks/1/interp = 1
+tracks/1/interp = 0
 tracks/1/loop_wrap = true
 tracks/1/keys = {
 "times": PackedFloat32Array(0, 0.125, 0.25, 0.375),
 "transitions": PackedFloat32Array(1000000, 1000000, 1000000, 1000000),
-"update": 0,
+"update": 1,
 "values": [Vector2(1, 1), Vector2(-1, 1), Vector2(-1, -1), Vector2(1, -1)]
+}
+
+[sub_resource type="Animation" id="Animation_x3wgy"]
+resource_name = "Roll2"
+loop_mode = 1
+step = 0.25
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:frame")
+tracks/1/interp = 0
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.25, 0.5, 0.75),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [4, 5, 6, 7]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_x3wgy"]
 _data = {
 &"Idle": SubResource("Animation_6t5aa"),
 &"RESET": SubResource("Animation_fkybt"),
-&"Roll": SubResource("Animation_vgqql")
+&"Roll": SubResource("Animation_vgqql"),
+&"Roll2": SubResource("Animation_x3wgy")
 }
 
 [node name="CharacterBody2D" type="CharacterBody2D" node_paths=PackedStringArray("radialProgress") groups=["Player"]]

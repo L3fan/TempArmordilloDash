@@ -28,7 +28,6 @@ public partial class LevelGenerator : Level
 			int randIndex = random.Next(sections.Length);
 			LevelSection randomLevelSection = sections[randIndex].Instantiate() as LevelSection;
 			randomLevelSection.Position = currentStartPoint - randomLevelSection.startPointNode.Position;
-			GD.Print("Placing " + randomLevelSection.Name + " at " + currentStartPoint);
 			AddChild(randomLevelSection);
 			currentStartPoint = randomLevelSection.endPointNode.GlobalPosition;
 		}
