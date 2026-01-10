@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using System.Diagnostics;
 
 public partial class PauseMenu : ColorRect
 {
@@ -7,6 +8,7 @@ public partial class PauseMenu : ColorRect
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
+		ProcessMode = ProcessModeEnum.Always;
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -36,6 +38,7 @@ public partial class PauseMenu : ColorRect
 
 	private void _OnExitLevelButtonPressed()
 	{
-		
+		GetTree().Paused = false;
+		GameManager.Instance.Load(SceneType.MainMenu);
 	}
 }

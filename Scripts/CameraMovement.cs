@@ -7,37 +7,52 @@ public partial class CameraMovement : Camera2D
 
 	[Export] public Vector2 bufferZone;
 
-	private ColorRect slowDownTint;
+	[Export] public ColorRect slowDownTint;
 
-	private ColorRect blackScreen;
+	[Export] public ColorRect blackScreen;
+
+	[Export] public Node2D resultScreen;
+
+	[Export] public float maxCameraDistance = 200;
+	[Export] public float maxCameraMoveDistance = 80;
+	[Export] public float maxCameraZoomDistance = 10;
+
+	private Vector2 startZoom;
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
-		slowDownTint = GetNode<ColorRect>("SlowDownTint");
-		blackScreen = GetNode<ColorRect>("BlackScreen");
+		Position = player.Position;
+		startZoom = Zoom;
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override void _Process(double delta)
 	{
-		//Camera Movement
-		if (player.Position.X - Position.X > bufferZone.X)
-			Position = new Vector2(player.Position.X - bufferZone.X, Position.Y);
-		
-		if (player.Position.X - Position.X < -bufferZone.X)
-			Position = new Vector2(player.Position.X + bufferZone.X, Position.Y);
-		
-		if (player.Position.Y - Position.Y > bufferZone.Y)
-			Position = new Vector2(Position.X, player.Position.Y - bufferZone.Y);
-		
-		if (player.Position.Y - Position.Y < -bufferZone.Y)
-			Position = new Vector2(Position.X, player.Position.Y + bufferZone.Y);
 			
 		//Set Slowdown Tint
 		if(player.IsInSlowDown())
 			slowDownTint.Color = new Color(slowDownTint.Color.R, slowDownTint.Color.G, slowDownTint.Color.B, 0.25f);
 		else
 			slowDownTint.Color = new Color(slowDownTint.Color.R, slowDownTint.Color.G, slowDownTint.Color.B, 0);
+	}
+
+	public override void _PhysicsProcess(double delta)
+	{
+		//Camera Movement
+		Vector2 offset = CalculateOffset() * Vector2.Right;
+		Vector2 target = player.Position + offset - new Vector2(0, 200);
+		Vector2 moveDirection = (target - Position) / 2f;
+		Position += moveDirection.Normalized() * Mathf.Min(moveDirection.Length(), maxCameraMoveDistance);
+
+		Zoom = Zoom.Lerp(startZoom - Vector2.One * offset.Length() / maxCameraDistance / 6f, (float)delta * maxCameraZoomDistance);
+	}
+
+	private Vector2 CalculateOffset()
+	{
+		if(player.Velocity.Length()/10 <= maxCameraDistance)
+			return player.Velocity/10;
+		
+		return player.Velocity.Normalized() * maxCameraDistance;
 	}
 
 	public void DarkenScreen(float amount)

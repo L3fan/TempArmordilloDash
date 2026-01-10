@@ -5,68 +5,98 @@ public partial class GameManager : Node
 {
 	public static GameManager Instance { get; private set; }
 	
-	[Export] public Settings settings;
-	[Export] public LevelManager levelManager;
 	[Export] public bool debugLevel = false;
-	[Export] public CameraMovement camera;
-	[Export] public DebugScreen debugScreen;
-	private Level currentLevel = null;
-	private PackedScene currentLevelScene = null;
+	public SceneType currentSceneType = SceneType.None;
+	public Node currentScene = null;
+	public Player player;
 
-	private Vector2 spawnPoint = Vector2.Zero;
+	private PackedScene mainMenuPackedScene = null;
+	private PackedScene levelPackedScene = null;
+	
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
 		ProcessMode = ProcessModeEnum.Always;
 		Instance = this;
 		
-		if (debugLevel)
-		{
-			currentLevelScene = levelManager.GetLevelScene(LevelType.Debug);
-		}
-		else
-		{
-			currentLevelScene = levelManager.GetLevelScene(LevelType.Default);
-		}
-
-		var instance = currentLevelScene.Instantiate();
-		AddChild(instance);
-
-		if (instance is Level)
-		{
-			Node2D spawnPointNode = ((Level)instance).spawnPoint;
-			spawnPoint = spawnPointNode.GlobalPosition;
-		}
+		Load(SceneType.MainMenu);
 		
-		PackedScene playerScene = GD.Load<PackedScene>("res://Scenes/player.tscn");
-		var playerNode = playerScene.Instantiate();
-		Player player = playerNode as Player;
-		player.Position = spawnPoint;
-		AddChild(player);
-
-		if (!debugLevel)
-		{
-			player.Velocity = new Vector2(0, 1000);
-		}
-		
-		PackedScene trailScene = GD.Load<PackedScene>("res://Scenes/DashTrail.tscn");
-		var dashTrail = trailScene.Instantiate();
-		dashTrail.ProcessMode = ProcessModeEnum.Pausable;
-		AddChild(dashTrail);
-		((DashTrail)dashTrail).player = player;
-		
-		camera.player = player;
-		debugScreen.player = player;
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override void _Process(double delta)
 	{
-	}
-
-	public void GameOver(bool won)
-	{
-		GetTree().Paused = true;
 		
 	}
+
+	public void GameOver()
+	{
+		GD.Print("Game Over");
+		if(GetTree().GetCurrentScene() is not Level) return;
+		
+		GetTree().Paused = true;
+		Level level = (Level)GetTree().GetCurrentScene();
+		Node2D resultScreen = level.levelUI.camera.resultScreen;
+		resultScreen.Visible = true;
+		Label timeLabel = resultScreen.GetChild<Polygon2D>(0).GetChild<Label>(1);
+		int finishTime = (int)Time.GetTicksMsec();
+		int totalTime = finishTime - level.GetStartTime();
+		timeLabel.Text = IntToTime(totalTime);
+		
+		GD.Print(totalTime);
+	}
+
+	private string IntToTime(int totalTime)
+	{
+		String minutes = (totalTime / (1000 * 60)).ToString();
+		if(minutes.Length < 2) minutes = "0" + minutes;
+		
+		String seconds = (totalTime % (1000 * 60) / 1000).ToString();
+		if(seconds.Length < 2) seconds = "0" + seconds;
+		
+		String miliseconds = (totalTime % (1000 * 60) % 1000).ToString();
+		while(miliseconds.Length < 3) miliseconds = "0" + miliseconds;
+		
+		return minutes + ":" + seconds + ":" + miliseconds;
+	}
+
+	public void Load(SceneType sceneType)
+	{
+		//load Scene
+		switch (sceneType)
+		{
+			case SceneType.MainMenu:
+				LoadMainMenu();
+				break;
+			case SceneType.Level:
+				LoadLevel();
+				break;
+		}
+		currentSceneType = sceneType;
+	}
+
+	public void LoadMainMenu()
+	{
+		mainMenuPackedScene = GD.Load<PackedScene>(Settings.Instance.mainMenuScenePath);
+		GetTree().ChangeSceneToPacked(mainMenuPackedScene);
+	}
+
+	public void LoadLevel()
+	{
+		if (debugLevel)
+		{
+			GetTree().ChangeSceneToPacked(LevelManager.Instance.GetLevelScene(LevelType.Debug));
+		}
+		else
+		{
+			GetTree().ChangeSceneToPacked(LevelManager.Instance.GetLevelScene(LevelType.Default));
+		}
+	}
+}
+
+public enum SceneType
+{
+	MainMenu,
+	Level,
+	None
 }

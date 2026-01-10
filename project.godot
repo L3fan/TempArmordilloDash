@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="Armordillo_Dash"
-run/main_scene="uid://bafyf3hli7yop"
+run/main_scene="uid://c4e38trnicacr"
 config/features=PackedStringArray("4.5", "C#", "GL Compatibility")
 config/icon="res://icon.svg"
 
@@ -23,8 +23,9 @@ LevelManager="*res://Scripts/LevelManager.cs"
 
 [display]
 
-window/size/viewport_width=1440
-window/size/viewport_height=810
+window/size/viewport_width=1920
+window/size/viewport_height=1080
+window/size/mode=2
 
 [dotnet]
 
@@ -32,7 +33,7 @@ project/assembly_name="Armordillo_Dash"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/radial_progress/plugin.cfg")
+enabled=PackedStringArray("res://addons/RoundedPolygon2D/plugin.cfg", "res://addons/radial_progress/plugin.cfg")
 
 [global_group]
 

@@ -1,3 +1,65 @@
-[gd_scene format=3 uid="uid://c4e38trnicacr"]
+[gd_scene load_steps=6 format=3 uid="uid://c4e38trnicacr"]
+
+[ext_resource type="Texture2D" uid="uid://emt6necqoxu4" path="res://Assets/origbig.png" id="1_47sjk"]
+[ext_resource type="Texture2D" uid="uid://cd3675fncumvm" path="res://Assets/Title.png" id="1_sb72h"]
+[ext_resource type="Script" uid="uid://blofsjafqy7vi" path="res://Scripts/MainMenu.cs" id="1_x260n"]
+[ext_resource type="Script" uid="uid://gdsdtd32sye5" path="res://addons/RoundedPolygon2D/RoundedPolygon2D.gd" id="3_mxhvt"]
+[ext_resource type="Theme" uid="uid://b1u83xngulxbq" path="res://Themes/PauseMenuTheme.tres" id="4_gmxq7"]
 
 [node name="MainMenuScene" type="Node2D"]
+script = ExtResource("1_x260n")
+
+[node name="Title" type="Sprite2D" parent="."]
+texture_filter = 1
+position = Vector2(960, 290.6667)
+scale = Vector2(2.6666663, 2.6666665)
+texture = ExtResource("1_sb72h")
+
+[node name="RoundedPolygon2D" type="Polygon2D" parent="."]
+position = Vector2(960, 648)
+scale = Vector2(1.6666664, 1.6666665)
+color = Color(0.28235295, 0.28235295, 0.28235295, 0.29803923)
+polygon = PackedVector2Array(-100, -100, -100, 100, 100, 100, 100, -100)
+polygons = [null]
+script = ExtResource("3_mxhvt")
+corner_radius = 3
+metadata/_custom_type_script = "uid://gdsdtd32sye5"
+
+[node name="Control" type="Control" parent="RoundedPolygon2D"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="StartButton" type="Button" parent="RoundedPolygon2D/Control"]
+texture_repeat = 1
+layout_mode = 0
+offset_left = -78.99997
+offset_top = -77.0
+offset_right = 316.0
+offset_bottom = 11.0
+scale = Vector2(0.4, 0.4)
+theme = ExtResource("4_gmxq7")
+theme_override_font_sizes/font_size = 64
+text = "Start"
+
+[node name="EndGameButton" type="Button" parent="RoundedPolygon2D/Control"]
+texture_repeat = 1
+layout_mode = 0
+offset_left = -78.99997
+offset_top = 33.0
+offset_right = 316.0
+offset_bottom = 121.0
+scale = Vector2(0.4, 0.4)
+theme = ExtResource("4_gmxq7")
+theme_override_font_sizes/font_size = 64
+text = "End Game"
+
+[node name="Origbig" type="Sprite2D" parent="."]
+z_index = -100
+position = Vector2(960, 540)
+scale = Vector2(3.333333, 3.3333333)
+texture = ExtResource("1_47sjk")
+
+[connection signal="pressed" from="RoundedPolygon2D/Control/StartButton" to="." method="_OnStartButtonPressed"]
+[connection signal="pressed" from="RoundedPolygon2D/Control/EndGameButton" to="." method="_OnEndGameButtonPressed"]

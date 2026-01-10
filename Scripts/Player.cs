@@ -65,9 +65,7 @@ public partial class Player : CharacterBody2D
         sprite = GetNode<Sprite2D>("SpritePixel");
         animationPlayer = GetNode<AnimationPlayer>("SpritePixel/AnimationPlayer");
         animationPlayer.Play("Idle");
-        GD.Print(Mathf.Max(-2000, -5000));
 
-        GD.Print("Player is ready");
         respawnPoint = Position;
     }
 

@@ -1,10 +1,8 @@
 using Godot;
 using System;
 
-public partial class LevelSection : Node2D
+public partial class MainMenu : Node2D
 {
-	[Export] public Node2D startPointNode;
-	[Export] public Node2D endPointNode;
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
@@ -15,11 +13,13 @@ public partial class LevelSection : Node2D
 	{
 	}
 
-	public void _OnGoalBodyEntered(Node2D body)
+	public void _OnStartButtonPressed()
 	{
-		if (body is not Player)
-			return;
-		
-		GameManager.Instance.GameOver();
+		GameManager.Instance.Load(SceneType.Level);
+	}
+
+	public void _OnEndGameButtonPressed()
+	{
+		GetTree().Quit();
 	}
 }
