@@ -38,7 +38,6 @@ public partial class PauseMenu : ColorRect
 
 	private void _OnExitLevelButtonPressed()
 	{
-		GetTree().Paused = false;
 		GameManager.Instance.Load(SceneType.MainMenu);
 	}
 }

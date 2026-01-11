@@ -27,6 +27,8 @@ public partial class Player : CharacterBody2D
     private bool isDashing = false;
     private Vector2 dashDir = Vector2.Zero;
     private bool dashSlowdown = false;
+    private bool justLanded = false;
+    private float slowdownMult = 3;
     private float timeSlow = 3f;
     private bool inSlowDown = false;
     private bool mustRecharge = false;
@@ -301,8 +303,7 @@ public partial class Player : CharacterBody2D
 
         if (pressingLeft)
         {
-            float forwardForce =
-                speed * 10 * delta * Mathf.Abs(Mathf.Max(-maxSpeed - Velocity.X, -maxSpeed)) / maxSpeed;
+            float forwardForce = speed * 10 * delta * Mathf.Abs(Mathf.Max(-maxSpeed - Velocity.X, -maxSpeed)) / maxSpeed;
             addedForce = forwardForce * Vector2.Left;
         }
 
@@ -316,13 +317,24 @@ public partial class Player : CharacterBody2D
         if (!(pressingRight && Velocity.X > 0 || pressingLeft && Velocity.X < 0) && IsOnFloor())
         {
             float slowdownForce = friction * delta;
-            //only slow down to 0 X velocity
+
+            if (justLanded)
+            {
+                slowdownForce /= friction * delta;
+                justLanded = false;
+            }
+
+            //only slow down to 0 velocity on X axis
             slowdownForce = Mathf.Min(slowdownForce, Mathf.Abs(Velocity.X));
+            
             //give it the opposite direction of the X velocity
             if(Velocity.X != 0)
-                slowdownForce = slowdownForce * (Velocity.X / Mathf.Abs(Velocity.X));
+                slowdownForce *= (Velocity.X / Mathf.Abs(Velocity.X));
             Velocity -= new Vector2(slowdownForce, 0);
         }
+
+        if (!IsOnFloor())
+            justLanded = true;
 
         velocityInfo += "Post Jump: " + Velocity + "\n";
     }
@@ -333,8 +345,8 @@ public partial class Player : CharacterBody2D
         {
             if (Velocity.Length() >= maxSpeed || dashCooldown >= dashCdMax/2f)
             {
-                if(Velocity.Length() > maxSpeed * 0.75f)
-                    Velocity *= 0.95f;
+                if(Velocity.Length() > maxSpeed)
+                    Velocity = Velocity.Lerp(Velocity.Normalized() * maxSpeed, delta * slowdownMult);
                 if(Velocity.Y < -1000)
                     Velocity *= new Vector2(1f, 0.9f);
             } else
@@ -349,7 +361,7 @@ public partial class Player : CharacterBody2D
         {
             if (!dashSlowdown)
             {
-                float force = dashForce * 100000 * delta;
+                float force = Mathf.Max(dashForce * 100000 * delta, Velocity.Length());
                 Velocity *= 0.1f;
                 Velocity += force * dashDir;
                 isDashing = false;

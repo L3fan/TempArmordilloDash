@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using System.Xml.Linq;
 
 public partial class GameManager : Node
 {
@@ -9,6 +10,7 @@ public partial class GameManager : Node
 	public SceneType currentSceneType = SceneType.None;
 	public Node currentScene = null;
 	public Player player;
+	public int totalTime;
 
 	private PackedScene mainMenuPackedScene = null;
 	private PackedScene levelPackedScene = null;
@@ -40,13 +42,13 @@ public partial class GameManager : Node
 		resultScreen.Visible = true;
 		Label timeLabel = resultScreen.GetChild<Polygon2D>(0).GetChild<Label>(1);
 		int finishTime = (int)Time.GetTicksMsec();
-		int totalTime = finishTime - level.GetStartTime();
+		totalTime = finishTime - level.GetStartTime();
 		timeLabel.Text = IntToTime(totalTime);
 		
 		GD.Print(totalTime);
 	}
 
-	private string IntToTime(int totalTime)
+	public string IntToTime(int totalTime)
 	{
 		String minutes = (totalTime / (1000 * 60)).ToString();
 		if(minutes.Length < 2) minutes = "0" + minutes;
@@ -77,6 +79,7 @@ public partial class GameManager : Node
 
 	public void LoadMainMenu()
 	{
+		GetTree().Paused = false;
 		mainMenuPackedScene = GD.Load<PackedScene>(Settings.Instance.mainMenuScenePath);
 		GetTree().ChangeSceneToPacked(mainMenuPackedScene);
 	}

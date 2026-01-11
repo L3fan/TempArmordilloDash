@@ -20,6 +20,7 @@ config/icon="res://icon.svg"
 GameManager="*res://Scripts/GameManager.cs"
 Settings="*res://Scripts/Settings.cs"
 LevelManager="*res://Scripts/LevelManager.cs"
+Save="*res://Scripts/Save.cs"
 
 [display]
 

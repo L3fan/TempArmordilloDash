@@ -3,6 +3,7 @@ using System;
 
 public partial class MainMenu : Node2D
 {
+	[Export] public Control doubleCheck;
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
@@ -21,5 +22,21 @@ public partial class MainMenu : Node2D
 	public void _OnEndGameButtonPressed()
 	{
 		GetTree().Quit();
+	}
+
+	public void _OnResetButtonPressed()
+	{
+		doubleCheck.Visible = true;
+	}
+
+	public void _OnConfirmResetButtonPressed()
+	{
+		Save.Instance.DeleteLeaderboard();
+		doubleCheck.Visible = false;
+	}
+
+	public void _OnCancelResetButtonPressed()
+	{
+		doubleCheck.Visible = false;
 	}
 }

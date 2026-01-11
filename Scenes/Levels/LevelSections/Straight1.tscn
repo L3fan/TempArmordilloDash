@@ -1,7 +1,8 @@
-[gd_scene load_steps=5 format=4 uid="uid://knlchph6b24b"]
+[gd_scene load_steps=6 format=4 uid="uid://knlchph6b24b"]
 
 [ext_resource type="Script" uid="uid://bnn64xyekpr5c" path="res://Scripts/LevelSection.cs" id="1_76lua"]
 [ext_resource type="TileSet" uid="uid://dcou5kgogcpka" path="res://Scenes/CaveTiles.tres" id="2_wpnyu"]
+[ext_resource type="Script" uid="uid://ckdfn7s0w0tre" path="res://Scripts/ObstacleSpot.cs" id="3_rft5a"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_4lgbr"]
 size = Vector2(3200, 384)
@@ -9,10 +10,11 @@ size = Vector2(3200, 384)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_pxsry"]
 size = Vector2(3200, 376)
 
-[node name="Straight1" type="Node2D" node_paths=PackedStringArray("startPointNode", "endPointNode")]
+[node name="Straight1" type="Node2D" node_paths=PackedStringArray("startPointNode", "endPointNode", "obstacleSpots")]
 script = ExtResource("1_76lua")
 startPointNode = NodePath("StartPoint")
 endPointNode = NodePath("EndPoint")
+obstacleSpots = [NodePath("Obstacle1"), NodePath("Obstacle2")]
 
 [node name="TileMapLayer" type="TileMapLayer" parent="."]
 texture_filter = 1
@@ -36,3 +38,19 @@ position = Vector2(-1600, 0)
 
 [node name="EndPoint" type="Node2D" parent="."]
 position = Vector2(1600, 0)
+
+[node name="Obstacle1" type="Node2D" parent="." node_paths=PackedStringArray("ceilingSpot")]
+position = Vector2(-534, 0)
+script = ExtResource("3_rft5a")
+ceilingSpot = NodePath("CeilingSpot")
+
+[node name="CeilingSpot" type="Node2D" parent="Obstacle1"]
+position = Vector2(0, -1320)
+
+[node name="Obstacle2" type="Node2D" parent="." node_paths=PackedStringArray("ceilingSpot")]
+position = Vector2(534, 0)
+script = ExtResource("3_rft5a")
+ceilingSpot = NodePath("CeilingSpot")
+
+[node name="CeilingSpot" type="Node2D" parent="Obstacle2"]
+position = Vector2(0, -1320)
