@@ -18,8 +18,8 @@ public partial class LevelSection : Node2D
 			Random random = new Random();
 			int amountOfObstacles = 0;
 
-			bool hasObstacles = random.Next(2) != 0;
-			if(true)
+			bool hasObstacles = random.Next(4) != 0;
+			if(hasObstacles)
 				amountOfObstacles = random.Next(1, obstacleSpots.Length);
 			List<ObstacleSpot> availableSpots = obstacleSpots.ToList();
 			List<ObstacleSpot> chosenSpots = new List<ObstacleSpot>();
