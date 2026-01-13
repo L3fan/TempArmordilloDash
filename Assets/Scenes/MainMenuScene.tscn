@@ -1,0 +1,129 @@
+[gd_scene load_steps=7 format=3 uid="uid://c4e38trnicacr"]
+
+[ext_resource type="Script" uid="uid://blofsjafqy7vi" path="res://Assets/Scripts/MainMenu.cs" id="1_b37ua"]
+[ext_resource type="Texture2D" uid="uid://emt6necqoxu4" path="res://Assets/Textures/origbig.png" id="2_23ht4"]
+[ext_resource type="Texture2D" uid="uid://cd3675fncumvm" path="res://Assets/Textures/Title.png" id="3_t8wwc"]
+[ext_resource type="Theme" uid="uid://b1u83xngulxbq" path="res://Assets/Themes/PauseMenuTheme.tres" id="4_5powm"]
+[ext_resource type="Script" uid="uid://gdsdtd32sye5" path="res://addons/RoundedPolygon2D/RoundedPolygon2D.gd" id="5_4jnjk"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_x260n"]
+bg_color = Color(0.27752772, 0.27752775, 0.27752757, 1)
+
+[node name="MainMenuScene" type="Node2D" node_paths=PackedStringArray("doubleCheck")]
+script = ExtResource("1_b37ua")
+doubleCheck = NodePath("DoubleCheckWindow")
+
+[node name="Origbig" type="Sprite2D" parent="."]
+z_index = -100
+position = Vector2(960, 540)
+scale = Vector2(3.333333, 3.3333333)
+texture = ExtResource("2_23ht4")
+
+[node name="Title" type="Sprite2D" parent="."]
+texture_filter = 1
+position = Vector2(960, 290.6667)
+scale = Vector2(2.6666663, 2.6666665)
+texture = ExtResource("3_t8wwc")
+
+[node name="ResetButton" type="Button" parent="."]
+texture_repeat = 1
+offset_left = 1655.0
+offset_top = 972.0
+offset_right = 2140.5
+offset_bottom = 1082.0
+scale = Vector2(0.4, 0.4)
+theme = ExtResource("4_5powm")
+theme_override_font_sizes/font_size = 48
+text = "Reset Leaderboard"
+
+[node name="RoundedPolygon2D" type="Polygon2D" parent="."]
+position = Vector2(960, 648)
+scale = Vector2(1.6666664, 1.6666665)
+color = Color(0.28235295, 0.28235295, 0.28235295, 0.29803923)
+polygon = PackedVector2Array(-100, -100, -100, 100, 100, 100, 100, -100)
+polygons = [null]
+script = ExtResource("5_4jnjk")
+corner_radius = 3
+metadata/_custom_type_script = "uid://gdsdtd32sye5"
+
+[node name="Control" type="Control" parent="RoundedPolygon2D"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="StartButton" type="Button" parent="RoundedPolygon2D/Control"]
+texture_repeat = 1
+layout_mode = 0
+offset_left = -78.99997
+offset_top = -77.0
+offset_right = 316.0
+offset_bottom = 11.0
+scale = Vector2(0.4, 0.4)
+theme = ExtResource("4_5powm")
+theme_override_font_sizes/font_size = 64
+text = "Start"
+
+[node name="EndGameButton" type="Button" parent="RoundedPolygon2D/Control"]
+texture_repeat = 1
+layout_mode = 0
+offset_left = -78.6
+offset_top = 31.8
+offset_right = 316.4
+offset_bottom = 119.8
+scale = Vector2(0.4, 0.4)
+theme = ExtResource("4_5powm")
+theme_override_font_sizes/font_size = 64
+text = "End Game"
+
+[node name="DoubleCheckWindow" type="Panel" parent="."]
+visible = false
+offset_left = 692.0
+offset_top = 475.0
+offset_right = 1229.0
+offset_bottom = 811.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_x260n")
+
+[node name="StartButton" type="Button" parent="DoubleCheckWindow"]
+texture_repeat = 1
+layout_mode = 0
+offset_left = 19.999985
+offset_top = 225.0
+offset_right = 610.0
+offset_bottom = 447.49988
+scale = Vector2(0.4, 0.4)
+theme = ExtResource("4_5powm")
+theme_override_font_sizes/font_size = 128
+text = "Confirm"
+
+[node name="EndGameButton" type="Button" parent="DoubleCheckWindow"]
+texture_repeat = 1
+layout_mode = 0
+offset_left = 279.0
+offset_top = 225.00003
+offset_right = 869.0
+offset_bottom = 447.50003
+scale = Vector2(0.4, 0.4)
+theme = ExtResource("4_5powm")
+theme_override_font_sizes/font_size = 128
+text = "Cancel
+"
+
+[node name="Label" type="Label" parent="DoubleCheckWindow"]
+layout_mode = 0
+offset_right = 537.0
+offset_bottom = 212.0
+theme = ExtResource("4_5powm")
+theme_type_variation = &"HeaderLarge"
+theme_override_constants/outline_size = 9
+theme_override_font_sizes/font_size = 48
+text = "Are you sure you wish to remove the entire Leaderboard?"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+
+[connection signal="pressed" from="ResetButton" to="." method="_OnResetButtonPressed"]
+[connection signal="pressed" from="RoundedPolygon2D/Control/StartButton" to="." method="_OnStartButtonPressed"]
+[connection signal="pressed" from="RoundedPolygon2D/Control/EndGameButton" to="." method="_OnEndGameButtonPressed"]
+[connection signal="pressed" from="DoubleCheckWindow/StartButton" to="." method="_OnConfirmResetButtonPressed"]
+[connection signal="pressed" from="DoubleCheckWindow/EndGameButton" to="." method="_OnCancelResetButtonPressed"]

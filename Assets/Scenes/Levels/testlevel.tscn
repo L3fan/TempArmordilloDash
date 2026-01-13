@@ -1,0 +1,122 @@
+[gd_scene load_steps=8 format=3 uid="uid://cpma7du425iag"]
+
+[ext_resource type="Script" uid="uid://b6c5alausgo8c" path="res://Assets/Scripts/Level.cs" id="1_anvtu"]
+[ext_resource type="PackedScene" uid="uid://dvy5rqygiv6v4" path="res://Assets/Scenes/wall.tscn" id="1_u52ul"]
+[ext_resource type="Texture2D" uid="uid://jo34hknve037" path="res://Assets/Textures/Round Ramp.png" id="2_vonw3"]
+[ext_resource type="PackedScene" uid="uid://biyduiebwd51t" path="res://Assets/Scenes/Spike.tscn" id="3_6phgx"]
+[ext_resource type="PackedScene" uid="uid://de8ybt5mrkrbi" path="res://Assets/Scenes/goal.tscn" id="4_0sylt"]
+
+[sub_resource type="Gradient" id="Gradient_vonw3"]
+colors = PackedColorArray(0.33374244, 0.1436351, 2.4065375e-08, 1, 0.11620868, 0.23988128, 0.20697212, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_oi3di"]
+gradient = SubResource("Gradient_vonw3")
+fill = 1
+
+[node name="Level" type="Node2D" node_paths=PackedStringArray("spawnPoint")]
+script = ExtResource("1_anvtu")
+levelType = 1
+spawnPoint = NodePath("Spawnpoint")
+
+[node name="Background" type="TextureRect" parent="."]
+z_index = -10
+offset_left = -6736.0
+offset_top = -3728.0
+offset_right = 9305.0
+offset_bottom = 2081.0
+texture = SubResource("GradientTexture2D_oi3di")
+
+[node name="Wall_Bottom" parent="." instance=ExtResource("1_u52ul")]
+position = Vector2(0, 701)
+scale = Vector2(35, 1)
+
+[node name="Wall_Right" parent="." instance=ExtResource("1_u52ul")]
+position = Vector2(7150, 614)
+scale = Vector2(2, 3)
+
+[node name="Wall_Left" parent="." instance=ExtResource("1_u52ul")]
+position = Vector2(-6800, -499)
+scale = Vector2(1, 5)
+
+[node name="Wall_Right2" parent="." instance=ExtResource("1_u52ul")]
+position = Vector2(7550, -986.00006)
+scale = Vector2(0.5, 5)
+
+[node name="TextureRect" type="TextureRect" parent="."]
+offset_left = 6578.0
+offset_top = 329.0
+offset_right = 6750.0
+offset_bottom = 501.0
+texture = ExtResource("2_vonw3")
+expand_mode = 1
+
+[node name="StaticBody2D" type="StaticBody2D" parent="TextureRect"]
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="TextureRect/StaticBody2D"]
+polygon = PackedVector2Array(172, 0, 172, 172, 0, 172, 44.517, 166.139, 86, 148.956, 121.622, 121.622, 148.956, 86, 166.139, 44.517)
+
+[node name="TextureRect2" type="TextureRect" parent="."]
+offset_left = 6578.0
+offset_top = 186.0
+offset_right = 6750.0
+offset_bottom = 358.0
+scale = Vector2(1, -1)
+texture = ExtResource("2_vonw3")
+expand_mode = 1
+
+[node name="StaticBody2D" type="StaticBody2D" parent="TextureRect2"]
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="TextureRect2/StaticBody2D"]
+polygon = PackedVector2Array(172, 0, 172, 172, 0, 172, 44.517, 166.139, 86, 148.956, 121.622, 121.622, 148.956, 86, 166.139, 44.517)
+
+[node name="TextureRect3" type="TextureRect" parent="."]
+offset_left = 5868.0
+offset_top = 46.0
+offset_right = 6040.0
+offset_bottom = 218.0
+scale = Vector2(-1, 1)
+texture = ExtResource("2_vonw3")
+expand_mode = 1
+
+[node name="StaticBody2D" type="StaticBody2D" parent="TextureRect3"]
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="TextureRect3/StaticBody2D"]
+polygon = PackedVector2Array(172, 0, 172, 172, 0, 172, 44.517, 166.139, 86, 148.956, 121.622, 121.622, 148.956, 86, 166.139, 44.517)
+
+[node name="TextureRect4" type="TextureRect" parent="."]
+offset_left = 5868.0
+offset_top = -72.0
+offset_right = 6040.0
+offset_bottom = 100.0
+scale = Vector2(-1, -1)
+texture = ExtResource("2_vonw3")
+expand_mode = 1
+
+[node name="StaticBody2D" type="StaticBody2D" parent="TextureRect4"]
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="TextureRect4/StaticBody2D"]
+polygon = PackedVector2Array(172, 0, 172, 172, 0, 172, 44.517, 166.139, 86, 148.956, 121.622, 121.622, 148.956, 86, 166.139, 44.517)
+
+[node name="Wall_Right3" parent="." instance=ExtResource("1_u52ul")]
+position = Vector2(6596.0005, -264.00003)
+scale = Vector2(4.5, 0.1)
+
+[node name="Wall_Right4" parent="." instance=ExtResource("1_u52ul")]
+position = Vector2(6669.9995, -6)
+scale = Vector2(3.9, 0.1)
+
+[node name="Wall_Right5" parent="." instance=ExtResource("1_u52ul")]
+position = Vector2(6025.9995, 238)
+scale = Vector2(2.65, 0.1)
+
+[node name="Spike" parent="." instance=ExtResource("3_6phgx")]
+position = Vector2(1165, 501)
+
+[node name="Wall_Right6" parent="." instance=ExtResource("1_u52ul")]
+position = Vector2(5596, -782)
+scale = Vector2(0.5, 5)
+
+[node name="Goal" parent="." instance=ExtResource("4_0sylt")]
+position = Vector2(7268, -29)
+
+[node name="Spawnpoint" type="Node2D" parent="."]

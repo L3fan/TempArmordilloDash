@@ -17,10 +17,10 @@ config/icon="res://icon.svg"
 
 [autoload]
 
-GameManager="*res://Scripts/GameManager.cs"
-Settings="*res://Scripts/Settings.cs"
-LevelManager="*res://Scripts/LevelManager.cs"
-Save="*res://Scripts/Save.cs"
+GameManager="*res://Assets/Scripts/GameManager.cs"
+Settings="*res://Assets/Scripts/Settings.cs"
+LevelManager="*res://Assets/Scripts/LevelManager.cs"
+Save="*res://Assets/Scripts/Save.cs"
 
 [display]
 
@@ -82,6 +82,7 @@ Pause={
 
 common/max_physics_steps_per_frame=16
 2d/physics_engine="GodotPhysics2D"
+2d/solver/contact_max_allowed_penetration=0.1
 
 [rendering]
 

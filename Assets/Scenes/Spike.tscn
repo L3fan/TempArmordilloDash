@@ -1,0 +1,35 @@
+[gd_scene load_steps=3 format=3 uid="uid://biyduiebwd51t"]
+
+[ext_resource type="Script" uid="uid://dlem3ih8spn8q" path="res://Assets/Scripts/Spike.cs" id="1_nuopa"]
+[ext_resource type="Texture2D" uid="uid://d3yxrxss3cwpu" path="res://Assets/Textures/Spike.png" id="2_n83sx"]
+
+[node name="Spike" type="Node2D" node_paths=PackedStringArray("damageArea")]
+script = ExtResource("1_nuopa")
+damageArea = NodePath("TextureRect/DamageArea")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -64.0
+offset_top = -128.0
+offset_right = 448.0
+offset_bottom = 384.0
+grow_horizontal = 2
+grow_vertical = 0
+scale = Vector2(0.25, 0.25)
+texture = ExtResource("2_n83sx")
+
+[node name="PhysicalBody" type="StaticBody2D" parent="TextureRect"]
+
+[node name="CollisionPolygon" type="CollisionPolygon2D" parent="TextureRect/PhysicalBody"]
+polygon = PackedVector2Array(256, 0, 512, 512, 0, 512)
+
+[node name="DamageArea" type="Area2D" parent="TextureRect"]
+
+[node name="CollisionPolygon" type="CollisionPolygon2D" parent="TextureRect/DamageArea"]
+polygon = PackedVector2Array(196, 112, 256, -4, 316, 112)
+
+[connection signal="body_entered" from="TextureRect/DamageArea" to="." method="_OnDamageAreaBodyEntered"]
