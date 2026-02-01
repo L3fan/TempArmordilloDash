@@ -48,7 +48,7 @@ public partial class LevelGenerator : Level
 			List<PackedScene> sectionPool = GetRaritySectionPool(randomRarity);
 			
 			int randIndex = random.Next(sectionPool.Count);
-			GD.Print("Randomly Generating number " + randIndex);
+			//GD.Print("Randomly Generating number " + randIndex);
 			LevelSection randomLevelSection = sectionPool[randIndex].Instantiate() as LevelSection;
 			randomLevelSection.Position = currentStartPoint - randomLevelSection.startPointNode.Position;
 			AddChild(randomLevelSection);
@@ -62,7 +62,7 @@ public partial class LevelGenerator : Level
 
 	private List<PackedScene> GetRaritySectionPool(int chanceResult)
 	{
-		GD.Print("Chance: " + chanceResult);
+		//GD.Print("Chance: " + chanceResult);
 		switch (chanceResult)
 		{
 			case var n when n < COMMON_SECTION_CHANCE:

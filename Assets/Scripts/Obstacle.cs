@@ -9,6 +9,7 @@ public partial class Obstacle: Node2D
 	[Export] public CollisionPolygon2D collisionPolygon;
 	[Export] public CollisionShape2D collisionShape;
 	[Export] private Node2D usedCollisionType;
+	[Export] public Vector2 offsetPosition;
 
 
 	public override void _Ready()
@@ -33,8 +34,8 @@ public partial class Obstacle: Node2D
 		if (usedCollisionType == null)
 			return;
 		
-		collisionBody.ConstantLinearVelocity = (prevPos - usedCollisionType.GlobalPosition)/ (float)delta;
-		//collisionBody.ConstantAngularVelocity = (prevRot - usedCollisionType.GlobalRotation) /360f*Mathf.Pi / (float)delta;
+		collisionBody.ConstantLinearVelocity = (usedCollisionType.GlobalPosition - prevPos)/ (float)delta;
+		collisionBody.ConstantAngularVelocity = (usedCollisionType.GlobalRotation - prevRot) / 360f * Mathf.Pi / (float)delta;
 		
 		prevPos = usedCollisionType.GlobalPosition;
 		prevRot = usedCollisionType.GlobalRotation;
@@ -42,7 +43,7 @@ public partial class Obstacle: Node2D
 	
 	public virtual void Setup(ObstacleSpot spot)
 	{
-		Position = spot.Position;
+		Position = spot.Position + offsetPosition;
 		Rotation = spot.Rotation;
 		Scale = spot.Scale;
 	}

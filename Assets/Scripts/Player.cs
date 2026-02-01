@@ -22,11 +22,11 @@ public partial class Player : CharacterBody2D
     private Vector2 forwardDir = new Vector2(1, 0);
     private Vector2 lastVelocity = Vector2.Zero;
     private List<Object> lastColliders = new List<Object>();
-    
+
     private float dashCooldown = 0f;
     private float dashCdMax = 1.2f;
-    private float dashTime = 0f;
     private bool isDashing = false;
+    private bool startDash = false;
     private Vector2 dashDir = Vector2.Zero;
     private bool dashSlowdown = false;
     private bool justLanded = false;
@@ -60,7 +60,7 @@ public partial class Player : CharacterBody2D
     private String velocityInfo;
 
     private float count = 1;
-    
+
     [Export] private Control radialProgress;
 
     // Called when the node enters the scene tree for the first time.
@@ -94,7 +94,8 @@ public partial class Player : CharacterBody2D
                     animationPlayer.Play("Idle");
                 }
             }
-        } else if (fadeOutOfBlack)
+        }
+        else if (fadeOutOfBlack)
         {
             playerCamera.DarkenScreen(-(float)delta);
             if (playerCamera.NoBlackScreen())
@@ -139,15 +140,16 @@ public partial class Player : CharacterBody2D
             radialProgress.Set("progress", 0);
         }
 
-        if(dashed)
+        if (dashed)
             dashed = !IsOnFloor();
 
         velocityInfo = "";
-        
-        CollisionCalc();
+
+        CollisionCalc((float)delta);
 
         //Gravity
-        Velocity += new Vector2(0, 983.4f * mass * (float)delta);
+        if (!IsOnFloor())
+            Velocity += new Vector2(0, 983.4f * mass * (float)delta);
         velocityInfo += "Post Gravity: " + Velocity + "\n";
 
         //Zero setter for anything between 0.5 and -0.5, cause speed reduction takes too long to go from 0.5 to 0
@@ -164,10 +166,10 @@ public partial class Player : CharacterBody2D
         //recharge timeSlow when not in Slowdown
         if (!inSlowDown && timeSlow < 1.5f)
             timeSlow = Mathf.Min(timeSlow + (float)delta * 0.5f, 1.5f);
-        
-        
+
+
         //allow Dashing when fully recharged after depleting entire timeSlow
-        if(timeSlow >= 1.5f && mustRecharge)
+        if (timeSlow >= 1.5f && mustRecharge)
             mustRecharge = false;
 
         InputCalculations((float)delta);
@@ -185,50 +187,72 @@ public partial class Player : CharacterBody2D
         MoveAndSlide();
     }
 
-    private void CollisionCalc()
+    private void CollisionCalc(float delta)
     {
         //Get the horizontal Vector or the normalized Vector of the last Velocity
         Vector2 toCompare = (lastVelocity * Vector2.Right).Normalized();
-        if (dashCooldown >= dashCdMax/2f || true)
+        if (dashCooldown >= dashCdMax / 2f)
             toCompare = lastVelocity.Normalized();
+        toCompare = Vector2.Up;
 
         String collisions = "";
         List<Object> colliders = new List<Object>();
         for (int i = 0; i < GetSlideCollisionCount(); i++)
         {
+            GodotObject collider = GetSlideCollision(i).GetCollider();
             Vector2 collisionNormal = GetSlideCollision(i).GetNormal();
             float collisionAngle = RotationOfVectors(toCompare, collisionNormal);
-            if(!colliders.Contains(GetSlideCollision(i).GetCollider()))
-                colliders.Add(GetSlideCollision(i).GetCollider());
+
+            if (!colliders.Contains(collider))
+                colliders.Add(collider);
+            else
+                return;
             //GD.Print(lastColliders.Contains(GetSlideCollision(i).GetCollider()));
             //GD.Print(collisionAngle);
-            
-            //if angle of collision is smaller than 60° or 135° while dashing, bounce, else slide on surface, also dont bounce off the same object while the object is still being touched
-            if (((dashCooldown > dashCdMax/2f && collisionAngle < 135f) || collisionAngle < 60f) && !lastColliders.Contains(GetSlideCollision(i).GetCollider()))
+
+            //if surface bouncing off of is a floor, aka 30° or less, bounce, otherwise slide off it, also dont bounce off the same object while the object is still being touched
+            if (isDashing && collisionAngle < 30f && !lastColliders.Contains(collider) &&
+                lastVelocity.Y > 16.5f)
             {
-                GD.Print("Bounced!");
                 Velocity = lastVelocity.Bounce(collisionNormal) * bounciness;
-                
+
                 if (dashDir != Vector2.Zero)
                 {
                     dashDir = dashDir.Bounce(collisionNormal);
                 }
-                
-                velocityInfo += "Post Bounce Calc (" + ((Node)GetSlideCollision(i).GetCollider()).GetParent().Name +
+
+                velocityInfo += "Post Bounce Calc (" + ((Node)collider).GetParent().Name +
                                 "): " + Velocity + " " + collisionNormal + "\n";
             }
             else
             {
                 Velocity = lastVelocity.Slide(collisionNormal);
-                velocityInfo += "Post Slide Calc (" + ((Node)GetSlideCollision(i).GetCollider()).GetParent().Name +
+                velocityInfo += "Post Slide Calc (" + ((Node)collider).GetParent().Name +
                                 "): " + Velocity + " " + collisionNormal + "\n";
             }
 
-            Vector2 collisionVelocity = GetSlideCollision(i).GetColliderVelocity() * collisionNormal;
-            Velocity += collisionVelocity;
+            Vector2 colliderVelocity = GetSlideCollision(i).GetColliderVelocity();
+            Velocity += colliderVelocity;
+            if (collider is StaticBody2D)
+            {
+                StaticBody2D colliderBody = ((StaticBody2D)collider);
+                float angularVelocity = colliderBody.ConstantAngularVelocity;
+                //GD.Print(colliderBody.GetParent().Name + " Velocity: " + angularVelocity);
+                if (angularVelocity != 0)
+                {
+                    Vector2 relativePlayerPos = colliderBody.GlobalPosition - GlobalPosition;
+                    float rotationSpeed = angularVelocity * 360 / Mathf.Pi / delta;
+                    Vector2 rotatedPos = relativePlayerPos.Rotated(-rotationSpeed);
+                    Vector2 angularForce = (rotatedPos - relativePlayerPos);
+                    GD.Print("Rotation: " + rotationSpeed);
+                    Velocity += angularForce * new Vector2(1.0f, 0.5f).Normalized();
+                }
+            }
+            //GD.Print(GetSlideCollision(i).GetCollider() + " Velocity: " + colliderVelocity + " // Velocity after collision: " + Velocity);
+            
 
             //keep Velocity horizontal on flat ground, prevents unusual hops while rolling from bounce calc, stemming from bad normal calcs
-            if (dashCooldown <= dashCdMax/2f)
+            if (dashCooldown <= dashCdMax / 2f)
             {
                 float floorAngle = GetSlideCollision(i).GetAngle() * 180 / Mathf.Pi;
                 collisions += ((Node)GetSlideCollision(i).GetCollider()).GetParent().Name + ": " + floorAngle +
@@ -247,30 +271,33 @@ public partial class Player : CharacterBody2D
     {
         if (!canControl)
             return;
-        
-        if (pressingDash && (dashCooldown == 0f || dashCooldown > dashCdMax-0.2f) && !mustRecharge && !dashed)
+
+        if (!dashed && dashCooldown == 0f && !mustRecharge)
         {
-            if (timeSlow > 0 && dashCooldown == 0)
+            if (pressingDash)
             {
-                timeSlow -= delta;
-                SetSlowDown(true);
+                if (timeSlow > 0 && dashCooldown == 0f)
+                {
+                    timeSlow -= delta;
+                    SetSlowDown(true);
+                }
+            }
+            else
+            {
+                if (inSlowDown)
+                    SetSlowDown(false);
+            }
+
+            if (letGoOfDash)
+            {
+                letGoOfDash = false;
+                InputDash(delta);
             }
         }
-        else
-        {
-            if(inSlowDown)
-                SetSlowDown(false);
-            
-            InputJumpCalc(delta);
 
-            InputHorizontalCalc(delta);
-        }
+        InputJumpCalc(delta);
 
-        if (letGoOfDash)
-        {
-            letGoOfDash = false;
-            InputDash(delta);
-        }
+        InputHorizontalCalc(delta);
     }
 
     private void InputDash(float delta)
@@ -286,12 +313,14 @@ public partial class Player : CharacterBody2D
         if (pressingUp)
             dashDir += Vector2.Up;
 
-        dashDir = dashDir.Normalized() * new Vector2(1.0f, 0.5f);
+        dashDir = dashDir.Normalized();
 
-        if (dashDir != Vector2.Zero && dashCooldown == 0f)
+        if (dashDir.Y < 0)
+            dashDir *= new Vector2(1.0f, 0.5f);
+
+        if (dashDir != Vector2.Zero)
         {
-            isDashing = true;
-            dashTime = 0.25f;
+            startDash = true;
             dashCooldown = dashCdMax;
             SetSlowDown(false);
             dashed = true;
@@ -321,7 +350,8 @@ public partial class Player : CharacterBody2D
 
         if (pressingLeft)
         {
-            float forwardForce = speed * 10 * delta * Mathf.Abs(Mathf.Max(-maxSpeed - Velocity.X, -maxSpeed)) / maxSpeed;
+            float forwardForce =
+                speed * 10 * delta * Mathf.Abs(Mathf.Max(-maxSpeed - Velocity.X, -maxSpeed)) / maxSpeed;
             addedForce = forwardForce * Vector2.Left;
         }
 
@@ -344,9 +374,9 @@ public partial class Player : CharacterBody2D
 
             //only slow down to 0 velocity on X axis
             slowdownForce = Mathf.Min(slowdownForce, Mathf.Abs(Velocity.X));
-            
+
             //give it the opposite direction of the X velocity
-            if(Velocity.X != 0)
+            if (Velocity.X != 0)
                 slowdownForce *= (Velocity.X / Mathf.Abs(Velocity.X));
             Velocity -= new Vector2(slowdownForce, 0);
         }
@@ -361,38 +391,30 @@ public partial class Player : CharacterBody2D
     {
         if (dashSlowdown)
         {
-            if (Velocity.Length() >= maxSpeed || dashCooldown >= dashCdMax/2f)
+            if (Velocity.Length() >= maxSpeed || dashCooldown >= dashCdMax / 2f)
             {
-                if(Velocity.Length() > maxSpeed)
-                    Velocity = Velocity.Lerp(Velocity.Normalized() * maxSpeed, delta * slowdownMult);
-                if(Velocity.Y < -1000)
+                if (Velocity.Length() > maxSpeed)
+                    Velocity /= 1.75f;
+                if (Velocity.Y < -1000)
                     Velocity *= new Vector2(1f, 0.9f);
-            } else
+            }
+            else
             {
-                if(lastVelocity.Length() > maxSpeed)
-                    Velocity = Velocity.Normalized() * maxSpeed;
                 dashSlowdown = false;
+                isDashing = false;
             }
         }
 
-        if (isDashing)
+        if (startDash)
         {
             if (!dashSlowdown)
             {
                 float force = Mathf.Max(dashForce * 100000 * delta, Velocity.Length());
                 Velocity *= 0.1f;
                 Velocity += force * dashDir;
-                isDashing = false;
+                startDash = false;
+                isDashing = true;
                 dashSlowdown = true;
-                dashTime = 0.25f;
-            }
-
-            if (dashTime > 0f)
-                dashTime -= delta;
-            if (dashTime <= 0f)
-            {
-                dashTime = 0f;
-                isDashing = false;
             }
         }
     }
@@ -444,7 +466,7 @@ public partial class Player : CharacterBody2D
             pressingDash = false;
         }
 
-        if(@event.IsActionPressed("playDeath"))
+        if (@event.IsActionPressed("playDeath"))
             animationPlayer.Play("Death");
     }
 
@@ -456,7 +478,7 @@ public partial class Player : CharacterBody2D
     public float RotationOfVectors(Vector2 vec1, Vector2 vec2)
     {
         float radiansAngle = Mathf.Acos(vec1.Dot(vec2) / (vec1.Length() * vec2.Length()));
-        return radiansAngle * 180 / Mathf.Pi;
+        return Mathf.Abs(radiansAngle * 180 / Mathf.Pi);
     }
 
     private void UpdateSprite()
@@ -541,7 +563,7 @@ public partial class Player : CharacterBody2D
 
     public bool IsDashing()
     {
-        return dashCooldown >= dashCdMax/2f;
+        return dashCooldown >= dashCdMax / 2f;
     }
 
     public Sprite2D GetSprite()
@@ -559,7 +581,7 @@ public partial class Player : CharacterBody2D
         //Do not get hit while already in damage routine
         if (gotHit)
             return;
-        
+
         gotHit = true;
         animationPlayer.SpeedScale = 0;
         StartCoroutine(PlayDeathAnim());
