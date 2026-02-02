@@ -14,7 +14,7 @@ public partial class CameraMovement : Camera2D
 	[Export] public Node2D resultScreen;
 
 	[Export] public float maxCameraDistance = 200;
-	[Export] public float maxCameraMoveDistance = 80;
+	[Export] public float maxCameraMoveDistance = 160;
 	[Export] public float maxCameraZoomDistance = 10;
 
 	private Vector2 startZoom;
@@ -42,7 +42,7 @@ public partial class CameraMovement : Camera2D
 		Vector2 offset = CalculateOffset() * Vector2.Right;
 		Vector2 target = player.Position + offset - new Vector2(0, 200);
 		Vector2 moveDirection = (target - Position) / 2f;
-		Position += moveDirection.Normalized() * Mathf.Min(moveDirection.Length(), maxCameraMoveDistance);
+		Position += moveDirection.Normalized() * Mathf.Sqrt(Mathf.Min(Mathf.Pow(moveDirection.Length(), 2), Mathf.Pow(maxCameraMoveDistance, 2)));
 
 		Zoom = Zoom.Lerp(startZoom - Vector2.One * offset.Length() / maxCameraDistance / 6f, (float)delta * maxCameraZoomDistance);
 	}

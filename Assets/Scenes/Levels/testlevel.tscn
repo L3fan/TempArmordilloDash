@@ -1,9 +1,8 @@
-[gd_scene load_steps=8 format=3 uid="uid://cpma7du425iag"]
+[gd_scene load_steps=7 format=3 uid="uid://cpma7du425iag"]
 
 [ext_resource type="Script" uid="uid://b6c5alausgo8c" path="res://Assets/Scripts/Level.cs" id="1_anvtu"]
 [ext_resource type="PackedScene" uid="uid://dvy5rqygiv6v4" path="res://Assets/Scenes/wall.tscn" id="1_u52ul"]
 [ext_resource type="Texture2D" uid="uid://jo34hknve037" path="res://Assets/Textures/Round Ramp.png" id="2_vonw3"]
-[ext_resource type="PackedScene" uid="uid://biyduiebwd51t" path="res://Assets/Scenes/Spike.tscn" id="3_6phgx"]
 [ext_resource type="PackedScene" uid="uid://de8ybt5mrkrbi" path="res://Assets/Scenes/goal.tscn" id="4_0sylt"]
 
 [sub_resource type="Gradient" id="Gradient_vonw3"]
@@ -108,9 +107,6 @@ scale = Vector2(3.9, 0.1)
 [node name="Wall_Right5" parent="." instance=ExtResource("1_u52ul")]
 position = Vector2(6025.9995, 238)
 scale = Vector2(2.65, 0.1)
-
-[node name="Spike" parent="." instance=ExtResource("3_6phgx")]
-position = Vector2(1165, 501)
 
 [node name="Wall_Right6" parent="." instance=ExtResource("1_u52ul")]
 position = Vector2(5596, -782)

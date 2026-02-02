@@ -254,7 +254,9 @@ _data = {
 [node name="CharacterBody2D" type="CharacterBody2D" node_paths=PackedStringArray("radialProgress") groups=["Player"]]
 safe_margin = 0.1
 script = ExtResource("1_t1xgp")
-friction = 2000.0
+mass = 1.5
+jumpForce = 4.5
+friction = 500.0
 bounciness = 0.5
 radialProgress = NodePath("RadialProgress")
 
