@@ -62,3 +62,7 @@ func draw_ring_arc(center: Vector2, radius1: float, radius2: float,\
 		var angle_point: float = a + float(i) * b
 		points_arc.push_back(center + Vector2(cos(angle_point), sin(angle_point)) * radius2)
 	draw_polygon(points_arc, colors)
+
+
+func _OnRigidBody2dBodyShapeEntered(body_rid: RID, body: Node, body_shape_index: int, local_shape_index: int) -> void:
+	pass # Replace with function body.

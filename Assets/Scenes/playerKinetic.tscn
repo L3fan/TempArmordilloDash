@@ -1,10 +1,9 @@
-[gd_scene load_steps=17 format=3 uid="uid://mdjyx11efd10"]
+[gd_scene load_steps=16 format=3 uid="uid://do84eyf6vw5rv"]
 
-[ext_resource type="Script" uid="uid://cfoxyrakflqib" path="res://Assets/Scripts/Player.cs" id="1_e5q2x"]
-[ext_resource type="PhysicsMaterial" uid="uid://cexo27xrthg6p" path="res://Assets/PlayerPhysicsMat.tres" id="1_mifcl"]
-[ext_resource type="Script" uid="uid://cbc6r3x84ejtj" path="res://addons/radial_progress/RadialProgress.gd" id="2_mifcl"]
-[ext_resource type="Texture2D" uid="uid://d0jifiae7afp7" path="res://Assets/Textures/Dylan/armadillo_roll_sprite_sheet.png" id="3_2thea"]
-[ext_resource type="Texture2D" uid="uid://brld20wd22m6q" path="res://Assets/Textures/Dylan/armadillo_sprite_sheet_pixel.png" id="4_jqe1p"]
+[ext_resource type="Script" uid="uid://fhwxvpl6q6db" path="res://Assets/Scripts/PlayerKinetic.cs" id="1_t1xgp"]
+[ext_resource type="Script" uid="uid://cbc6r3x84ejtj" path="res://addons/radial_progress/RadialProgress.gd" id="2_23lac"]
+[ext_resource type="Texture2D" uid="uid://d0jifiae7afp7" path="res://Assets/Textures/Dylan/armadillo_roll_sprite_sheet.png" id="3_w3t24"]
+[ext_resource type="Texture2D" uid="uid://brld20wd22m6q" path="res://Assets/Textures/Dylan/armadillo_sprite_sheet_pixel.png" id="4_c3tg1"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_wtcfe"]
 radius = 64.0
@@ -252,10 +251,13 @@ _data = {
 &"Roll2": SubResource("Animation_x3wgy")
 }
 
-[node name="RigidBody2D" type="RigidBody2D" node_paths=PackedStringArray("radialProgress") groups=["Player"]]
-physics_material_override = ExtResource("1_mifcl")
-lock_rotation = true
-script = ExtResource("1_e5q2x")
+[node name="CharacterBody2D" type="CharacterBody2D" node_paths=PackedStringArray("radialProgress") groups=["Player"]]
+safe_margin = 0.1
+script = ExtResource("1_t1xgp")
+mass = 1.5
+jumpForce = 4.5
+friction = 500.0
+bounciness = 0.5
 radialProgress = NodePath("RadialProgress")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
@@ -266,7 +268,7 @@ layout_mode = 3
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
-script = ExtResource("2_mifcl")
+script = ExtResource("2_23lac")
 max_value = 1.0
 radius = 80.0
 thickness = 10.0
@@ -279,7 +281,7 @@ metadata/_custom_type_script = "uid://cbc6r3x84ejtj"
 visible = false
 z_index = 5
 scale = Vector2(0.2, 0.2)
-texture = ExtResource("3_2thea")
+texture = ExtResource("3_w3t24")
 offset = Vector2(-7, 0)
 hframes = 3
 vframes = 2
@@ -292,7 +294,7 @@ libraries = {
 [node name="SpritePixel" type="Sprite2D" parent="."]
 texture_filter = 1
 scale = Vector2(2, 2)
-texture = ExtResource("4_jqe1p")
+texture = ExtResource("4_c3tg1")
 offset = Vector2(1, 1)
 hframes = 4
 vframes = 4
@@ -301,6 +303,3 @@ vframes = 4
 libraries = {
 &"": SubResource("AnimationLibrary_x3wgy")
 }
-
-[connection signal="body_shape_entered" from="." to="." method="_OnBodyShapeEntered"]
-[connection signal="body_shape_exited" from="." to="." method="_OnBodyShapeExited"]

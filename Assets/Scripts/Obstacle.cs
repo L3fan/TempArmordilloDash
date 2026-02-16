@@ -34,7 +34,7 @@ public partial class Obstacle: Node2D
 		if (usedCollisionType == null)
 			return;
 		
-		collisionBody.ConstantLinearVelocity = (usedCollisionType.GlobalPosition - prevPos)/ (float)delta;
+		collisionBody.ConstantLinearVelocity = (usedCollisionType.GlobalPosition - prevPos)/ (float)delta * 0.9f;
 		collisionBody.ConstantAngularVelocity = (usedCollisionType.GlobalRotation - prevRot) / 360f * Mathf.Pi / (float)delta;
 		
 		prevPos = usedCollisionType.GlobalPosition;

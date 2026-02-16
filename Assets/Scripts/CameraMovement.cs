@@ -49,10 +49,10 @@ public partial class CameraMovement : Camera2D
 
 	private Vector2 CalculateOffset()
 	{
-		if(player.Velocity.Length()/10 <= maxCameraDistance)
-			return player.Velocity/10;
+		if(player.LinearVelocity.Length()/10 <= maxCameraDistance)
+			return player.LinearVelocity/10;
 		
-		return player.Velocity.Normalized() * maxCameraDistance;
+		return player.LinearVelocity.Normalized() * maxCameraDistance;
 	}
 
 	public void DarkenScreen(float amount)

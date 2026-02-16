@@ -8,7 +8,7 @@ using System.Numerics;
 using System.Threading.Tasks;
 using Vector2 = Godot.Vector2;
 
-public partial class Player : RigidBody2D
+public partial class PlayerKinetic : CharacterBody2D
 {
     [Export] public float mass = 1;
     [Export] public float speed = 200f;
@@ -22,8 +22,6 @@ public partial class Player : RigidBody2D
     private Vector2 forwardDir = new Vector2(1, 0);
     private Vector2 lastVelocity = Vector2.Zero;
     private List<Object> lastColliders = new List<Object>();
-    private CollisionShape2D collisionShape;
-    [Export] private bool isOnFloor = false;
 
     private float dashCooldown = 0f;
     private float dashCdMax = 1.2f;
@@ -63,10 +61,7 @@ public partial class Player : RigidBody2D
     public override void _Ready()
     {
         ProcessMode = ProcessModeEnum.Pausable;
-        ContactMonitor = true;
-        MaxContactsReported = 100;
         sprite = GetNode<Sprite2D>("SpritePixel");
-        collisionShape = GetNode<CollisionShape2D>("CollisionShape2D");
         animationPlayer = GetNode<AnimationPlayer>("SpritePixel/AnimationPlayer");
         animationPlayer.Play("Idle");
 
@@ -78,18 +73,22 @@ public partial class Player : RigidBody2D
     {
     }
 
-    public override void _IntegrateForces(PhysicsDirectBodyState2D state)
+    public override void _PhysicsProcess(double delta)
     {
-        base._IntegrateForces(state);
-
-        float delta = state.Step;
+        DashCooldownCalc((float)delta);
 
         velocityInfo = "";
-        SlowdownCalc(delta);
-        
-        DashCooldownCalc(delta);
 
-        //CollisionCalc((float)delta);
+        CollisionCalc((float)delta);
+
+        //Gravity
+        if (!IsOnFloor())
+            Velocity += new Vector2(0, 983.4f * mass * (float)delta);
+        velocityInfo += "Post Gravity: " + Velocity + "\n";
+
+        //Zero setter for anything between 0.5 and -0.5, cause speed reduction takes too long to go from 0.5 to 0
+        if (Velocity.X is < 5f and > -5f)
+            Velocity = new Vector2(0, Velocity.Y);
 
         //Reset Slowdown if timeSlow has reached 0 and set mustRecharge = true, only allowing the player to dash again when it has recharged fully
         if (timeSlow <= 0f)
@@ -117,8 +116,9 @@ public partial class Player : RigidBody2D
 
         UpdateSprite();
 
-        lastVelocity = LinearVelocity;
-        
+        lastVelocity = Velocity;
+
+        MoveAndSlide();
     }
 
     private void DashCooldownCalc(float delta)
@@ -141,12 +141,12 @@ public partial class Player : RigidBody2D
         }
 
         if (dashed)
-            dashed = !isOnFloor;
+            dashed = !IsOnFloor();
     }
 
-    /*private void CollisionCalc(float delta)
+    private void CollisionCalc(float delta)
     {
-        //Get the horizontal Vector or the normalized Vector of the last LinearVelocity
+        //Get the horizontal Vector or the normalized Vector of the last Velocity
         Vector2 toCompare = (lastVelocity * Vector2.Right).Normalized();
         if (isDashing)
             toCompare = lastVelocity.Normalized();
@@ -174,15 +174,15 @@ public partial class Player : RigidBody2D
             Vector2 colliderVelocity = GetSlideCollision(i).GetColliderVelocity();
             if (colliderVelocity != Vector2.Zero)
             {
-                GD.Print("Pre-Calc Collider LinearVelocity: " + colliderVelocity);
+                GD.Print("Pre-Calc Collider Velocity: " + colliderVelocity);
                 
                 float bounceWeight = RotationOfVectors(lastVelocity, colliderVelocity)/180f;
                 colliderVelocity = (1-bounceWeight)* colliderVelocity + bounceWeight * colliderVelocity.Bounce(collisionAngleVector);
 
-                GD.Print("Bounce Weight: " + bounceWeight + "\nPost-Calc Collider LinearVelocity: " + colliderVelocity);
+                GD.Print("Bounce Weight: " + bounceWeight + "\nPost-Calc Collider Velocity: " + colliderVelocity);
 
-                LinearVelocity = lastVelocity + colliderVelocity; 
-                GD.Print("Velocity: " + LinearVelocity + "\n");
+                Velocity = lastVelocity + colliderVelocity; 
+                GD.Print("Velocity: " + Velocity + "\n");
             }
             else
             {
@@ -191,24 +191,24 @@ public partial class Player : RigidBody2D
                 if (isDashing && canBounce && collisionAngle > 150f && !lastColliders.Contains(collider) &&
                     lastVelocity.Y > 50f)
                 {
-                    LinearVelocity = lastVelocity.Bounce(collisionAngleVector) * bounciness;
+                    Velocity = lastVelocity.Bounce(collisionAngleVector) * bounciness;
 
                     if (dashDir != Vector2.Zero)
                     {
                         dashDir = dashDir.Bounce(collisionAngleVector);
                     }
 
-                    velocityInfo += "Post Bounce Calc (" + ((Node)collider).GetParent().Name + "): " + LinearVelocity + " " +
+                    velocityInfo += "Post Bounce Calc (" + ((Node)collider).GetParent().Name + "): " + Velocity + " " +
                                     collisionAngleVector + "\n";
                 }
                 else
                 {
                     float slideWeight = Mathf.Min(lastVelocity.Length() / 1000f, 1.0f);
                     float bounceWeight = 1 - slideWeight;
-                    LinearVelocity = slideWeight * lastVelocity.Slide(collisionNormal) +
+                    Velocity = slideWeight * lastVelocity.Slide(collisionNormal) +
                                bounceWeight * lastVelocity.Bounce(collisionNormal);
 
-                    velocityInfo += "Post Slide Calc (" + ((Node)collider).GetParent().Name + "): " + LinearVelocity + " " +
+                    velocityInfo += "Post Slide Calc (" + ((Node)collider).GetParent().Name + "): " + Velocity + " " +
                                     collisionNormal + "\n";
                 }
             }
@@ -217,21 +217,21 @@ public partial class Player : RigidBody2D
             {
                 StaticBody2D colliderBody = ((StaticBody2D)collider);
                 float angularVelocity = colliderBody.ConstantAngularVelocity;
-                //GD.Print(colliderBody.GetParent().Name + " LinearVelocity: " + angularVelocity);
+                //GD.Print(colliderBody.GetParent().Name + " Velocity: " + angularVelocity);
                 if (angularVelocity != 0)
                 {
                     Vector2 relativePlayerPos = colliderBody.GlobalPosition - GlobalPosition;
                     float rotationSpeed = angularVelocity * 360 / Mathf.Pi / delta;
                     Vector2 rotatedPos = relativePlayerPos.Rotated(-rotationSpeed);
                     Vector2 angularForce = (rotatedPos - relativePlayerPos);
-                    LinearVelocity += angularForce * new Vector2(1.0f, 0.5f).Normalized();
+                    Velocity += angularForce * new Vector2(1.0f, 0.5f).Normalized();
                 }
-            }
-            //GD.Print(GetSlideCollision(i).GetCollider() + " LinearVelocity: " + colliderVelocity + " // LinearVelocity after collision: " + LinearVelocity);
+            }*/
+            //GD.Print(GetSlideCollision(i).GetCollider() + " Velocity: " + colliderVelocity + " // Velocity after collision: " + Velocity);
         }
 
         lastColliders = colliders;
-    }*/
+    }
 
     private void InputCalculations(float delta)
     {
@@ -292,13 +292,13 @@ public partial class Player : RigidBody2D
 
     private void InputJumpCalc(float delta)
     {
-        if (pressingUp && isOnFloor)
+        if (pressingUp && IsOnFloor())
         {
-            LinearVelocity *= Vector2.Right;
-            LinearVelocity += new Vector2(0, -jumpForce * 200);
+            Velocity *= Vector2.Right;
+            Velocity += new Vector2(0, -jumpForce * 200);
         }
 
-        velocityInfo += "Post Jump: " + LinearVelocity + "\n";
+        velocityInfo += "Post Jump: " + Velocity + "\n";
     }
 
     private void InputHorizontalCalc(float delta)
@@ -307,25 +307,25 @@ public partial class Player : RigidBody2D
 
         if (pressingRight)
         {
-            float forwardForce = speed * 10 * delta * Mathf.Min(maxSpeed - LinearVelocity.X, maxSpeed) / maxSpeed;
+            float forwardForce = speed * 10 * delta * Mathf.Min(maxSpeed - Velocity.X, maxSpeed) / maxSpeed;
             addedForce = forwardForce * Vector2.Right;
         }
 
         if (pressingLeft)
         {
             float forwardForce =
-                speed * 10 * delta * Mathf.Abs(Mathf.Max(-maxSpeed - LinearVelocity.X, -maxSpeed)) / maxSpeed;
+                speed * 10 * delta * Mathf.Abs(Mathf.Max(-maxSpeed - Velocity.X, -maxSpeed)) / maxSpeed;
             addedForce = forwardForce * Vector2.Left;
         }
 
-        LinearVelocity += addedForce;
-        velocityInfo += "Post Force Add: " + LinearVelocity + "\n";
+        Velocity += addedForce;
+        velocityInfo += "Post Force Add: " + Velocity + "\n";
     }
 
     private void SlowdownCalc(float delta)
     {
         //Slowdown when no left/right input and on floor
-        if ((!pressingRight && LinearVelocity.X > 0 || !pressingLeft && LinearVelocity.X < 0) && isOnFloor)
+        if ((!pressingRight && Velocity.X > 0 || !pressingLeft && Velocity.X < 0) && IsOnFloor())
         {
             float slowdownForce = friction * delta;
 
@@ -336,33 +336,33 @@ public partial class Player : RigidBody2D
             }
 
             //only slow down to 0 velocity on X axis
-            slowdownForce = Mathf.Min(slowdownForce, Mathf.Abs(LinearVelocity.X));
+            slowdownForce = Mathf.Min(slowdownForce, Mathf.Abs(Velocity.X));
 
             //give it the opposite direction of the X velocity
-            if (LinearVelocity.X != 0)
-                slowdownForce *= (LinearVelocity.X / Mathf.Abs(LinearVelocity.X));
-            LinearVelocity -= new Vector2(slowdownForce, 0);
+            if (Velocity.X != 0)
+                slowdownForce *= (Velocity.X / Mathf.Abs(Velocity.X));
+            Velocity -= new Vector2(slowdownForce, 0);
         }
 
-        if (isOnFloor && justLanded)
+        if (IsOnFloor() && justLanded)
             justLanded = false;
 
-        if (!isOnFloor)
+        if (!IsOnFloor())
             justLanded = true;
 
-        velocityInfo += "Post Slowdown: " + LinearVelocity + "\n";
+        velocityInfo += "Post Slowdown: " + Velocity + "\n";
     }
 
     private void DashCalc(float delta)
     {
         if (dashSlowdown)
         {
-            if (LinearVelocity.Length() >= maxSpeed || dashCooldown >= dashCdMax / 2f)
+            if (Velocity.Length() >= maxSpeed || dashCooldown >= dashCdMax / 2f)
             {
-                if (LinearVelocity.Length() > maxSpeed)
-                    LinearVelocity /= 1.95f;
-                if (LinearVelocity.Y < -1000)
-                    LinearVelocity *= new Vector2(1f, 0.9f);
+                if (Velocity.Length() > maxSpeed)
+                    Velocity /= 1.95f;
+                if (Velocity.Y < -1000)
+                    Velocity *= new Vector2(1f, 0.9f);
             }
             else
             {
@@ -375,9 +375,9 @@ public partial class Player : RigidBody2D
         {
             if (!dashSlowdown)
             {
-                float force = Mathf.Max(dashForce * 100000 * delta, LinearVelocity.Length());
-                LinearVelocity *= 0.25f;
-                LinearVelocity += force * dashDir;
+                float force = Mathf.Max(dashForce * 100000 * delta, Velocity.Length());
+                Velocity *= 0.25f;
+                Velocity += force * dashDir;
                 startDash = false;
                 isDashing = true;
                 dashSlowdown = true;
@@ -450,15 +450,15 @@ public partial class Player : RigidBody2D
     private void UpdateSprite()
     {
         //turn sprite around depending on velocity
-        if (LinearVelocity.X > 0 && sprite.Scale.X < 0)
+        if (Velocity.X > 0 && sprite.Scale.X < 0)
             sprite.Scale = new Vector2(Mathf.Abs(sprite.Scale.X), sprite.Scale.Y);
-        else if (LinearVelocity.X < 0 && sprite.Scale.X > 0)
+        else if (Velocity.X < 0 && sprite.Scale.X > 0)
             sprite.Scale = new Vector2(-Mathf.Abs(sprite.Scale.X), sprite.Scale.Y);
 
-        //when on floor, only consider the X value, otherwise use the length of the LinearVelocity to determine sprite animation
-        float givenForce = LinearVelocity.Length();
-        if (isOnFloor)
-            givenForce = LinearVelocity.X;
+        //when on floor, only consider the X value, otherwise use the length of the Velocity to determine sprite animation
+        float givenForce = Velocity.Length();
+        if (IsOnFloor())
+            givenForce = Velocity.X;
 
         switch (givenForce)
         {
@@ -529,32 +529,6 @@ public partial class Player : RigidBody2D
         foreach (var _ in coroutine)
         {
             await mainLoopTree.ToSignal(mainLoopTree, SceneTree.SignalName.ProcessFrame);
-        }
-    }
-
-    public void _OnBodyShapeEntered(Rid body_rid, Node body, int bodyShapeIndex, int localShapeIndex)
-    {
-        if (body is StaticBody2D)
-        {
-            StaticBody2D staticBody = (StaticBody2D)body;
-            //GD.Print("Entered Shape " + staticBody.Name + " with Position  " + staticBody.Position);
-
-            if (staticBody.Position.Y > Position.Y)
-                isOnFloor = true;
-        }
-    }
-
-    public void _OnBodyShapeExited(Rid body_rid, Node body, int bodyShapeIndex, int localShapeIndex)
-    {
-        if (body is StaticBody2D)
-        {
-            StaticBody2D staticBody = (StaticBody2D)body;
-            //GD.Print("Exited Shape " + staticBody.Name + " with Position  " + staticBody.Position);
-
-            if (staticBody.Position.Y > Position.Y)
-                isOnFloor = false;
-            
-            //GD.Print(isOnFloor);
         }
     }
 }

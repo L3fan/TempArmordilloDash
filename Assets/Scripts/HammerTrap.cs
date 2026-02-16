@@ -44,7 +44,7 @@ public partial class HammerTrap : Obstacle
 	public override void Setup(ObstacleSpot spot)
 	{
 		base.Setup(spot);
-		hammer.Position = spot.ceilingSpot.Position;
+		hammer.Position = spot.ceilingSpot.Position + new Vector2(0, 12);
 		hammer.Rotation = spot.ceilingSpot.Rotation;
 		startRotation = hammer.RotationDegrees;
 		endRotation = hammer.RotationDegrees + 180;

@@ -17,6 +17,7 @@ script = ExtResource("2_6fer2")
 hammer = NodePath("Hammer")
 collisionBody = NodePath("Hammer/StaticBody2D")
 collisionShape = NodePath("Hammer/StaticBody2D/CollisionShape2D")
+offsetPosition = Vector2(0, 10)
 
 [node name="Hammer" type="TileMapLayer" parent="."]
 z_index = 1

@@ -14,7 +14,7 @@ public partial class DebugScreen : Node
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override void _Process(double delta)
 	{
-		velocityDisplay.Text = "Velocity: \nX: " + player.Velocity.X + "\nY: " + player.Velocity.Y;
+		velocityDisplay.Text = "Velocity: \nX: " + player.LinearVelocity.X + "\nY: " + player.LinearVelocity.Y;
 		parameterDisplay.Text = "Dash Cooldown: " + player.GetDashCooldown();
 	}
 }
