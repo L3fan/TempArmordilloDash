@@ -1,9 +1,15 @@
-[gd_scene load_steps=7 format=4 uid="uid://7gqmvc36hr2g"]
+[gd_scene load_steps=9 format=4 uid="uid://7gqmvc36hr2g"]
 
 [ext_resource type="TileSet" uid="uid://dcou5kgogcpka" path="res://Assets/Scenes/CaveTiles.tres" id="1_6fer2"]
 [ext_resource type="Script" uid="uid://c4nfbmei1shd" path="res://Assets/Scripts/HammerTrap.cs" id="2_6fer2"]
+[ext_resource type="Shader" uid="uid://dmt6wsb40s7c6" path="res://Assets/Shaders/OutlineShader.tres" id="2_7ce1b"]
 [ext_resource type="Script" uid="uid://cmyxlnxfcrfjh" path="res://Assets/Scripts/Tripwire.cs" id="3_o5gcf"]
 [ext_resource type="PhysicsMaterial" uid="uid://7bqaj4crhleg" path="res://Assets/Scenes/ObstaclePhysicsMat.tres" id="4_g20ir"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_68jm6"]
+shader = ExtResource("2_7ce1b")
+shader_parameter/OutlineColor = Color(0, 0, 0, 1)
+shader_parameter/Width = 0.0
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ie1we"]
 size = Vector2(144, 288)
@@ -12,7 +18,7 @@ size = Vector2(144, 288)
 size = Vector2(13, 217)
 
 [node name="HammerTrap" type="Node2D" node_paths=PackedStringArray("hammer", "collisionBody", "collisionShape")]
-z_index = -8
+z_index = -51
 script = ExtResource("2_6fer2")
 hammer = NodePath("Hammer")
 collisionBody = NodePath("Hammer/StaticBody2D")
@@ -22,6 +28,7 @@ offsetPosition = Vector2(0, 10)
 [node name="Hammer" type="TileMapLayer" parent="."]
 z_index = 1
 texture_filter = 1
+material = SubResource("ShaderMaterial_68jm6")
 scale = Vector2(2, 2)
 tile_map_data = PackedByteArray("AAAgAPj/AAAzAAYAAAAgAPv/AAAvAAYAAAAgAP7/AAAzAAYAAAAgAAEAAAAvAAYAAAAgAAQAAAAvAAYAAAAgAAcAAAAzAAYAAAAjAPj/AAAvAAYAAAAjAPv/AAAvAAYAAAAjAP7/AAAzAAYAAAAjAAEAAAAvAAYAAAAjAAQAAAAvAAYAAAAjAAcAAAAzAAYAAAAmAPj/AAAvAAYAAAAmAPv/AAAvAAYAAAAmAP7/AAAvAAYAAAAmAAEAAAAzAAYAAAAmAAQAAAAzAAYAAAAmAAcAAAAvAAYAAAA=")
 tile_set = ExtResource("1_6fer2")

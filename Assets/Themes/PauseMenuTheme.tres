@@ -9,5 +9,5 @@ corner_radius_bottom_left = 10
 
 [resource]
 Button/constants/outline_size = 7
-Button/font_sizes/font_size = 32
+Button/font_sizes/font_size = 128
 Button/styles/normal = SubResource("StyleBoxFlat_lpsel")

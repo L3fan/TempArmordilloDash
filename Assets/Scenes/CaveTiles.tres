@@ -1,10 +1,10 @@
 [gd_resource type="TileSet" load_steps=4 format=3 uid="uid://dcou5kgogcpka"]
 
-[ext_resource type="Texture2D" uid="uid://byktoc7yj6f1g" path="res://Assets/Textures/mainlev_build.png" id="1_bprxb"]
+[ext_resource type="Texture2D" uid="uid://byktoc7yj6f1g" path="res://Assets/Textures/Environment/mainlev_build.png" id="1_aibkv"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_dpvwn"]
 resource_name = "Big Tiles"
-texture = ExtResource("1_bprxb")
+texture = ExtResource("1_aibkv")
 6:1/0 = 0
 20:1/size_in_atlas = Vector2i(2, 2)
 20:1/0 = 0
@@ -580,7 +580,7 @@ texture = ExtResource("1_bprxb")
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_4uk7y"]
 resource_name = "Small Tiles"
-texture = ExtResource("1_bprxb")
+texture = ExtResource("1_aibkv")
 6:1/0 = 0
 20:1/0 = 0
 21:1/0 = 0

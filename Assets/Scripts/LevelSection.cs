@@ -10,9 +10,12 @@ public partial class LevelSection : Node2D
 
 	[Export] public ObstacleSpot[] obstacleSpots;
 	[Export] public SectionRarity rarity = SectionRarity.COMMON;
+
+	private float yDifference = 0;
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
+		//yDifference = startPointNode.GlobalPosition.Y - endPointNode.GlobalPosition.Y;
 		if (obstacleSpots != null)
 		{
 			Random random = new Random();
@@ -54,6 +57,12 @@ public partial class LevelSection : Node2D
 			return;
 		
 		GameManager.Instance.GameOver();
+	}
+
+	public float GetYDifference()
+	{
+		yDifference = startPointNode.GlobalPosition.Y - endPointNode.GlobalPosition.Y;
+		return yDifference;
 	}
 }
 

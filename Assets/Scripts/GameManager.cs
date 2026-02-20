@@ -40,12 +40,12 @@ public partial class GameManager : Node
 		Level level = (Level)GetTree().GetCurrentScene();
 		Node2D resultScreen = level.levelUI.camera.resultScreen;
 		resultScreen.Visible = true;
-		Label timeLabel = resultScreen.GetChild<Polygon2D>(0).GetChild<Label>(1);
+		Label timeLabel = resultScreen.GetChild(0).GetChild<Label>(1);
 		int finishTime = (int)Time.GetTicksMsec();
 		totalTime = finishTime - level.GetStartTime();
 		timeLabel.Text = IntToTime(totalTime);
 		
-		GD.Print(totalTime);
+		//GD.Print(totalTime);
 	}
 
 	public string IntToTime(int totalTime)

@@ -1,10 +1,11 @@
-[gd_scene load_steps=17 format=3 uid="uid://mdjyx11efd10"]
+[gd_scene load_steps=19 format=3 uid="uid://mdjyx11efd10"]
 
 [ext_resource type="Script" uid="uid://cfoxyrakflqib" path="res://Assets/Scripts/Player.cs" id="1_e5q2x"]
 [ext_resource type="PhysicsMaterial" uid="uid://cexo27xrthg6p" path="res://Assets/PlayerPhysicsMat.tres" id="1_mifcl"]
 [ext_resource type="Script" uid="uid://cbc6r3x84ejtj" path="res://addons/radial_progress/RadialProgress.gd" id="2_mifcl"]
 [ext_resource type="Texture2D" uid="uid://d0jifiae7afp7" path="res://Assets/Textures/Dylan/armadillo_roll_sprite_sheet.png" id="3_2thea"]
 [ext_resource type="Texture2D" uid="uid://brld20wd22m6q" path="res://Assets/Textures/Dylan/armadillo_sprite_sheet_pixel.png" id="4_jqe1p"]
+[ext_resource type="Shader" uid="uid://dmt6wsb40s7c6" path="res://Assets/Shaders/OutlineShader.tres" id="5_2thea"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_wtcfe"]
 radius = 64.0
@@ -130,6 +131,11 @@ _data = {
 &"Roll": SubResource("Animation_0e48y")
 }
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_jqe1p"]
+shader = ExtResource("5_2thea")
+shader_parameter/OutlineColor = Color(0, 0, 0, 1)
+shader_parameter/Width = 1.0
+
 [sub_resource type="Animation" id="Animation_6t5aa"]
 resource_name = "Idle"
 step = 4.0
@@ -252,9 +258,12 @@ _data = {
 &"Roll2": SubResource("Animation_x3wgy")
 }
 
-[node name="RigidBody2D" type="RigidBody2D" node_paths=PackedStringArray("radialProgress") groups=["Player"]]
+[node name="Player" type="RigidBody2D" node_paths=PackedStringArray("radialProgress") groups=["Player"]]
 physics_material_override = ExtResource("1_mifcl")
 lock_rotation = true
+continuous_cd = 2
+contact_monitor = true
+max_contacts_reported = 100
 script = ExtResource("1_e5q2x")
 radialProgress = NodePath("RadialProgress")
 
@@ -291,6 +300,7 @@ libraries = {
 
 [node name="SpritePixel" type="Sprite2D" parent="."]
 texture_filter = 1
+material = SubResource("ShaderMaterial_jqe1p")
 scale = Vector2(2, 2)
 texture = ExtResource("4_jqe1p")
 offset = Vector2(1, 1)
@@ -301,6 +311,3 @@ vframes = 4
 libraries = {
 &"": SubResource("AnimationLibrary_x3wgy")
 }
-
-[connection signal="body_shape_entered" from="." to="." method="_OnBodyShapeEntered"]
-[connection signal="body_shape_exited" from="." to="." method="_OnBodyShapeExited"]

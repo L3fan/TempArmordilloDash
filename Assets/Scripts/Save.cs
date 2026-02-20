@@ -105,9 +105,8 @@ public partial class Save : Node
             if (newKey >= entryToReplace)
                 newKey++;
             
-            if(newDictionary.ContainsKey(newKey))
-                newDictionary.Remove(newKey);
-            newDictionary.Add(newKey, entry);
+            if(newKey <= 10)
+                newDictionary.Add(newKey, entry);
         }
 
         newDictionary.Add(newEntry.Key, newEntry.Value);

@@ -4,115 +4,158 @@
 [ext_resource type="Texture2D" uid="uid://emt6necqoxu4" path="res://Assets/Textures/origbig.png" id="2_23ht4"]
 [ext_resource type="Texture2D" uid="uid://cd3675fncumvm" path="res://Assets/Textures/Title.png" id="3_t8wwc"]
 [ext_resource type="Theme" uid="uid://b1u83xngulxbq" path="res://Assets/Themes/PauseMenuTheme.tres" id="4_5powm"]
-[ext_resource type="Script" uid="uid://gdsdtd32sye5" path="res://addons/RoundedPolygon2D/RoundedPolygon2D.gd" id="5_4jnjk"]
+[ext_resource type="PackedScene" uid="uid://kgexjxgug512" path="res://Assets/Scenes/FPSDisplay.tscn" id="5_b37ua"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_x260n"]
 bg_color = Color(0.27752772, 0.27752775, 0.27752757, 1)
 
-[node name="MainMenuScene" type="Node2D" node_paths=PackedStringArray("doubleCheck")]
+[node name="MainMenuScene" type="Control" node_paths=PackedStringArray("doubleCheck")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 script = ExtResource("1_b37ua")
-doubleCheck = NodePath("DoubleCheckWindow")
+doubleCheck = NodePath("TextureRect/DoubleCheckWindow")
 
-[node name="Origbig" type="Sprite2D" parent="."]
+[node name="TextureRect" type="TextureRect" parent="."]
 z_index = -100
-position = Vector2(960, 540)
-scale = Vector2(3.333333, 3.3333333)
-texture = ExtResource("2_23ht4")
-
-[node name="Title" type="Sprite2D" parent="."]
 texture_filter = 1
-position = Vector2(960, 290.6667)
-scale = Vector2(2.6666663, 2.6666665)
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -960.0
+offset_top = -540.0
+offset_right = 960.0
+offset_bottom = 540.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_23ht4")
+expand_mode = 2
+
+[node name="TextureRect2" type="TextureRect" parent="TextureRect"]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.32700002
+anchor_top = 0.11400001
+anchor_right = 0.675
+anchor_bottom = 0.423
+offset_left = 0.15997314
+offset_top = -0.120010376
+offset_bottom = 0.16000366
 texture = ExtResource("3_t8wwc")
 
-[node name="ResetButton" type="Button" parent="."]
+[node name="Panel" type="Panel" parent="TextureRect"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.41000003
+anchor_top = 0.45000002
+anchor_right = 0.58400005
+anchor_bottom = 0.73700005
+offset_left = 0.79992676
+offset_top = -3.0517578e-05
+offset_right = -0.28015137
+offset_bottom = 0.039978027
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="StartButton" type="Button" parent="TextureRect/Panel"]
 texture_repeat = 1
-offset_left = 1655.0
-offset_top = 972.0
-offset_right = 2140.5
-offset_bottom = 1082.0
-scale = Vector2(0.4, 0.4)
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.060000002
+anchor_top = 0.14500001
+anchor_right = 0.95000005
+anchor_bottom = 0.358
+offset_left = 0.01999855
+offset_top = 0.049995422
+offset_right = 98.649994
+offset_bottom = 22.019997
+scale = Vector2(0.75, 0.75)
 theme = ExtResource("4_5powm")
-theme_override_font_sizes/font_size = 48
-text = "Reset Leaderboard"
-
-[node name="RoundedPolygon2D" type="Polygon2D" parent="."]
-position = Vector2(960, 648)
-scale = Vector2(1.6666664, 1.6666665)
-color = Color(0.28235295, 0.28235295, 0.28235295, 0.29803923)
-polygon = PackedVector2Array(-100, -100, -100, 100, 100, 100, 100, -100)
-polygons = [null]
-script = ExtResource("5_4jnjk")
-corner_radius = 3
-metadata/_custom_type_script = "uid://gdsdtd32sye5"
-
-[node name="Control" type="Control" parent="RoundedPolygon2D"]
-layout_mode = 3
-anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
-
-[node name="StartButton" type="Button" parent="RoundedPolygon2D/Control"]
-texture_repeat = 1
-layout_mode = 0
-offset_left = -78.99997
-offset_top = -77.0
-offset_right = 316.0
-offset_bottom = 11.0
-scale = Vector2(0.4, 0.4)
-theme = ExtResource("4_5powm")
+theme_override_constants/outline_size = 12
 theme_override_font_sizes/font_size = 64
-text = "Start"
+text = "START"
 
-[node name="EndGameButton" type="Button" parent="RoundedPolygon2D/Control"]
+[node name="EndGameButton" type="Button" parent="TextureRect/Panel"]
 texture_repeat = 1
-layout_mode = 0
-offset_left = -78.6
-offset_top = 31.8
-offset_right = 316.4
-offset_bottom = 119.8
-scale = Vector2(0.4, 0.4)
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.060000002
+anchor_top = 0.63900006
+anchor_right = 0.95000005
+anchor_bottom = 0.85200006
+offset_left = 0.01999855
+offset_top = -0.0900116
+offset_right = 98.649994
+offset_bottom = 21.879974
+scale = Vector2(0.75, 0.75)
 theme = ExtResource("4_5powm")
+theme_override_constants/outline_size = 12
 theme_override_font_sizes/font_size = 64
-text = "End Game"
+text = "END"
 
-[node name="DoubleCheckWindow" type="Panel" parent="."]
+[node name="DoubleCheckWindow" type="Panel" parent="TextureRect"]
 visible = false
-offset_left = 692.0
-offset_top = 475.0
-offset_right = 1229.0
-offset_bottom = 811.0
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.354
+anchor_top = 0.44400004
+anchor_right = 0.634
+anchor_bottom = 0.75500005
+offset_left = 0.32000732
+offset_top = -0.52005005
+offset_right = -0.2800293
+offset_bottom = -0.40008545
 theme_override_styles/panel = SubResource("StyleBoxFlat_x260n")
 
-[node name="StartButton" type="Button" parent="DoubleCheckWindow"]
+[node name="StartButton" type="Button" parent="TextureRect/DoubleCheckWindow"]
+texture_filter = 2
 texture_repeat = 1
-layout_mode = 0
-offset_left = 19.999985
-offset_top = 225.0
-offset_right = 610.0
-offset_bottom = 447.49988
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.037
+anchor_top = 0.67
+anchor_right = 0.47700003
+anchor_bottom = 0.93500006
+offset_left = 0.13098526
+offset_top = -0.120010376
+offset_right = 353.85098
+offset_bottom = 133.33984
 scale = Vector2(0.4, 0.4)
 theme = ExtResource("4_5powm")
-theme_override_font_sizes/font_size = 128
 text = "Confirm"
 
-[node name="EndGameButton" type="Button" parent="DoubleCheckWindow"]
+[node name="EndGameButton" type="Button" parent="TextureRect/DoubleCheckWindow"]
+texture_filter = 2
 texture_repeat = 1
-layout_mode = 0
-offset_left = 279.0
-offset_top = 225.00003
-offset_right = 869.0
-offset_bottom = 447.50003
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.52000004
+anchor_top = 0.67
+anchor_right = 0.95900005
+anchor_bottom = 0.93500006
+offset_left = -0.24002075
+offset_top = -0.11997986
+offset_right = 354.01697
+offset_bottom = 133.34
 scale = Vector2(0.4, 0.4)
 theme = ExtResource("4_5powm")
 theme_override_font_sizes/font_size = 128
 text = "Cancel
 "
 
-[node name="Label" type="Label" parent="DoubleCheckWindow"]
-layout_mode = 0
-offset_right = 537.0
-offset_bottom = 212.0
+[node name="Label" type="Label" parent="TextureRect/DoubleCheckWindow"]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 0.601
+offset_bottom = 5.0639954
 theme = ExtResource("4_5powm")
 theme_type_variation = &"HeaderLarge"
 theme_override_constants/outline_size = 9
@@ -122,8 +165,32 @@ horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 2
 
-[connection signal="pressed" from="ResetButton" to="." method="_OnResetButtonPressed"]
-[connection signal="pressed" from="RoundedPolygon2D/Control/StartButton" to="." method="_OnStartButtonPressed"]
-[connection signal="pressed" from="RoundedPolygon2D/Control/EndGameButton" to="." method="_OnEndGameButtonPressed"]
-[connection signal="pressed" from="DoubleCheckWindow/StartButton" to="." method="_OnConfirmResetButtonPressed"]
-[connection signal="pressed" from="DoubleCheckWindow/EndGameButton" to="." method="_OnCancelResetButtonPressed"]
+[node name="ResetButton" type="Button" parent="TextureRect"]
+texture_repeat = 1
+layout_direction = 1
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.874
+anchor_top = 0.91800004
+anchor_right = 0.975
+anchor_bottom = 0.95800006
+offset_left = -0.080078125
+offset_top = -0.44006348
+offset_right = 291.5
+offset_bottom = 66.359985
+scale = Vector2(0.4, 0.4)
+size_flags_horizontal = 8
+size_flags_vertical = 8
+theme = ExtResource("4_5powm")
+theme_override_font_sizes/font_size = 48
+text = "Reset Leaderboard"
+
+[node name="FpsDisplay" parent="." instance=ExtResource("5_b37ua")]
+visible = false
+layout_mode = 0
+
+[connection signal="pressed" from="TextureRect/Panel/StartButton" to="." method="_OnStartButtonPressed"]
+[connection signal="pressed" from="TextureRect/Panel/EndGameButton" to="." method="_OnEndGameButtonPressed"]
+[connection signal="pressed" from="TextureRect/DoubleCheckWindow/StartButton" to="." method="_OnConfirmResetButtonPressed"]
+[connection signal="pressed" from="TextureRect/DoubleCheckWindow/EndGameButton" to="." method="_OnCancelResetButtonPressed"]
+[connection signal="pressed" from="TextureRect/ResetButton" to="." method="_OnResetButtonPressed"]

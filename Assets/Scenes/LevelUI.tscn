@@ -4,9 +4,9 @@
 [ext_resource type="Script" uid="uid://blaqne3byfy6l" path="res://Assets/Scripts/CameraMovement.cs" id="2_kd8io"]
 [ext_resource type="Script" uid="uid://bf2an2yo1wkfa" path="res://Assets/Scripts/DebugScreen.cs" id="3_lu0uf"]
 [ext_resource type="Script" uid="uid://b4s3r1nh62hwl" path="res://Assets/Scripts/ResultScreen.cs" id="4_qo436"]
-[ext_resource type="Script" uid="uid://gdsdtd32sye5" path="res://addons/RoundedPolygon2D/RoundedPolygon2D.gd" id="5_xni5y"]
 [ext_resource type="Theme" uid="uid://udhxxxsqgmll" path="res://Assets/Themes/ResultScreenTheme.tres" id="6_01rf3"]
 [ext_resource type="Theme" uid="uid://b1u83xngulxbq" path="res://Assets/Themes/PauseMenuTheme.tres" id="7_h2nac"]
+[ext_resource type="PackedScene" uid="uid://kgexjxgug512" path="res://Assets/Scenes/FPSDisplay.tscn" id="8_3wyff"]
 [ext_resource type="Script" uid="uid://cpq25uchy4ylf" path="res://Assets/Scripts/PauseMenu.cs" id="8_xbsc4"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4eh7o"]
@@ -35,11 +35,15 @@ resultScreen = NodePath("../CanvasLayer/ResultScreen")
 [node name="Debug Screen" type="Control" parent="CanvasLayer" node_paths=PackedStringArray("velocityDisplay", "parameterDisplay")]
 visible = false
 layout_mode = 3
-anchors_preset = 0
-offset_left = 960.0
-offset_top = 540.0
-offset_right = 1027.0
-offset_bottom = 607.0
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_right = 67.0
+offset_bottom = 67.0
+grow_horizontal = 2
+grow_vertical = 2
 script = ExtResource("3_lu0uf")
 velocityDisplay = NodePath("Velocity")
 parameterDisplay = NodePath("Parameters")
@@ -61,80 +65,85 @@ offset_bottom = -182.0
 
 [node name="Screens" type="Control" parent="CanvasLayer"]
 layout_mode = 3
-anchors_preset = 0
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
 offset_left = 960.0
 offset_top = 540.0
-offset_right = 1000.0
-offset_bottom = 580.0
+offset_right = -920.0
+offset_bottom = -500.0
+grow_horizontal = 2
+grow_vertical = 2
 
 [node name="SlowDownTint" type="ColorRect" parent="CanvasLayer/Screens"]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = -36.425
-anchor_top = -18.725
-anchor_right = 37.25
-anchor_bottom = 22.175
-offset_left = -960.0
-offset_top = -540.0
-offset_right = 960.0
-offset_bottom = 540.0
+anchor_left = -24.000002
+anchor_top = -13.500001
+anchor_right = 24.000002
+anchor_bottom = 13.500001
+offset_left = 6.1035156e-05
+offset_top = 6.1035156e-05
+offset_right = -6.1035156e-05
+offset_bottom = -6.1035156e-05
 color = Color(0, 0.5176471, 1, 0)
 metadata/_edit_use_anchors_ = true
 
 [node name="BlackScreen" type="ColorRect" parent="CanvasLayer/Screens"]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = -39.275
-anchor_top = -23.8
-anchor_right = 38.05
-anchor_bottom = 23.4
-offset_left = -960.0
-offset_top = -540.0
-offset_right = 960.0
-offset_bottom = 540.0
+anchor_left = -24.000002
+anchor_top = -13.500001
+anchor_right = 24.000002
+anchor_bottom = 13.500001
+offset_left = 6.1035156e-05
+offset_top = 6.1035156e-05
+offset_right = -6.1035156e-05
+offset_bottom = -6.1035156e-05
 color = Color(0, 0, 0, 0)
 metadata/_edit_use_anchors_ = true
 
-[node name="ResultScreen" type="Node2D" parent="CanvasLayer" node_paths=PackedStringArray("timeResult", "leaderboard", "timesLabel")]
+[node name="ResultScreen" type="Node2D" parent="CanvasLayer" node_paths=PackedStringArray("leaderboard", "timesLabel")]
 visible = false
 position = Vector2(960, 540)
 script = ExtResource("4_qo436")
-timeResult = NodePath("TimeResult")
 leaderboard = NodePath("Leaderboard")
 timesLabel = NodePath("Leaderboard/Time")
 
-[node name="TimeResult" type="Polygon2D" parent="CanvasLayer/ResultScreen"]
-color = Color(0.27058825, 0.27058825, 0.27058825, 0.3882353)
-polygon = PackedVector2Array(-240, -160, 240, -160, 240, 160, -240, 160)
-polygons = [null]
-script = ExtResource("5_xni5y")
-corner_radius = 11
-metadata/_custom_type_script = "uid://gdsdtd32sye5"
+[node name="Panel" type="Panel" parent="CanvasLayer/ResultScreen"]
+offset_left = -241.0
+offset_top = -161.0
+offset_right = 239.0
+offset_bottom = 160.0
 
-[node name="Label" type="Label" parent="CanvasLayer/ResultScreen/TimeResult"]
-offset_left = -62.0
-offset_top = -136.0
-offset_right = 65.0
-offset_bottom = -69.0
+[node name="Label" type="Label" parent="CanvasLayer/ResultScreen/Panel"]
+layout_mode = 0
+offset_left = 179.0
+offset_top = 25.0
+offset_right = 306.0
+offset_bottom = 92.0
 theme = ExtResource("6_01rf3")
 theme_type_variation = &"HeaderLarge"
 text = "Time:"
 
-[node name="Label2" type="Label" parent="CanvasLayer/ResultScreen/TimeResult"]
-offset_left = -232.0
-offset_top = -36.0
-offset_right = 234.0
-offset_bottom = 95.0
+[node name="Label2" type="Label" parent="CanvasLayer/ResultScreen/Panel"]
+layout_mode = 0
+offset_left = 9.0
+offset_top = 125.0
+offset_right = 475.0
+offset_bottom = 256.0
 theme = ExtResource("6_01rf3")
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="ContinueButton" type="Button" parent="CanvasLayer/ResultScreen/TimeResult"]
-offset_left = -145.0
-offset_top = 107.0
-offset_right = 146.0
-offset_bottom = 152.0
+[node name="ContinueButton" type="Button" parent="CanvasLayer/ResultScreen/Panel"]
+layout_mode = 0
+offset_left = 96.0
+offset_top = 268.0
+offset_right = 387.0
+offset_bottom = 313.0
 theme = ExtResource("7_h2nac")
+theme_override_font_sizes/font_size = 32
 theme_override_styles/normal = SubResource("StyleBoxFlat_4eh7o")
 text = "Continue"
 
@@ -158,14 +167,16 @@ horizontal_alignment = 1
 [node name="Time" type="RichTextLabel" parent="CanvasLayer/ResultScreen/Leaderboard"]
 layout_mode = 0
 offset_left = 100.0
-offset_top = 114.0
+offset_top = 113.0
 offset_right = 489.0
 offset_bottom = 642.0
 theme = ExtResource("6_01rf3")
+theme_override_constants/paragraph_separation = 3
 theme_override_constants/outline_size = 9
 theme_override_font_sizes/normal_font_size = 32
 bbcode_enabled = true
 text = "Time "
+scroll_active = false
 horizontal_alignment = 1
 
 [node name="Rank" type="Label" parent="CanvasLayer/ResultScreen/Leaderboard"]
@@ -196,16 +207,22 @@ offset_top = 653.0
 offset_right = 397.0
 offset_bottom = 698.0
 theme = ExtResource("7_h2nac")
+theme_override_font_sizes/font_size = 32
 theme_override_styles/normal = SubResource("StyleBoxFlat_4eh7o")
 text = "Finish"
 
 [node name="PauseMenu" type="ColorRect" parent="CanvasLayer"]
 visible = false
 clip_contents = true
-offset_left = 818.0
-offset_top = 401.0
-offset_right = 1106.0
-offset_bottom = 641.0
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.50100005
+anchor_bottom = 0.5
+offset_left = -142.0
+offset_top = -139.0
+offset_right = 144.0799
+offset_bottom = 101.0
 color = Color(0.19215687, 0.19215687, 0.19215687, 0.6509804)
 script = ExtResource("8_xbsc4")
 
@@ -216,18 +233,28 @@ offset_top = 38.0
 offset_right = 243.75
 offset_bottom = 101.0
 theme = ExtResource("7_h2nac")
+theme_override_font_sizes/font_size = 32
 text = "Resume"
 
 [node name="Exit Level Button" type="Button" parent="CanvasLayer/PauseMenu"]
-layout_mode = 0
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
 offset_left = 44.75
 offset_top = 143.0
-offset_right = 243.75
-offset_bottom = 206.0
+offset_right = -44.25
+offset_bottom = -34.0
+grow_horizontal = 2
+grow_vertical = 2
 theme = ExtResource("7_h2nac")
+theme_override_font_sizes/font_size = 32
 text = "Exit Level"
 
-[connection signal="pressed" from="CanvasLayer/ResultScreen/TimeResult/ContinueButton" to="CanvasLayer/ResultScreen" method="_OnContinueButtonPressed"]
+[node name="FpsDisplay" parent="CanvasLayer" instance=ExtResource("8_3wyff")]
+visible = false
+
+[connection signal="pressed" from="CanvasLayer/ResultScreen/Panel/ContinueButton" to="CanvasLayer/ResultScreen" method="_OnContinueButtonPressed"]
 [connection signal="pressed" from="CanvasLayer/ResultScreen/Leaderboard/FinishButton" to="CanvasLayer/ResultScreen" method="_OnFinishButtonPressed"]
 [connection signal="pressed" from="CanvasLayer/PauseMenu/Resume Button" to="CanvasLayer/PauseMenu" method="_OnResumeButtonPressed"]
 [connection signal="pressed" from="CanvasLayer/PauseMenu/Exit Level Button" to="CanvasLayer/PauseMenu" method="_OnExitLevelButtonPressed"]

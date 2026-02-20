@@ -4,7 +4,6 @@ using System.IO;
 
 public partial class ResultScreen : Node2D
 {
-	[Export] public Node2D timeResult;
 	[Export] public Control leaderboard;
 	[Export] public RichTextLabel timesLabel;
 	// Called when the node enters the scene tree for the first time.
@@ -20,7 +19,7 @@ public partial class ResultScreen : Node2D
 
 	public void _OnContinueButtonPressed()
 	{
-		timeResult.Visible = false;
+		GetChild<Control>(0).Visible = false;
 		leaderboard.Visible = true;
 		GD.Print(Save.Instance != null);
 		Save.Instance.LoadLeaderboard(timesLabel);

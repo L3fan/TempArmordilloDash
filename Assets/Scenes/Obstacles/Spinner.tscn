@@ -1,0 +1,68 @@
+[gd_scene load_steps=7 format=4 uid="uid://ciocwkh6ma0lp"]
+
+[ext_resource type="PhysicsMaterial" uid="uid://7bqaj4crhleg" path="res://Assets/Scenes/ObstaclePhysicsMat.tres" id="1_25mr2"]
+[ext_resource type="Script" uid="uid://dhta63jjmvire" path="res://Assets/Scripts/Spinner.cs" id="2_xwkv2"]
+[ext_resource type="TileSet" uid="uid://dcou5kgogcpka" path="res://Assets/Scenes/CaveTiles.tres" id="3_pto3c"]
+
+[sub_resource type="Animation" id="Animation_mtb7m"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+
+[sub_resource type="Animation" id="Animation_pto3c"]
+resource_name = "Spin"
+length = 1.5
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5, 0.75, 1.25, 1.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 0,
+"values": [0.0, -3.1415927, -3.1415927, -6.2831855, -6.2831855]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_xtyp0"]
+_data = {
+&"RESET": SubResource("Animation_mtb7m"),
+&"Spin": SubResource("Animation_pto3c")
+}
+
+[node name="Spinner" type="Node2D" node_paths=PackedStringArray("collisionBody", "collisionPolygon", "usedCollisionType")]
+script = ExtResource("2_xwkv2")
+collisionBody = NodePath("Spinner")
+collisionPolygon = NodePath("Spinner/CollisionPolygon2D")
+usedCollisionType = NodePath("Spinner/CollisionPolygon2D")
+
+[node name="Spinner" type="AnimatableBody2D" parent="."]
+z_index = -11
+physics_material_override = ExtResource("1_25mr2")
+
+[node name="TileMapLayer" type="TileMapLayer" parent="Spinner"]
+z_index = -10
+texture_filter = 1
+scale = Vector2(2, 2)
+tile_map_data = PackedByteArray("AAD/////AAA3AAEAAAD+/wAAAAAwAAEAAAD+////AAA3AAEAAAAAAP//AAAwAAEAAAD//wAAAAAzAAEAAAAAAAAAAAAwAAEAAAABAAAAAAA0AAEAAAADAAAAAAAzAAEAAAAEAAAAAAAxAAEAAAD8////AAA0AAEAAAAHAP//AAA3AAEAAAAIAP//AAAwAAEAAAAJAP//AAA2AAEAAAAIAAAAAAA2AAEAAAAJAAAAAAA2AAEAAAAKAP//AAAzAAEAAAD7/wAAAAAwAAEAAAD4////AAAxAAEAAAD4/wAAAAA4AAEAAAD3////AAAyAAEAAAD3/wAAAAA4AAEAAAD2/wAAAAA2AAEAAAD2////AAAyAAEAAAD1////AAAwAAEAAAAHAAAAAAAzAAEAAAAEAP//AAAxAAEAAAADAP//AAAxAAEAAAD0////AAAvAAEAAAD0/wAAAAAvAAEAAAALAP//AAA5AAEAAAALAAAAAAA5AAEAAAD1/wAAAAAzAAEAAAAKAAAAAAAxAAEAAAD8/wAAAAA0AAEAAAABAP//AAA0AAEAAAAFAP//AAA0AAEAAAAFAAAAAAA0AAEAAAD5/wAAAAA0AAEAAAD5////AAA0AAEAAAD7////AAAxAAEAAAA=")
+tile_set = ExtResource("3_pto3c")
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Spinner"]
+polygon = PackedVector2Array(364, 32.00003, -364, 31.999968, -388, 0, -364, -32.00003, 364, -31.999968, 388, 3.3920038e-05)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Spinner"]
+libraries = {
+&"": SubResource("AnimationLibrary_xtyp0")
+}

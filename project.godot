@@ -8,6 +8,10 @@
 
 config_version=5
 
+[addons]
+
+ss2d/version="3.3.1"
+
 [application]
 
 config/name="Armordillo_Dash"
@@ -27,14 +31,23 @@ Save="*res://Assets/Scripts/Save.cs"
 window/size/viewport_width=1920
 window/size/viewport_height=1080
 window/size/mode=2
+window/stretch/mode="canvas_items"
+window/stretch/aspect="expand"
 
 [dotnet]
 
 project/assembly_name="Armordillo_Dash"
 
+[editor]
+
+naming/default_signal_callback_name="_On{node_name}{signal_name}"
+naming/default_signal_callback_to_self_name="_On{signal_name}"
+naming/scene_name_casing=1
+naming/script_name_casing=1
+
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/RoundedPolygon2D/plugin.cfg", "res://addons/radial_progress/plugin.cfg")
+enabled=PackedStringArray("res://addons/RoundedPolygon2D/plugin.cfg", "res://addons/parallax2d_preview/plugin.cfg", "res://addons/radial_progress/plugin.cfg", "res://addons/rmsmartshape/plugin.cfg")
 
 [global_group]
 
@@ -80,11 +93,14 @@ Pause={
 
 [physics]
 
+common/physics_ticks_per_second=120
 common/max_physics_steps_per_frame=16
 2d/physics_engine="GodotPhysics2D"
 2d/solver/contact_max_allowed_penetration=0.1
+2d/solver/default_contact_bias=1.0
 
 [rendering]
 
+textures/canvas_textures/default_texture_filter=0
 renderer/rendering_method="gl_compatibility"
 renderer/rendering_method.mobile="gl_compatibility"
