@@ -9,74 +9,85 @@
 [node name="ParallaxBackground" type="Node2D"]
 
 [node name="Parallax2D" type="Parallax2D" parent="."]
-scroll_scale = Vector2(1.01, 1)
-repeat_size = Vector2(1920, 1080)
+scroll_scale = Vector2(0.75, 1)
+scroll_offset = Vector2(0, 50)
+repeat_size = Vector2(2400, 1350)
 repeat_times = 3
 limit_begin = Vector2(-10000000, 0)
 limit_end = Vector2(10000000, -100)
 
 [node name="1" type="Sprite2D" parent="Parallax2D"]
 texture_repeat = 2
+scale = Vector2(1.25, 1.25)
 texture = ExtResource("1_bf3bc")
 centered = false
 region_enabled = true
 region_rect = Rect2(0, 0, 3840, 1080)
 
 [node name="Parallax2D2" type="Parallax2D" parent="."]
-scroll_scale = Vector2(1.05, 1)
-repeat_size = Vector2(1920, 1080)
+scroll_scale = Vector2(0.8, 1)
+scroll_offset = Vector2(0, 50)
+repeat_size = Vector2(2400, 1350)
 repeat_times = 3
 
 [node name="1" type="Sprite2D" parent="Parallax2D2"]
 texture_repeat = 2
+scale = Vector2(1.25, 1.25)
 texture = ExtResource("2_lxpjc")
 centered = false
 region_enabled = true
 region_rect = Rect2(0, 0, 3840, 1080)
 
 [node name="Parallax2D3" type="Parallax2D" parent="."]
-scroll_scale = Vector2(1.1, 1)
-repeat_size = Vector2(1920, 1080)
+scroll_scale = Vector2(0.85, 1)
+scroll_offset = Vector2(0, 50)
+repeat_size = Vector2(2400, 1350)
 repeat_times = 3
 
 [node name="1" type="Sprite2D" parent="Parallax2D3"]
 texture_repeat = 2
+scale = Vector2(1.25, 1.25)
 texture = ExtResource("1_bf3bc")
 centered = false
 region_enabled = true
 region_rect = Rect2(0, 0, 3840, 1080)
 
 [node name="Parallax2D4" type="Parallax2D" parent="."]
-scroll_scale = Vector2(1.15, 1)
-repeat_size = Vector2(1920, 1080)
+scroll_scale = Vector2(0.9, 1)
+scroll_offset = Vector2(0, 50)
+repeat_size = Vector2(2400, 1350)
 repeat_times = 3
 
 [node name="1" type="Sprite2D" parent="Parallax2D4"]
 texture_repeat = 2
+scale = Vector2(1.25, 1.25)
 texture = ExtResource("4_vec46")
 centered = false
 region_enabled = true
 region_rect = Rect2(0, 0, 3840, 1080)
 
 [node name="Parallax2D5" type="Parallax2D" parent="."]
-scroll_scale = Vector2(1.2, 1)
-repeat_size = Vector2(1920, 1080)
+scroll_scale = Vector2(0.95, 1)
+scroll_offset = Vector2(0, 50)
+repeat_size = Vector2(2400, 1350)
 repeat_times = 3
 
 [node name="1" type="Sprite2D" parent="Parallax2D5"]
 texture_repeat = 2
+scale = Vector2(1.25, 1.25)
 texture = ExtResource("5_gd81d")
 centered = false
 region_enabled = true
 region_rect = Rect2(0, 0, 3840, 1080)
 
 [node name="Parallax2D6" type="Parallax2D" parent="."]
-scroll_scale = Vector2(1.25, 1)
-repeat_size = Vector2(1920, 1080)
+scroll_offset = Vector2(0, 50)
+repeat_size = Vector2(2400, 1350)
 repeat_times = 3
 
 [node name="1" type="Sprite2D" parent="Parallax2D6"]
 texture_repeat = 2
+scale = Vector2(1.25, 1.25)
 texture = ExtResource("6_r7ke7")
 centered = false
 region_enabled = true

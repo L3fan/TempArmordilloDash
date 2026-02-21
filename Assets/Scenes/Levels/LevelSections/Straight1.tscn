@@ -16,26 +16,26 @@
 
 [sub_resource type="Resource" id="Resource_fdshb"]
 script = ExtResource("4_fno3g")
-position = Vector2(-1600, 0)
+position = Vector2(-2000, 0)
 texture_idx = -7
 
 [sub_resource type="Resource" id="Resource_0d110"]
 script = ExtResource("4_fno3g")
-position = Vector2(1600, 0)
+position = Vector2(2000, 0)
 texture_idx = -8
 
 [sub_resource type="Resource" id="Resource_3nxcm"]
 script = ExtResource("4_fno3g")
-position = Vector2(1600, 1568)
+position = Vector2(2000, 1568)
 
 [sub_resource type="Resource" id="Resource_l2gda"]
 script = ExtResource("4_fno3g")
-position = Vector2(-1600, 1568)
+position = Vector2(-2000, 1568)
 texture_idx = -2
 
 [sub_resource type="Resource" id="Resource_36gal"]
 script = ExtResource("4_fno3g")
-position = Vector2(-1600, 0)
+position = Vector2(-2000, 0)
 texture_idx = -7
 
 [sub_resource type="Resource" id="Resource_ep5pn"]
@@ -55,15 +55,15 @@ _next_key = 5
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_mnxyp"]
 _surfaces = [{
-"aabb": AABB(-1600, 0, 0, 3200, 1568, 1e-05),
-"attribute_data": PackedByteArray("/////wAASEIAAAAAAABIQgAAAAD/////AABIQgAAREIAAEhCAABEQv////8AAEjCAABEQgAASMIAAERC/////wAASMIAAAAAAABIwgAAAAA="),
+"aabb": AABB(-2000, 0, 0, 4000, 1568, 1e-05),
+"attribute_data": PackedByteArray("/////wAAekIAAAAAAAB6QgAAAAD/////AAB6QgAAREIAAHpCAABEQv////8AAHrCAABEQgAAesIAAERC/////wAAesIAAAAAAAB6wgAAAAA="),
 "format": 34359742527,
 "index_count": 9,
 "index_data": PackedByteArray("AAABAAIAAgADAAMAAwAAAAIA"),
 "primitive": 3,
 "uv_scale": Vector4(0, 0, 0, 0),
 "vertex_count": 4,
-"vertex_data": PackedByteArray("AADIRAAAAAAAAAAAAADIRAAAxEQAAAAAAADIxAAAxEQAAAAAAADIxAAAAAAAAAAA/////////7//////////v/////////+//////////78=")
+"vertex_data": PackedByteArray("AAD6RAAAAAAAAAAAAAD6RAAAxEQAAAAAAAD6xAAAxEQAAAAAAAD6xAAAAAAAAAAA/////////7//////////v/////////+//////////78=")
 }]
 
 [sub_resource type="Resource" id="Resource_vbfpi"]
@@ -74,15 +74,15 @@ z_index = -10
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_wabyh"]
 _surfaces = [{
-"aabb": AABB(-1600, -31.92, 0, 3200, 96, 1e-05),
-"attribute_data": PackedByteArray("/////wAAAAAAAAAAAAAAAAAAAAD/////AAAAAAAAgD8AAAAAAACAP/////8AAABBAACAPwAAAEEAAIA//////wAAAEEAAAAAAAAAQQAAAAA="),
+"aabb": AABB(-2000, -31.92, 0, 4000, 96, 1e-05),
+"attribute_data": PackedByteArray("/////wAAAAAAAAAAAAAAAAAAAAD/////AAAAAAAAgD8AAAAAAACAP/////8AACBBAACAPwAAIEEAAIA//////wAAIEEAAAAAAAAgQQAAAAA="),
 "format": 34359742527,
 "index_count": 6,
 "index_data": PackedByteArray("AAABAAIAAAACAAMA"),
 "primitive": 3,
 "uv_scale": Vector4(0, 0, 0, 0),
 "vertex_count": 4,
-"vertex_data": PackedByteArray("AADIxClc/8EAAAAAAADIxPYogEIAAAAAAADIRPYogEIAAAAAAADIRClc/8EAAAAA/3//f////z//f/9/////P/9//3////8//3//f////z8=")
+"vertex_data": PackedByteArray("AAD6xClc/8EAAAAAAAD6xPYogEIAAAAAAAD6RPYogEIAAAAAAAD6RClc/8EAAAAA/3//f////z//f/9/////P/9//3////8//3//f////z8=")
 }]
 
 [sub_resource type="Resource" id="Resource_3luva"]
@@ -116,25 +116,25 @@ fill_textures = Array[Texture2D]([ExtResource("7_rhdp0")])
 
 [sub_resource type="Resource" id="Resource_xb3jn"]
 script = ExtResource("4_fno3g")
-position = Vector2(-1600, -1320)
+position = Vector2(-2000, -1320)
 texture_idx = 26
 
 [sub_resource type="Resource" id="Resource_kgbi1"]
 script = ExtResource("4_fno3g")
-position = Vector2(1600, -1320)
+position = Vector2(2000, -1320)
 texture_idx = -2
 
 [sub_resource type="Resource" id="Resource_wio1l"]
 script = ExtResource("4_fno3g")
-position = Vector2(1600, -3008)
+position = Vector2(2000, -3008)
 
 [sub_resource type="Resource" id="Resource_3lawf"]
 script = ExtResource("4_fno3g")
-position = Vector2(-1600, -3008)
+position = Vector2(-2000, -3008)
 
 [sub_resource type="Resource" id="Resource_y0ain"]
 script = ExtResource("4_fno3g")
-position = Vector2(-1600, -1320)
+position = Vector2(-2000, -1320)
 texture_idx = 26
 
 [sub_resource type="Resource" id="Resource_ggdvx"]
@@ -154,15 +154,15 @@ _next_key = 5
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_ter6i"]
 _surfaces = [{
-"aabb": AABB(-1600, -3008, 0, 3200, 1688, 1e-05),
-"attribute_data": PackedByteArray("/////wAASMIAALzCAABIwgAAvML/////AABIQgAAvMIAAEhCAAC8wv////8AAEhCAAAlwgAASEIAACXC/////wAASMIAACXCAABIwgAAJcI="),
+"aabb": AABB(-2000, -3008, 0, 4000, 1688, 1e-05),
+"attribute_data": PackedByteArray("/////wAAesIAALzCAAB6wgAAvML/////AAB6QgAAvMIAAHpCAAC8wv////8AAHpCAAAlwgAAekIAACXC/////wAAesIAACXCAAB6wgAAJcI="),
 "format": 34359742527,
 "index_count": 9,
 "index_data": PackedByteArray("AAABAAIAAgADAAMAAwAAAAIA"),
 "primitive": 3,
 "uv_scale": Vector4(0, 0, 0, 0),
 "vertex_count": 4,
-"vertex_data": PackedByteArray("AADIxAAAPMUAAAAAAADIRAAAPMUAAAAAAADIRAAApcQAAAAAAADIxAAApcQAAAAA/////////7//////////v/////////+//////////78=")
+"vertex_data": PackedByteArray("AAD6xAAAPMUAAAAAAAD6RAAAPMUAAAAAAAD6RAAApcQAAAAAAAD6xAAApcQAAAAA/////////7//////////v/////////+//////////78=")
 }]
 
 [sub_resource type="Resource" id="Resource_c4t1a"]
@@ -173,15 +173,15 @@ z_index = -10
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_y65o5"]
 _surfaces = [{
-"aabb": AABB(-1600, -1374, 0, 3200, 96, 1e-05),
-"attribute_data": PackedByteArray("/////wAAAAAAAAAAAAAAAAAAAAD/////AAAAAAAAgD8AAAAAAACAP/////8AAABBAACAPwAAAEEAAIA//////wAAAEEAAAAAAAAAQQAAAAA="),
+"aabb": AABB(-2000, -1374, 0, 4000, 96, 1e-05),
+"attribute_data": PackedByteArray("/////wAAAAAAAAAAAAAAAAAAAAD/////AAAAAAAAgD8AAAAAAACAP/////8AACBBAACAPwAAIEEAAIA//////wAAIEEAAAAAAAAgQQAAAAA="),
 "format": 34359742527,
 "index_count": 6,
 "index_data": PackedByteArray("AAABAAIAAAACAAMA"),
 "primitive": 3,
 "uv_scale": Vector4(0, 0, 0, 0),
 "vertex_count": 4,
-"vertex_data": PackedByteArray("AADIRADAn8QAAAAAAADIRADAq8QAAAAAAADIxADAq8QAAAAAAADIxADAn8QAAAAA/3//fwAA/z//f/9/AAD/P/9//38AAP8//3//fwAA/z8=")
+"vertex_data": PackedByteArray("AAD6RADAn8QAAAAAAAD6RADAq8QAAAAAAAD6xADAq8QAAAAAAAD6xADAn8QAAAAA/3//fwAA/z//f/9/AAD/P/9//38AAP8//3//fwAA/z8=")
 }]
 
 [sub_resource type="Resource" id="Resource_4yhgf"]
@@ -223,19 +223,19 @@ obstacleSpots = [NodePath("Obstacle1"), NodePath("Obstacle2")]
 modulate = Color(1, 1, 1, 0.34901962)
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="StaticBody2D"]
-polygon = PackedVector2Array(-1600, 0, 1600, 0, 1600, 1568, -1600, 1568)
+polygon = PackedVector2Array(-2000, 0, 2000, 0, 2000, 1568, -2000, 1568)
 
 [node name="CollisionPolygon2D2" type="CollisionPolygon2D" parent="StaticBody2D"]
-polygon = PackedVector2Array(-1600, -1320, -1600, -3008, 1600, -3008, 1600, -1320)
+polygon = PackedVector2Array(-2000, -1320, -2000, -3008, 2000, -3008, 2000, -1320)
 
 [node name="StartPoint" type="Node2D" parent="."]
-position = Vector2(-1600, 0)
+position = Vector2(-2000, 0)
 
 [node name="EndPoint" type="Node2D" parent="."]
-position = Vector2(1600, 0)
+position = Vector2(2000, 0)
 
 [node name="Obstacle1" type="Node2D" parent="." node_paths=PackedStringArray("ceilingSpot")]
-position = Vector2(-534, 0)
+position = Vector2(-750, 0)
 script = ExtResource("3_rft5a")
 ceilingSpot = NodePath("CeilingSpot")
 
@@ -243,7 +243,7 @@ ceilingSpot = NodePath("CeilingSpot")
 position = Vector2(493, -1320)
 
 [node name="Obstacle2" type="Node2D" parent="." node_paths=PackedStringArray("ceilingSpot")]
-position = Vector2(534, 0)
+position = Vector2(750, 0)
 script = ExtResource("3_rft5a")
 ceilingSpot = NodePath("CeilingSpot")
 

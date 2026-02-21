@@ -499,6 +499,11 @@ script = ExtResource("5_aair5")
 position = Vector2(1104, -288)
 point_in = Vector2(72, 0)
 
+[sub_resource type="Resource" id="Resource_bmfej"]
+script = ExtResource("5_aair5")
+position = Vector2(1216, -368)
+point_out = Vector2(0, 64)
+
 [sub_resource type="Resource" id="Resource_d5ujc"]
 script = ExtResource("5_aair5")
 position = Vector2(1216, -416)
@@ -551,11 +556,6 @@ position = Vector2(168, -488)
 point_in = Vector2(56, 56)
 point_out = Vector2(-56, -56)
 texture_idx = -2
-
-[sub_resource type="Resource" id="Resource_bmfej"]
-script = ExtResource("5_aair5")
-position = Vector2(1216, -368)
-point_out = Vector2(0, 64)
 
 [sub_resource type="Resource" id="Resource_51fns"]
 script = ExtResource("6_onlqt")
@@ -888,6 +888,7 @@ collision_polygon_node_path = NodePath("../StaticBody2D/CollisionPolygon2D")
 metadata/_custom_type_script = "uid://dhdc4b8yddyej"
 
 [node name="StaticBody2D" type="StaticBody2D" parent="."]
+visible = false
 modulate = Color(1, 1, 1, 0.34901962)
 
 [node name="CollisionPolygon2D2" type="CollisionPolygon2D" parent="StaticBody2D"]

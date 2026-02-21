@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 public partial class LevelManager : Node2D
 {
-	[Export] public String levelScenesFolderPath;
+	[Export] public String levelScenesFolderPath = "res://Assets/Scenes/Levels/";
 	[Export] public String[] levelScenesPaths;
 	private List<PackedScene> levelScenes = new List<PackedScene>();
 
@@ -30,15 +30,8 @@ public partial class LevelManager : Node2D
 	private void GetLevelScenesPaths()
 	{
 		List<String> tempList = new List<String>();
-		var dir = DirAccess.Open(levelScenesFolderPath);
-		dir.ListDirBegin();
-		String fileName = dir.GetNext();
-		while (fileName != String.Empty)
-		{
-			if (fileName.EndsWith(".tscn"))
-				tempList.Add(levelScenesFolderPath + fileName);
-			fileName = dir.GetNext();
-		}
+		tempList.Add(levelScenesFolderPath + "LevelGenerator.tscn");
+		tempList.Add(levelScenesFolderPath + "testlevel.tscn");
 		levelScenesPaths = tempList.ToArray();
 	}
 

@@ -239,7 +239,7 @@ _edge_meta_materials = Array[ExtResource("10_v3sfa")]([SubResource("Resource_2wv
 fill_textures = Array[Texture2D]([ExtResource("8_wt0hv")])
 render_offset = -0.10000000000000007
 
-[node name="Straight3" type="Node2D" node_paths=PackedStringArray("startPointNode", "endPointNode", "obstacleSpots")]
+[node name="Rise1" type="Node2D" node_paths=PackedStringArray("startPointNode", "endPointNode", "obstacleSpots")]
 script = ExtResource("1_t2ee0")
 startPointNode = NodePath("StartPoint")
 endPointNode = NodePath("EndPoint")
@@ -247,6 +247,7 @@ obstacleSpots = [NodePath("Obstacle1")]
 rarity = 1
 
 [node name="StaticBody2D" type="StaticBody2D" parent="."]
+visible = false
 modulate = Color(1, 1, 1, 0.34901962)
 scale = Vector2(-1, 1)
 

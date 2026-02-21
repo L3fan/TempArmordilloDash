@@ -252,7 +252,6 @@ theme_override_font_sizes/font_size = 32
 text = "Exit Level"
 
 [node name="FpsDisplay" parent="CanvasLayer" instance=ExtResource("8_3wyff")]
-visible = false
 
 [connection signal="pressed" from="CanvasLayer/ResultScreen/Panel/ContinueButton" to="CanvasLayer/ResultScreen" method="_OnContinueButtonPressed"]
 [connection signal="pressed" from="CanvasLayer/ResultScreen/Leaderboard/FinishButton" to="CanvasLayer/ResultScreen" method="_OnFinishButtonPressed"]

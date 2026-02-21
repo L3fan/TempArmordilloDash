@@ -21,7 +21,7 @@ public partial class GameManager : Node
 		ProcessMode = ProcessModeEnum.Always;
 		Instance = this;
 		
-		Load(SceneType.MainMenu);
+		//Load(SceneType.MainMenu);
 		
 	}
 

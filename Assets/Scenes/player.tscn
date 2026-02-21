@@ -259,12 +259,14 @@ _data = {
 }
 
 [node name="Player" type="RigidBody2D" node_paths=PackedStringArray("radialProgress") groups=["Player"]]
+mass = 10.0
 physics_material_override = ExtResource("1_mifcl")
 lock_rotation = true
 continuous_cd = 2
 contact_monitor = true
 max_contacts_reported = 100
 script = ExtResource("1_e5q2x")
+mass = 10.0
 radialProgress = NodePath("RadialProgress")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]

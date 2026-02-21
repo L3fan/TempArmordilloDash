@@ -44,9 +44,15 @@ _data = {
 
 [node name="Spinner" type="Node2D" node_paths=PackedStringArray("collisionBody", "collisionPolygon", "usedCollisionType")]
 script = ExtResource("2_xwkv2")
+Rarity = 2
 collisionBody = NodePath("Spinner")
 collisionPolygon = NodePath("Spinner/CollisionPolygon2D")
 usedCollisionType = NodePath("Spinner/CollisionPolygon2D")
+
+[node name="Node2D" type="Node2D" parent="."]
+
+[node name="RemoteTransform2D" type="RemoteTransform2D" parent="Node2D"]
+remote_path = NodePath("../../Spinner")
 
 [node name="Spinner" type="AnimatableBody2D" parent="."]
 z_index = -11
@@ -63,6 +69,8 @@ tile_set = ExtResource("3_pto3c")
 polygon = PackedVector2Array(364, 32.00003, -364, 31.999968, -388, 0, -364, -32.00003, 364, -31.999968, 388, 3.3920038e-05)
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Spinner"]
+root_node = NodePath("../..")
+root_motion_local = true
 libraries = {
 &"": SubResource("AnimationLibrary_xtyp0")
 }

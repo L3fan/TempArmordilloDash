@@ -179,7 +179,7 @@ public partial class Player : RigidBody2D
                     SetSlowDown(false);
             }
 
-            if (letGoOfDash && !isOnFloor)
+            if (letGoOfDash && !dashed)
             {
                 letGoOfDash = false;
                 InputDash(delta);
@@ -275,7 +275,10 @@ public partial class Player : RigidBody2D
             LinearVelocity -= new Vector2(slowdownForce, 0);
         }
 
-        LinearVelocity *= drag;
+        
+        
+        LinearVelocity *= CalculateDrag();
+        
 
         if (isOnFloor && justLanded)
             justLanded = false;
@@ -284,6 +287,14 @@ public partial class Player : RigidBody2D
             justLanded = true;
 
         velocityInfo += "Post Slowdown: " + LinearVelocity + "\n";
+    }
+
+    private float CalculateDrag()
+    {
+        if (isDashing)
+            return drag;
+        else
+            return 1 - (1 - drag) / 10f;
     }
 
     private void DashCalc(float delta)
@@ -478,11 +489,11 @@ public partial class Player : RigidBody2D
         {
             case EnvState.DEFAULT:
                 drag = 1.0f;
-                jumpForce /= 3f;                
+                GravityScale *= 3f;                
                 break;
             case EnvState.WATER:
-                drag = 0.975f;
-                jumpForce *= 3f;
+                drag = 0.95f;
+                GravityScale /= 3f;
                 break;
         }
     }
