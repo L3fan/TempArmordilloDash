@@ -5,6 +5,8 @@ using System.Diagnostics;
 public partial class PauseMenu : ColorRect
 {
 	private bool pauseMenuOpen = false;
+
+	private bool enabled = false;
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
@@ -18,6 +20,9 @@ public partial class PauseMenu : ColorRect
 
 	public override void _Input(InputEvent @event)
 	{
+		if (!enabled)
+			return;
+		
 		if (@event.IsActionPressed("Pause"))
 		{
 			SetPauseMenu(!pauseMenuOpen);
@@ -39,5 +44,10 @@ public partial class PauseMenu : ColorRect
 	private void _OnExitLevelButtonPressed()
 	{
 		GameManager.Instance.Load(SceneType.MainMenu);
+	}
+
+	public void Enable()
+	{
+		enabled = true;
 	}
 }
