@@ -95,6 +95,12 @@ public partial class GameManager : Node
 			GetTree().ChangeSceneToPacked(LevelManager.Instance.GetLevelScene(LevelType.Default));
 		}
 	}
+
+	public void UpdateVolume(float volume, string busName)
+	{
+		int busIndex = AudioServer.GetBusIndex(busName);
+		AudioServer.SetBusVolumeLinear(busIndex, volume);
+	}
 }
 
 public enum SceneType

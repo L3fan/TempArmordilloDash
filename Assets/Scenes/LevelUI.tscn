@@ -1,4 +1,4 @@
-[gd_scene load_steps=36 format=3 uid="uid://cf1ldq8b1ul32"]
+[gd_scene load_steps=38 format=3 uid="uid://cf1ldq8b1ul32"]
 
 [ext_resource type="Script" uid="uid://db46bx8r4yio3" path="res://Assets/Scripts/LevelUI.cs" id="1_3wyff"]
 [ext_resource type="Script" uid="uid://blaqne3byfy6l" path="res://Assets/Scripts/CameraMovement.cs" id="2_kd8io"]
@@ -29,10 +29,132 @@ corner_radius_top_right = 10
 corner_radius_bottom_right = 10
 corner_radius_bottom_left = 10
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_o1ma8"]
+bg_color = Color(0.91228896, 0.9122889, 0.91228884, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_r7snc"]
+bg_color = Color(0.851769, 0.851769, 0.8517688, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.19408336, 0.550782, 0.76476717, 1)
+
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_yqag2"]
 shader = ExtResource("16_4ycha")
 shader_parameter/OutlineColor = Color(0, 0, 0, 1)
 shader_parameter/Width = 1.0
+
+[sub_resource type="Animation" id="Animation_o1ma8"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:flip_h")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath(".:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1248, 229)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("../FloorExample:material:shader_parameter/Offset")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("../FloorExample:position")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1262, 301)]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("../W:frame")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("../A:frame")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [1]
+}
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("../S:frame")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+tracks/8/type = "value"
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/path = NodePath("../D:frame")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
 
 [sub_resource type="Animation" id="Animation_d6ryl"]
 resource_name = "basic_movement"
@@ -147,12 +269,18 @@ tracks/8/keys = {
 "values": [0, 1, 0]
 }
 
-[sub_resource type="Animation" id="Animation_o1ma8"]
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_r7snc"]
+_data = {
+&"RESET": SubResource("Animation_o1ma8"),
+&"basic_movement": SubResource("Animation_d6ryl")
+}
+
+[sub_resource type="Animation" id="Animation_5xvw5"]
 length = 0.001
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath(".:frame")
+tracks/0/path = NodePath("Space:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -164,104 +292,62 @@ tracks/0/keys = {
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath(".:flip_h")
+tracks/1/path = NodePath("Animation/ArmadilloSpriteSheetPixel:frame")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [true]
+"values": [4]
 }
 tracks/2/type = "value"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath(".:position")
+tracks/2/path = NodePath("Animation/FloorExample2:material:shader_parameter/Offset")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector2(1248, 229)]
+"values": [0.2]
 }
 tracks/3/type = "value"
 tracks/3/imported = false
 tracks/3/enabled = true
-tracks/3/path = NodePath("../FloorExample:material:shader_parameter/Offset")
+tracks/3/path = NodePath("Animation/ColorRect:visible")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [0.0]
+"update": 1,
+"values": [true]
 }
 tracks/4/type = "value"
 tracks/4/imported = false
 tracks/4/enabled = true
-tracks/4/path = NodePath("../FloorExample:position")
+tracks/4/path = NodePath("Animation/ArmadilloSpriteSheetPixel:position")
 tracks/4/interp = 1
 tracks/4/loop_wrap = true
 tracks/4/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector2(1262, 301)]
+"values": [Vector2(86, 233)]
 }
 tracks/5/type = "value"
 tracks/5/imported = false
 tracks/5/enabled = true
-tracks/5/path = NodePath("../W:frame")
+tracks/5/path = NodePath("Animation/Spike:position")
 tracks/5/interp = 1
 tracks/5/loop_wrap = true
 tracks/5/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [0]
-}
-tracks/6/type = "value"
-tracks/6/imported = false
-tracks/6/enabled = true
-tracks/6/path = NodePath("../A:frame")
-tracks/6/interp = 1
-tracks/6/loop_wrap = true
-tracks/6/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [1]
-}
-tracks/7/type = "value"
-tracks/7/imported = false
-tracks/7/enabled = true
-tracks/7/path = NodePath("../S:frame")
-tracks/7/interp = 1
-tracks/7/loop_wrap = true
-tracks/7/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [0]
-}
-tracks/8/type = "value"
-tracks/8/imported = false
-tracks/8/enabled = true
-tracks/8/path = NodePath("../D:frame")
-tracks/8/interp = 1
-tracks/8/loop_wrap = true
-tracks/8/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [0]
-}
-
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_r7snc"]
-_data = {
-&"RESET": SubResource("Animation_o1ma8"),
-&"basic_movement": SubResource("Animation_d6ryl")
+"update": 0,
+"values": [Vector2(416, 232)]
 }
 
 [sub_resource type="Animation" id="Animation_hxwcs"]
@@ -340,81 +426,6 @@ tracks/5/keys = {
 "transitions": PackedFloat32Array(1, 1, 1, 1, 1),
 "update": 0,
 "values": [Vector2(416, 232), Vector2(416, 232), Vector2(204, 232), Vector2(-32, 232), Vector2(-32, 232)]
-}
-
-[sub_resource type="Animation" id="Animation_5xvw5"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Space:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [0]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("Animation/ArmadilloSpriteSheetPixel:frame")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [4]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("Animation/FloorExample2:material:shader_parameter/Offset")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [0.2]
-}
-tracks/3/type = "value"
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/path = NodePath("Animation/ColorRect:visible")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [true]
-}
-tracks/4/type = "value"
-tracks/4/imported = false
-tracks/4/enabled = true
-tracks/4/path = NodePath("Animation/ArmadilloSpriteSheetPixel:position")
-tracks/4/interp = 1
-tracks/4/loop_wrap = true
-tracks/4/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(86, 233)]
-}
-tracks/5/type = "value"
-tracks/5/imported = false
-tracks/5/enabled = true
-tracks/5/path = NodePath("Animation/Spike:position")
-tracks/5/interp = 1
-tracks/5/loop_wrap = true
-tracks/5/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(416, 232)]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_6os6k"]
@@ -750,12 +761,14 @@ offset_bottom = -6.1035156e-05
 color = Color(0, 0, 0, 0)
 metadata/_edit_use_anchors_ = true
 
-[node name="ResultScreen" type="Node2D" parent="CanvasLayer" node_paths=PackedStringArray("leaderboard", "timesLabel")]
+[node name="ResultScreen" type="Node2D" parent="CanvasLayer" node_paths=PackedStringArray("leaderboard", "namesLabel", "timesLabel", "nameEntry")]
 visible = false
 position = Vector2(960, 540)
 script = ExtResource("4_qo436")
 leaderboard = NodePath("Leaderboard")
-timesLabel = NodePath("Leaderboard/Time")
+namesLabel = NodePath("Leaderboard/Names")
+timesLabel = NodePath("Leaderboard/Times")
+nameEntry = NodePath("Panel/LineEdit")
 
 [node name="Panel" type="Panel" parent="CanvasLayer/ResultScreen"]
 offset_left = -241.0
@@ -776,9 +789,9 @@ text = "Time:"
 [node name="Label2" type="Label" parent="CanvasLayer/ResultScreen/Panel"]
 layout_mode = 0
 offset_left = 9.0
-offset_top = 125.0
+offset_top = 96.0
 offset_right = 475.0
-offset_bottom = 256.0
+offset_bottom = 179.0
 theme = ExtResource("6_01rf3")
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -794,44 +807,97 @@ theme_override_font_sizes/font_size = 32
 theme_override_styles/normal = SubResource("StyleBoxFlat_4eh7o")
 text = "Continue"
 
+[node name="LineEdit" type="LineEdit" parent="CanvasLayer/ResultScreen/Panel"]
+layout_mode = 0
+offset_left = 56.0
+offset_top = 190.0
+offset_right = 431.0
+offset_bottom = 253.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_placeholder_color = Color(0, 0, 0, 0.6)
+theme_override_font_sizes/font_size = 40
+theme_override_styles/normal = SubResource("StyleBoxFlat_o1ma8")
+theme_override_styles/focus = SubResource("StyleBoxFlat_r7snc")
+placeholder_text = "Enter Name..."
+alignment = 1
+max_length = 4
+emoji_menu_enabled = false
+
 [node name="Leaderboard" type="Panel" parent="CanvasLayer/ResultScreen"]
 visible = false
-offset_left = -243.0
+offset_left = -358.0
 offset_top = -315.0
-offset_right = 246.0
+offset_right = 379.0
 offset_bottom = 327.0
 
 [node name="Header" type="Label" parent="CanvasLayer/ResultScreen/Leaderboard"]
-layout_mode = 0
-offset_top = 10.0
-offset_right = 490.0
-offset_bottom = 79.0
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.16700001
+anchor_top = 0.016
+anchor_right = 0.832
+anchor_bottom = 0.123
+offset_left = -0.07901001
+offset_top = -0.2720003
+offset_right = -0.184021
+offset_bottom = 0.033996582
 theme = ExtResource("6_01rf3")
 theme_type_variation = &"HeaderLarge"
 text = "Leaderboard"
 horizontal_alignment = 1
 
-[node name="Time" type="RichTextLabel" parent="CanvasLayer/ResultScreen/Leaderboard"]
-layout_mode = 0
-offset_left = 100.0
-offset_top = 113.0
-offset_right = 489.0
-offset_bottom = 642.0
+[node name="Times" type="RichTextLabel" parent="CanvasLayer/ResultScreen/Leaderboard"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.48400003
+anchor_top = 0.17600001
+anchor_right = 0.98800004
+anchor_bottom = 1.0
+offset_left = 0.2919922
+offset_top = 0.007987976
+offset_right = -0.15600586
+grow_horizontal = 0
+grow_vertical = 0
 theme = ExtResource("6_01rf3")
 theme_override_constants/paragraph_separation = 3
 theme_override_constants/outline_size = 9
 theme_override_font_sizes/normal_font_size = 32
 bbcode_enabled = true
-text = "Time "
+text = "Time"
+scroll_active = false
+horizontal_alignment = 1
+
+[node name="Names" type="RichTextLabel" parent="CanvasLayer/ResultScreen/Leaderboard"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.132
+anchor_top = 0.17600001
+anchor_right = 0.48400003
+anchor_bottom = 1.0
+offset_left = -0.28399658
+offset_top = 0.007987976
+offset_right = 0.2919922
+grow_horizontal = 0
+grow_vertical = 0
+theme = ExtResource("6_01rf3")
+theme_override_constants/paragraph_separation = 3
+theme_override_constants/outline_size = 9
+theme_override_font_sizes/normal_font_size = 32
+bbcode_enabled = true
+text = "Name"
 scroll_active = false
 horizontal_alignment = 1
 
 [node name="Rank" type="Label" parent="CanvasLayer/ResultScreen/Leaderboard"]
-layout_mode = 0
-offset_left = 11.0
-offset_top = 112.0
-offset_right = 56.0
-offset_bottom = 642.0
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.015000001
+anchor_top = 0.17400001
+anchor_right = 0.12100001
+anchor_bottom = 1.0
+offset_left = -0.055000305
+offset_top = 0.2919922
+offset_right = -33.177002
 theme = ExtResource("6_01rf3")
 theme_override_constants/outline_size = 9
 theme_override_font_sizes/font_size = 32
@@ -848,11 +914,16 @@ text = "Rank
  10."
 
 [node name="FinishButton" type="Button" parent="CanvasLayer/ResultScreen/Leaderboard"]
-layout_mode = 0
-offset_left = 106.0
-offset_top = 653.0
-offset_right = 397.0
-offset_bottom = 698.0
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 1.0600001
+anchor_right = 0.5
+anchor_bottom = 1.0600001
+offset_left = -143.5
+offset_top = -23.52002
+offset_right = 147.5
+offset_bottom = 21.47998
 theme = ExtResource("7_h2nac")
 theme_override_font_sizes/font_size = 32
 theme_override_styles/normal = SubResource("StyleBoxFlat_4eh7o")
@@ -1183,6 +1254,7 @@ theme_override_styles/hover = SubResource("StyleBoxFlat_d6ryl")
 text = "GO!"
 
 [connection signal="pressed" from="CanvasLayer/ResultScreen/Panel/ContinueButton" to="CanvasLayer/ResultScreen" method="_OnContinueButtonPressed"]
+[connection signal="text_changed" from="CanvasLayer/ResultScreen/Panel/LineEdit" to="CanvasLayer/ResultScreen" method="_OnLineEditTextChanged"]
 [connection signal="pressed" from="CanvasLayer/ResultScreen/Leaderboard/FinishButton" to="CanvasLayer/ResultScreen" method="_OnFinishButtonPressed"]
 [connection signal="pressed" from="CanvasLayer/PauseMenu/Resume Button" to="CanvasLayer/PauseMenu" method="_OnResumeButtonPressed"]
 [connection signal="pressed" from="CanvasLayer/PauseMenu/Exit Level Button" to="CanvasLayer/PauseMenu" method="_OnExitLevelButtonPressed"]

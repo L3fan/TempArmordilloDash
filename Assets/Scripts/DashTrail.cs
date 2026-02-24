@@ -59,8 +59,8 @@ public partial class DashTrail : Node2D
 				trailPiece.Hframes = playerSprite.Hframes;
 				
 				trailPiece.Frame = playerSprite.Frame;
-				trailPiece.Position = player.Position;
-				trailPiece.Rotation = player.GetSprite().Rotation;
+				trailPiece.Position = player.Position + playerSprite.Position;
+				trailPiece.Rotation = playerSprite.Rotation;
 				trailPiece.Scale = playerSprite.Scale;
 				
 				foundAvailablePiece = true;

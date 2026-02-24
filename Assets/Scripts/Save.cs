@@ -7,111 +7,107 @@ using FileAccess = Godot.FileAccess;
 
 public partial class Save : Node
 {
-	[Export] private Godot.Collections.Dictionary<int, int> leaderboard = new();
-    private List<int> times;
+	private Leaderboard leaderboard = new Leaderboard();
 	public static Save Instance { get; private set; }
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
 		Instance = this;
+		
+        LoadLeaderboard();
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override void _Process(double delta)
 	{
 	}
-	
-	
-    public void LoadLeaderboard(RichTextLabel timesLabel)
+
+
+    public void LoadLeaderboard()
     {
         if (FileAccess.FileExists("user://leaderboard.save"))
         {
-            
+
             var leaderboardFile = FileAccess.Open("user://leaderboard.save", Godot.FileAccess.ModeFlags.Read);
-            
+
             String jsonString = leaderboardFile.GetAsText();
 
             var json = new Json();
             var parseResult = json.Parse(jsonString);
-            if (parseResult != Error.Ok) 
-            { 
+            if (parseResult != Error.Ok)
+            {
                 GD.PrintErr("Error parsing leaderboard: " + json.GetErrorMessage() + " at line " +
-                                                           json.GetErrorLine());
+                            json.GetErrorLine());
             }
-            
-            leaderboard = JsonSerializer.Deserialize<Godot.Collections.Dictionary<int, int>>(jsonString);
-        
+
+            leaderboard = JsonSerializer.Deserialize<Leaderboard>(jsonString);
+
             leaderboardFile.Close();
         }
+    }
 
-        int newEntryValue = GameManager.Instance.totalTime;
-        int position = 1;
-
-        //check if we are on leaderboard and replace 
-        foreach (var entry in leaderboard)
+    public void ShowLeaderboard(RichTextLabel namesLabel, RichTextLabel timesLabel, int newPosition = -1)
+    {
+        
+        for (int i = 0; i < leaderboard.Count; i++)
         {
-            if (newEntryValue >= entry.Value)
+            String nameToAdd = leaderboard.names[i];
+            String timeToAdd = GameManager.Instance.IntToTime(leaderboard.times[i]);
+
+            if (i == newPosition)
             {
-                position++;
+                nameToAdd = " [color=green] " + nameToAdd + " [/color] ";
+                timeToAdd = " [color=green] " + timeToAdd + " [/color] ";
             }
-        }
 
-        if (position <= 10)
-        {
-            leaderboard = PlaceEntry(leaderboard, new KeyValuePair<int, int>(position, newEntryValue));
-        }
-
-        times = new List<int>();
-        foreach (var entry in leaderboard)
-        {
-            times.Add(-1);
-        }
-
-
-        foreach (var entry in leaderboard)
-        {
-            times[entry.Key-1] = entry.Value;
-        }
-
-        for (int i = 0; i < times.Count; i++)
-        {
-            String textToAdd = GameManager.Instance.IntToTime(times[i]);
-            if (i == position - 1)
-                textToAdd = " [color=green] " + textToAdd + " [/color] ";
-            timesLabel.Text += "\n" + textToAdd;
+            namesLabel.Text += "\n" + nameToAdd;
+            timesLabel.Text += "\n" + timeToAdd;
         }
 
         //fill the remaining unfilled ranks with "-"
-        for (int i = 0; i < 10 - times.Count; i++)
+        for (int i = 0; i < 10 - leaderboard.Count; i++)
         {
+            namesLabel.Text += "\n-";
             timesLabel.Text += "\n-";
         }
     }
 
-    private Godot.Collections.Dictionary<int, int> PlaceEntry(
-        Godot.Collections.Dictionary<int, int> currentDictionary, KeyValuePair<int, int> newEntry)
+    public int PlaceEntryOnLeaderboard(string givenName, int givenTime)
     {
-        if(currentDictionary.ContainsKey(10))
-            currentDictionary.Remove(10);
-        
-        int entryToReplace = newEntry.Key;
-        Godot.Collections.Dictionary<int, int> newDictionary = new Godot.Collections.Dictionary<int, int>();
-
-        //going backwards from last place to first and systematically adding them one position lower and deleting the previously placed entry
-        for (int i = currentDictionary.Count; i > 0; i--)
+        if (leaderboard.times.Count >= 10)
         {
-            currentDictionary.TryGetValue(i, out int entry);
-            int newKey = i;
-            if (newKey >= entryToReplace)
-                newKey++;
-            
-            if(newKey <= 10)
-                newDictionary.Add(newKey, entry);
+            leaderboard.RemoveAt(10);
+        }
+        
+        Leaderboard newLeaderboard = new Leaderboard();
+
+        //start at last position of leaderboard and place one step higher for each already existing entry worse than the new one
+        int newPlacement = leaderboard.Count;
+        foreach (int entry in leaderboard.times)
+        {
+            if (givenTime < entry)
+                newPlacement--;
+        }
+        
+        for (int i = 0; i < newPlacement; i++)
+        {
+            string entryName = leaderboard.names[i];
+            int entryTime = leaderboard.times[i];
+            newLeaderboard.Add(entryName, entryTime);
+        }
+        
+        newLeaderboard.Add(givenName, givenTime);
+        
+        for (int i = newPlacement; i < leaderboard.Count; i++)
+        {
+            string entryName = leaderboard.names[i];
+            int entryTime = leaderboard.times[i];
+            newLeaderboard.Add(entryName, entryTime);
         }
 
-        newDictionary.Add(newEntry.Key, newEntry.Value);
+        leaderboard = newLeaderboard;
 
-        return newDictionary;
+        return newPlacement;
     }
 
 	public void SaveLeaderboard()
@@ -128,5 +124,42 @@ public partial class Save : Node
     public void DeleteLeaderboard()
     {
         DirAccess.RemoveAbsolute("user://leaderboard.save");
+    }
+}
+
+[Serializable]
+public class Leaderboard
+{
+    
+    public List<string> names {get; set;}
+    public List<int> times {get; set;}
+    public int Count {get; set;}
+
+    public Leaderboard()
+    {
+        names = new List<string>();
+        times = new List<int>();
+        Count = 0;
+    }
+    
+    public Leaderboard(List<string> givenNames, List<int> givenTimes)
+    {
+        names = givenNames;
+        times = givenTimes;
+        Count = names.Count;
+    }
+
+    public void RemoveAt(int index)
+    {
+        names.RemoveAt(index);
+        times.RemoveAt(index);
+        Count--;
+    }
+
+    public void Add(string givenName, int givenTime)
+    {
+        names.Add(givenName);
+        times.Add(givenTime);
+        Count++;
     }
 }

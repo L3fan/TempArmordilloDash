@@ -18,6 +18,7 @@ public partial class Level : Node
 		var playerNode = playerScene.Instantiate();
 		Player player = playerNode as Player;
 		player.Position = spawnPointPos;
+		player.LinearVelocity = spawnPoint.GetChild<Node2D>(4).Position;
 		AddChild(player);
 		GameManager.Instance.player = player;
 

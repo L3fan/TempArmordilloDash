@@ -48,6 +48,11 @@ public partial class Player : RigidBody2D
 
     private Sprite2D sprite;
     private AnimationPlayer animationPlayer;
+    private AnimationTree animationTree;
+    public float givenForce;
+    public bool idle = false;
+    public float timerUntilIdle = 4;
+    public float moveFast = 1800;
 
     private String velocityInfo;
 
@@ -68,7 +73,7 @@ public partial class Player : RigidBody2D
         sprite = GetNode<Sprite2D>("SpritePixel");
         collisionShape = GetNode<CollisionShape2D>("CollisionShape2D");
         animationPlayer = GetNode<AnimationPlayer>("SpritePixel/AnimationPlayer");
-        animationPlayer.Play("Idle");
+        animationTree = GetNode<AnimationTree>("SpritePixel/AnimationTree");
 
         respawnPoint = Position;
     }
@@ -102,22 +107,22 @@ public partial class Player : RigidBody2D
 
         //recharge timeSlow when not in Slowdown
         if (!inSlowDown && timeSlow < 1.5f)
-            timeSlow = Mathf.Min(timeSlow + (float)delta * 0.5f, 1.5f);
+            timeSlow = Mathf.Min(timeSlow + delta * 0.5f, 1.5f);
 
 
         //allow Dashing when fully recharged after depleting entire timeSlow
         if (timeSlow >= 1.5f && mustRecharge)
             mustRecharge = false;
 
-        InputCalculations((float)delta);
+        InputCalculations(delta);
 
-        SlowdownCalc((float)delta);
+        SlowdownCalc(delta);
 
-        DashCalc((float)delta);
+        DashCalc(delta);
 
         //GD.Print(velocityInfo);
 
-        UpdateSprite();
+        UpdateSpriteValues(delta);
 
         lastVelocity = LinearVelocity;
         
@@ -392,34 +397,39 @@ public partial class Player : RigidBody2D
         return Mathf.Abs(radiansAngle * 180 / Mathf.Pi);
     }
 
-    private void UpdateSprite()
+    private void UpdateSpriteValues(float delta)
     {
+        
         //turn sprite around depending on velocity
         if (LinearVelocity.X > 0 && sprite.Scale.X < 0)
             sprite.Scale = new Vector2(Mathf.Abs(sprite.Scale.X), sprite.Scale.Y);
         else if (LinearVelocity.X < 0 && sprite.Scale.X > 0)
             sprite.Scale = new Vector2(-Mathf.Abs(sprite.Scale.X), sprite.Scale.Y);
-
-        //when on floor, only consider the X value, otherwise use the length of the LinearVelocity to determine sprite animation
-        float givenForce = LinearVelocity.Length();
-        if (isOnFloor)
-            givenForce = LinearVelocity.X;
-
-        switch (givenForce)
-        {
-            case var n when n == 0:
-                animationPlayer.Play("Idle");
-                break;
-            case var n when n < 1600:
-                animationPlayer.Play("Roll");
-                break;
-
-            case var n when (n >= 1600):
-                animationPlayer.Play("Roll2");
-                break;
-        }
         
-        animationPlayer.SpeedScale = givenForce / maxSpeed * 10;
+        
+        //when on floor, only consider the X value, otherwise use the length of the LinearVelocity to determine sprite animation
+        givenForce = LinearVelocity.Length();
+        if (isOnFloor)
+            givenForce = Mathf.Abs(LinearVelocity.X);
+
+        float speedScale = givenForce / maxSpeed * 10;
+        animationTree.Set("parameters/Roll/TimeScale/scale", speedScale);
+        animationTree.Set("parameters/Roll2/TimeScale/scale", speedScale/2);
+        if (givenForce == 0)
+        {
+            if (timerUntilIdle > 0)
+                timerUntilIdle -= delta;
+            if (timerUntilIdle <= 0)
+            {
+                animationTree.Set("parameters/conditions/idling", true);
+            }
+        }
+        else if(timerUntilIdle < 4)
+        {
+            timerUntilIdle = 4;
+            animationTree.Set("parameters/conditions/idling", false);
+        }
+
     }
 
     private float ValueFurtherFromZero(float val1, float val2)
