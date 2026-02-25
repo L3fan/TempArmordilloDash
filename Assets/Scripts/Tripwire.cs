@@ -4,7 +4,7 @@ using System;
 public partial class Tripwire : Node2D
 {
 	[Export] public HammerTrap hammerTrap;
-	[Export] public ColorRect wire;
+	[Export] public Sprite2D wire;
 
 	private bool activated = false;
 	// Called when the node enters the scene tree for the first time.
@@ -21,7 +21,7 @@ public partial class Tripwire : Node2D
 	{
 		if (activated || body is not Player)
 			return;
-		wire.Visible = false;
+		wire.GetNode<AnimationPlayer>("AnimationPlayer").Play("cut_rope");
 		activated = true;
 		hammerTrap.Activate();
 	}

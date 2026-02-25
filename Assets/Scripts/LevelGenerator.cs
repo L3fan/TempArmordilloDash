@@ -39,7 +39,6 @@ public partial class LevelGenerator : Level
 		endSectionPath = Settings.Instance.levelEndSectionPath;
 		
 		GetSectionPaths();
-		GD.Print();
 
 		CreateSectionPools();
 		
@@ -107,7 +106,7 @@ public partial class LevelGenerator : Level
 				obstacleTypes += randObstacle.Name + ", ";
 			}
 			String debugMesssage = "Created " + amountOfObstacles + " obstacle(s): " + obstacleTypes + " of a possible " + totalSpots;
-			GD.Print(debugMesssage);
+			//GD.Print(debugMesssage);
 		}
 	}
 
@@ -206,7 +205,7 @@ public partial class LevelGenerator : Level
 			{
 				if (fileName.GetExtension() == "remap")
 					fileName = fileName.Substring(0, fileName.Length - 6);
-				GD.Print(fileName.GetExtension());
+				//GD.Print(fileName.GetExtension());
 				
 				if (fileName.GetExtension() == "tscn")
 				{
@@ -219,7 +218,7 @@ public partial class LevelGenerator : Level
 			}
 
 			sections = tempList.ToArray();
-			GD.Print("Found " + i + " files.");
+			//GD.Print("Found " + i + " files.");
 		}
 		else
 		{

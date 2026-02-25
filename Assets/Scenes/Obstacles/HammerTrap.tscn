@@ -1,10 +1,11 @@
-[gd_scene load_steps=9 format=4 uid="uid://7gqmvc36hr2g"]
+[gd_scene load_steps=13 format=4 uid="uid://7gqmvc36hr2g"]
 
 [ext_resource type="TileSet" uid="uid://dcou5kgogcpka" path="res://Assets/Scenes/CaveTiles.tres" id="1_6fer2"]
 [ext_resource type="Script" uid="uid://c4nfbmei1shd" path="res://Assets/Scripts/HammerTrap.cs" id="2_6fer2"]
 [ext_resource type="Shader" uid="uid://dmt6wsb40s7c6" path="res://Assets/Shaders/OutlineShader.tres" id="2_7ce1b"]
 [ext_resource type="Script" uid="uid://cmyxlnxfcrfjh" path="res://Assets/Scripts/Tripwire.cs" id="3_o5gcf"]
 [ext_resource type="PhysicsMaterial" uid="uid://7bqaj4crhleg" path="res://Assets/Scenes/ObstaclePhysicsMat.tres" id="4_g20ir"]
+[ext_resource type="Texture2D" uid="uid://dhdvo3nwqm58f" path="res://Assets/Textures/Rope.png" id="6_68jm6"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_68jm6"]
 shader = ExtResource("2_7ce1b")
@@ -16,6 +17,44 @@ size = Vector2(144, 288)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ka8ht"]
 size = Vector2(13, 217)
+
+[sub_resource type="Animation" id="Animation_powlk"]
+resource_name = "cut_rope"
+length = 0.500005
+step = 0.05
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 1,
+"values": [1, 2, 3, 4, 5]
+}
+
+[sub_resource type="Animation" id="Animation_li8sm"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_vjl1h"]
+_data = {
+&"RESET": SubResource("Animation_li8sm"),
+&"cut_rope": SubResource("Animation_powlk")
+}
 
 [node name="HammerTrap" type="Node2D" node_paths=PackedStringArray("hammer", "collisionBody", "collisionShape")]
 z_index = -51
@@ -54,6 +93,14 @@ physics_material_override = ExtResource("4_g20ir")
 position = Vector2(568, 0)
 shape = SubResource("RectangleShape2D_ie1we")
 
+[node name="ColorRect" type="ColorRect" parent="Hammer"]
+z_index = -1
+offset_left = 494.0
+offset_top = -146.0
+offset_right = 642.0
+offset_bottom = 146.0
+color = Color(0, 0, 0, 1)
+
 [node name="Tripwire" type="TileMapLayer" parent="." node_paths=PackedStringArray("hammerTrap", "wire")]
 texture_filter = 1
 scale = Vector2(2, 2)
@@ -61,28 +108,32 @@ tile_map_data = PackedByteArray("AAD/////AQA8AAoAAAD///7/AQA8AAgAAAD///z/AQA8AAk
 tile_set = ExtResource("1_6fer2")
 script = ExtResource("3_o5gcf")
 hammerTrap = NodePath("..")
-wire = NodePath("Wire")
+wire = NodePath("Sprite2D")
 
-[node name="Wire" type="ColorRect" parent="Tripwire"]
-offset_left = -1.0
-offset_top = -158.99998
-offset_bottom = 58.000015
+[node name="Sprite2D" type="Sprite2D" parent="Tripwire"]
+position = Vector2(37.5, -76.5)
+texture = ExtResource("6_68jm6")
+hframes = 3
+vframes = 2
+
+[node name="Area2D" type="Area2D" parent="Tripwire/Sprite2D"]
+position = Vector2(-38.5, -82.499985)
 rotation = -0.29496065
 
-[node name="Area2D" type="Area2D" parent="Tripwire/Wire"]
-visible = false
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Tripwire/Wire/Area2D"]
-position = Vector2(6.5, 108.499985)
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Tripwire/Sprite2D/Area2D"]
+position = Vector2(-0.19770813, 106.46506)
 shape = SubResource("RectangleShape2D_ka8ht")
 
-[node name="Wire" type="ColorRect" parent="Tripwire/Wire"]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Tripwire/Sprite2D"]
+libraries = {
+&"": SubResource("AnimationLibrary_vjl1h")
+}
+
+[node name="ColorRect" type="ColorRect" parent="Tripwire"]
 z_index = -1
-layout_mode = 0
-offset_left = -1.0
-offset_top = -1.0
-offset_right = 2.0
-offset_bottom = 218.0
+offset_left = -17.0
+offset_top = -161.0
+offset_right = 0.5
 color = Color(0, 0, 0, 1)
 
-[connection signal="body_entered" from="Tripwire/Wire/Area2D" to="Tripwire" method="_OnBodyEnteredWire"]
+[connection signal="body_entered" from="Tripwire/Sprite2D/Area2D" to="Tripwire" method="_OnBodyEnteredWire"]

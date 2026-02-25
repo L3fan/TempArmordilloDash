@@ -6,7 +6,6 @@ public partial class Level : Node
 	[Export] public LevelType levelType;
 	[Export] public Node2D spawnPoint;
 	public LevelUI levelUI;
-	private int startTime;
 	public Vector2 spawnPointPos = Vector2.Zero;
 	
 	public override void _Ready()
@@ -23,10 +22,6 @@ public partial class Level : Node
 		GameManager.Instance.player = player;
 
 		Setup();
-		
-		startTime = (int)Time.GetTicksMsec();
-		
-		//GD.Print("Level Start Time: " + startTime);
 	}
 
 	public void Setup()
@@ -36,11 +31,6 @@ public partial class Level : Node
 		levelUI = (LevelUI)levelUIScene.Instantiate();
 		levelUI.Setup(GameManager.Instance.player);
 		AddChild(levelUI);
-	}
-
-	public int GetStartTime()
-	{
-		return startTime;
 	}
 }
 

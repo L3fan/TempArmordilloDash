@@ -10,11 +10,14 @@ public partial class GameManager : Node
 	public SceneType currentSceneType = SceneType.None;
 	public Node currentScene = null;
 	public Player player;
+	private int startTime;
 	public int totalTime;
 	public AudioStreamPlayer sfxPlayer;
 
 	private PackedScene mainMenuPackedScene = null;
 	private PackedScene levelPackedScene = null;
+
+	public bool demo = true;
 	
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
@@ -32,9 +35,16 @@ public partial class GameManager : Node
 		
 	}
 
+	public void StartTimer()
+	{
+		startTime = (int)Time.GetTicksMsec();
+		
+		GD.Print("Level Start Time: " + startTime);
+	}
+
 	public void GameOver()
 	{
-		GD.Print("Game Over");
+		//GD.Print("Game Over");
 		if(GetTree().GetCurrentScene() is not Level) return;
 		
 		GetTree().Paused = true;
@@ -43,7 +53,7 @@ public partial class GameManager : Node
 		resultScreen.Visible = true;
 		Label timeLabel = resultScreen.GetChild(0).GetChild<Label>(1);
 		int finishTime = (int)Time.GetTicksMsec();
-		totalTime = finishTime - level.GetStartTime();
+		totalTime = finishTime - startTime;
 		timeLabel.Text = IntToTime(totalTime);
 		
 		//GD.Print(totalTime);

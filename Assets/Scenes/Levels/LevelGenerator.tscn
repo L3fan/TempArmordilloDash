@@ -16,6 +16,10 @@
 [ext_resource type="PackedScene" uid="uid://duxf3nwudnn1e" path="res://Assets/Scenes/BackgroundParallax.tscn" id="17_v2qml"]
 [ext_resource type="AudioStream" uid="uid://b88qxh6bc62rv" path="res://Assets/Audio/Music/hurry_up_and_run.ogg" id="18_o2a3m"]
 
+[sub_resource type="Resource" id="Resource_jyc3m"]
+script = ExtResource("4_s1ab8")
+position = Vector2(1216, -1512)
+
 [sub_resource type="Resource" id="Resource_j8snf"]
 script = ExtResource("4_s1ab8")
 position = Vector2(-560, -192)
@@ -59,10 +63,6 @@ texture_idx = 1
 script = ExtResource("4_s1ab8")
 position = Vector2(1216, -3408)
 texture_idx = 1
-
-[sub_resource type="Resource" id="Resource_jyc3m"]
-script = ExtResource("4_s1ab8")
-position = Vector2(1216, -1512)
 
 [sub_resource type="Resource" id="Resource_nn4pi"]
 script = ExtResource("5_cwtws")
@@ -120,6 +120,7 @@ _surfaces = [{
 script = ExtResource("5_tvsp3")
 texture = ExtResource("7_o2a3m")
 mesh = SubResource("ArrayMesh_y15k7")
+z_index = 11
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_h6nqb"]
 _surfaces = [{
@@ -138,6 +139,7 @@ _surfaces = [{
 script = ExtResource("5_tvsp3")
 texture = ExtResource("8_4m5ke")
 mesh = SubResource("ArrayMesh_h6nqb")
+z_index = 11
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_fvbn6"]
 _surfaces = [{
@@ -175,6 +177,7 @@ _surfaces = [{
 script = ExtResource("5_tvsp3")
 texture = ExtResource("9_i7dho")
 mesh = SubResource("ArrayMesh_h68hj")
+z_index = 11
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_h7vyx"]
 _surfaces = [{
@@ -193,6 +196,7 @@ _surfaces = [{
 script = ExtResource("5_tvsp3")
 texture = ExtResource("9_i7dho")
 mesh = SubResource("ArrayMesh_h7vyx")
+z_index = 11
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_68uku"]
 _surfaces = [{
@@ -230,6 +234,7 @@ _surfaces = [{
 script = ExtResource("5_tvsp3")
 texture = ExtResource("9_i7dho")
 mesh = SubResource("ArrayMesh_5fdsv")
+z_index = 11
 
 [sub_resource type="Resource" id="Resource_uppnu"]
 script = ExtResource("10_24h34")
@@ -264,6 +269,7 @@ distance = 90.0
 script = ExtResource("6_mebhh")
 edge_material = SubResource("Resource_yidip")
 normal_range = SubResource("Resource_nl48b")
+z_index = 11
 metadata/_custom_type_script = "uid://0lhxan4cqrc1"
 
 [sub_resource type="Resource" id="Resource_4lo2e"]
@@ -280,6 +286,7 @@ distance = 90.0
 script = ExtResource("6_mebhh")
 edge_material = SubResource("Resource_4lo2e")
 normal_range = SubResource("Resource_bltlr")
+z_index = 11
 offset = -0.33499999999999996
 metadata/_custom_type_script = "uid://0lhxan4cqrc1"
 
@@ -310,7 +317,7 @@ size = Vector2(154, 20)
 
 [node name="LevelGenerator" type="Node2D" node_paths=PackedStringArray("endPointNode", "spawnPoint")]
 script = ExtResource("1_lmwb7")
-sectionCount = 10
+sectionCount = 15
 sections = Array[PackedScene]([])
 endSectionPath = "res://Scenes/EndLevelSection.tscn"
 endPointNode = NodePath("Endpoint")

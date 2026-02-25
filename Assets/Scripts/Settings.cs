@@ -48,7 +48,7 @@ public partial class Settings : Node2D
 
 		LoadSettings();
 		
-		GD.Print("Loaded Settings");
+		//GD.Print("Loaded Settings");
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -80,7 +80,7 @@ public partial class Settings : Node2D
 				fileName = dir.GetNext();
 				count++;
 			}
-			GD.Print("Found " + count + " Obstacle files.");
+			//GD.Print("Found " + count + " Obstacle files.");
 		}
 		else
 		{

@@ -12,9 +12,14 @@ public partial class MainMenu : Control
 	[Export] public Control settingsDisplay;
 
 	[Export] public AudioHandler audioHandler;
+
+	[Export] private Button quitButton;
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
+		if (GameManager.Instance.demo)
+			quitButton.Visible = false;
+		
 		Settings.Instance.LoadSettings();
 		VolumeSettings vSet = Settings.Instance.settingsSave.VolumeSettings;
 		SetVolume(vSet);
@@ -27,45 +32,45 @@ public partial class MainMenu : Control
 
 	public void _OnStartButtonPressed()
 	{
-		audioHandler.Play("Select");
+		audioHandler.Play(MainMenuSFXType.SELECT);
 		GameManager.Instance.Load(SceneType.Level);
 	}
 
 	public void _OnEndGameButtonPressed()
 	{
-		audioHandler.Play("Cancel");
+		audioHandler.Play(MainMenuSFXType.CANCEL);
 		GetTree().Quit();
 	}
 
 	public void _OnResetButtonPressed()
 	{
-		audioHandler.Play("Select");
+		audioHandler.Play(MainMenuSFXType.SELECT);
 		doubleCheck.Visible = true;
 	}
 
 	public void _OnConfirmResetButtonPressed()
 	{
-		audioHandler.Play("Select");
+		audioHandler.Play(MainMenuSFXType.SELECT);
 		Save.Instance.DeleteLeaderboard();
 		doubleCheck.Visible = false;
 	}
 
 	public void _OnCancelResetButtonPressed()
 	{
-		audioHandler.Play("Cancel");
+		audioHandler.Play(MainMenuSFXType.CANCEL);
 		doubleCheck.Visible = false;
 	}
 
 	public void _OnLeaderboardButtonPressed()
 	{
-		audioHandler.Play("Select");
+		audioHandler.Play(MainMenuSFXType.SELECT);
 		leaderboardDisplay.Visible = true;
 		Save.Instance.ShowLeaderboard(nameEntry, timeEntry);
 	}
 	
 	public void _OnCloseLeaderboardButtonPressed()
 	{
-		audioHandler.Play("Cancel");
+		audioHandler.Play(MainMenuSFXType.CANCEL);
 		leaderboardDisplay.Visible = false;
 		nameEntry.Text = "Name";
 		timeEntry.Text = "Time";
@@ -91,13 +96,13 @@ public partial class MainMenu : Control
 
 	public void _OnSettingsButtonPressed()
 	{
-		audioHandler.Play("Select");
+		audioHandler.Play(MainMenuSFXType.SELECT);
 		settingsDisplay.Visible = true;
 	}
 
 	public void _OnCloseSettingsButtonPressed()
 	{
-		audioHandler.Play("Cancel");
+		audioHandler.Play(MainMenuSFXType.CANCEL);
 		Settings.Instance.SaveSettings();
 		settingsDisplay.Visible = false;
 	}

@@ -4,13 +4,13 @@ using Godot.Collections;
 
 public partial class AudioHandler : Node2D
 {
-	[Export] public Dictionary<string, string> soundeffects;
-
-	[Export] private AudioStreamPlayer chosenSFX;
+	public AudioStreamPlayer selectSFX;
+	public AudioStreamPlayer cancelSFX;
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
-		GD.Print(soundeffects);
+		selectSFX = GetNode<AudioStreamPlayer>("SelectSFXPlayer");
+		cancelSFX = GetNode<AudioStreamPlayer>("CancelSFXPlayer");
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -18,15 +18,22 @@ public partial class AudioHandler : Node2D
 	{
 	}
 
-	public void Play(string soundeffectName)
+	public void Play(MainMenuSFXType sfxType)
 	{
-		bool succeeded = soundeffects.TryGetValue(soundeffectName, out string sfxPath);
-		
-		if (!succeeded)
-			return;
-		
-		chosenSFX = GetNode<AudioStreamPlayer>(sfxPath);
-		
-		chosenSFX.Play();
+		switch (sfxType)
+		{
+			case MainMenuSFXType.SELECT:
+				selectSFX.Play();
+				break;
+			case MainMenuSFXType.CANCEL:
+				cancelSFX.Play();
+				break;
+		}
 	}
+}
+
+public enum MainMenuSFXType
+{
+	SELECT,
+	CANCEL
 }

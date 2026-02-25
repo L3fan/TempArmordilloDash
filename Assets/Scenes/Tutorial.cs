@@ -17,6 +17,7 @@ public partial class Tutorial : Panel
 
 	public void _OnContinueButtonPressed()
 	{
+		GameManager.Instance.StartTimer();
 		pauseMenu.Enable();
 		GetTree().Paused = false;
 		Visible = false;

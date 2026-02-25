@@ -74,11 +74,6 @@ public partial class Save : Node
 
     public int PlaceEntryOnLeaderboard(string givenName, int givenTime)
     {
-        if (leaderboard.times.Count >= 10)
-        {
-            leaderboard.RemoveAt(10);
-        }
-        
         Leaderboard newLeaderboard = new Leaderboard();
 
         //start at last position of leaderboard and place one step higher for each already existing entry worse than the new one
@@ -98,7 +93,7 @@ public partial class Save : Node
         
         newLeaderboard.Add(givenName, givenTime);
         
-        for (int i = newPlacement; i < leaderboard.Count; i++)
+        for (int i = newPlacement; i < leaderboard.Count-1; i++)
         {
             string entryName = leaderboard.names[i];
             int entryTime = leaderboard.times[i];

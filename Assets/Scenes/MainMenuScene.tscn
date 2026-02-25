@@ -48,7 +48,7 @@ bg_color = Color(0.51985234, 0, 0.013529217, 1)
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_u77n8"]
 bg_color = Color(0.74607056, 4.4304357e-05, 0.025927361, 1)
 
-[node name="MainMenuScene" type="Control" node_paths=PackedStringArray("doubleCheck", "leaderboardDisplay", "nameEntry", "timeEntry", "settingsDisplay", "audioHandler")]
+[node name="MainMenuScene" type="Control" node_paths=PackedStringArray("doubleCheck", "leaderboardDisplay", "nameEntry", "timeEntry", "settingsDisplay", "audioHandler", "quitButton")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -62,6 +62,7 @@ nameEntry = NodePath("Control/Leaderboard/Names")
 timeEntry = NodePath("Control/Leaderboard/Time")
 settingsDisplay = NodePath("Control/Settings")
 audioHandler = NodePath("AudioHandler")
+quitButton = NodePath("Control/GameButtons/EndGameButton")
 
 [node name="TextureRect" type="TextureRect" parent="."]
 z_index = -100
@@ -286,7 +287,7 @@ anchor_top = 0.5
 anchor_right = 0.499
 anchor_bottom = 0.5
 offset_left = -516.08
-offset_top = -430.0
+offset_top = -443.0
 offset_right = 430.9201
 offset_bottom = 430.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_b37ua")
@@ -318,6 +319,7 @@ offset_left = 9.669999
 offset_top = 0.35995483
 offset_right = 0.1889801
 offset_bottom = -0.40008545
+theme_override_constants/line_spacing = 4
 theme_override_constants/outline_size = 10
 theme_override_font_sizes/font_size = 44
 text = "Rank
@@ -336,23 +338,25 @@ horizontal_alignment = 2
 [node name="Names" type="RichTextLabel" parent="Control/Leaderboard"]
 layout_mode = 0
 offset_left = 146.00002
-offset_top = 147.0
+offset_top = 154.0
 offset_right = 474.0
-offset_bottom = 847.0
+offset_bottom = 870.0
 theme_override_constants/outline_size = 10
-theme_override_font_sizes/normal_font_size = 44
+theme_override_font_sizes/normal_font_size = 43
 text = "Name"
+scroll_active = false
 horizontal_alignment = 1
 
 [node name="Time" type="RichTextLabel" parent="Control/Leaderboard"]
 layout_mode = 0
 offset_left = 472.0
-offset_top = 147.0
+offset_top = 151.0
 offset_right = 936.0
-offset_bottom = 847.0
+offset_bottom = 865.0
 theme_override_constants/outline_size = 10
-theme_override_font_sizes/normal_font_size = 44
+theme_override_font_sizes/normal_font_size = 43
 text = "Time"
+scroll_active = false
 horizontal_alignment = 1
 
 [node name="CloseLeaderboardButton" type="Button" parent="Control/Leaderboard"]
@@ -532,17 +536,13 @@ theme_override_styles/normal = SubResource("StyleBoxFlat_museo")
 theme_override_styles/hover = SubResource("StyleBoxFlat_u77n8")
 text = "CLOSE"
 
-[node name="AudioHandler" parent="." node_paths=PackedStringArray("soundeffects") instance=ExtResource("6_23ht4")]
-soundeffects = {
-"Cancel": NodePath("CancelSFXPlayer"),
-"Select": NodePath("SelectSFXPlayer")
-}
-
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("7_t8wwc")
 autoplay = true
 bus = &"Music"
 parameters/looping = true
+
+[node name="AudioHandler" parent="." instance=ExtResource("6_23ht4")]
 
 [connection signal="pressed" from="Control/GameButtons/StartButton" to="." method="_OnStartButtonPressed"]
 [connection signal="pressed" from="Control/GameButtons/LeaderboardButton" to="." method="_OnLeaderboardButtonPressed"]
