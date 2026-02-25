@@ -11,6 +11,7 @@ public partial class GameManager : Node
 	public Node currentScene = null;
 	public Player player;
 	public int totalTime;
+	public AudioStreamPlayer sfxPlayer;
 
 	private PackedScene mainMenuPackedScene = null;
 	private PackedScene levelPackedScene = null;
@@ -20,9 +21,9 @@ public partial class GameManager : Node
 	{
 		ProcessMode = ProcessModeEnum.Always;
 		Instance = this;
-		
+
 		//Load(SceneType.MainMenu);
-		
+
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.

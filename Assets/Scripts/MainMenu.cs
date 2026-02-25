@@ -10,12 +10,14 @@ public partial class MainMenu : Control
 	[Export] public RichTextLabel timeEntry;
 
 	[Export] public Control settingsDisplay;
+
+	[Export] public AudioHandler audioHandler;
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
-		_OnMasterVolumeUpdate(0.7f);
-		_OnMusicVolumeUpdate(0.7f);
-		_OnSFXVolumeUpdate(0.7f);
+		Settings.Instance.LoadSettings();
+		VolumeSettings vSet = Settings.Instance.settingsSave.VolumeSettings;
+		SetVolume(vSet);
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -25,38 +27,45 @@ public partial class MainMenu : Control
 
 	public void _OnStartButtonPressed()
 	{
+		audioHandler.Play("Select");
 		GameManager.Instance.Load(SceneType.Level);
 	}
 
 	public void _OnEndGameButtonPressed()
 	{
+		audioHandler.Play("Cancel");
 		GetTree().Quit();
 	}
 
 	public void _OnResetButtonPressed()
 	{
+		audioHandler.Play("Select");
 		doubleCheck.Visible = true;
 	}
 
 	public void _OnConfirmResetButtonPressed()
 	{
+		audioHandler.Play("Select");
 		Save.Instance.DeleteLeaderboard();
 		doubleCheck.Visible = false;
 	}
 
 	public void _OnCancelResetButtonPressed()
 	{
+		audioHandler.Play("Cancel");
 		doubleCheck.Visible = false;
 	}
 
 	public void _OnLeaderboardButtonPressed()
 	{
+		audioHandler.Play("Select");
 		leaderboardDisplay.Visible = true;
 		Save.Instance.ShowLeaderboard(nameEntry, timeEntry);
 	}
 	
 	public void _OnCloseLeaderboardButtonPressed()
 	{
+		audioHandler.Play("Cancel");
 		leaderboardDisplay.Visible = false;
 		nameEntry.Text = "Name";
 		timeEntry.Text = "Time";
@@ -65,25 +74,54 @@ public partial class MainMenu : Control
 	public void _OnMasterVolumeUpdate(float value)
 	{
 		GameManager.Instance.UpdateVolume(value, "Master");
+		Settings.Instance.settingsSave.VolumeSettings.MasterVolume = value;
 	}
 
 	public void _OnMusicVolumeUpdate(float value)
 	{
 		GameManager.Instance.UpdateVolume(value, "Music");
+		Settings.Instance.settingsSave.VolumeSettings.MusicVolume = value;
 	}
 
 	public void _OnSFXVolumeUpdate(float value)
 	{
-		GameManager.Instance.UpdateVolume(value, "Soundtrack");
+		GameManager.Instance.UpdateVolume(value, "Soundeffect");
+		Settings.Instance.settingsSave.VolumeSettings.SFXVolume = value;
 	}
 
 	public void _OnSettingsButtonPressed()
 	{
+		audioHandler.Play("Select");
 		settingsDisplay.Visible = true;
 	}
 
 	public void _OnCloseSettingsButtonPressed()
 	{
+		audioHandler.Play("Cancel");
+		Settings.Instance.SaveSettings();
 		settingsDisplay.Visible = false;
+	}
+
+	private void SetVolume(VolumeSettings vSet)
+	{
+		_OnMasterVolumeUpdate(vSet.MasterVolume);
+		_OnMusicVolumeUpdate(vSet.MusicVolume);
+		_OnSFXVolumeUpdate(vSet.SFXVolume);
+
+		Slider[] volumeSliders = [null, null, null];
+		int i = 0;
+		foreach (Node child in settingsDisplay.GetChildren())
+		{
+			if (i > volumeSliders.Length || child is not Label || child.GetChildCount() == 0)
+				continue;
+			if(child.GetChild(0) is not Slider)
+				continue;
+			volumeSliders[i] = child.GetChild<Slider>(0);
+			i++;
+		}
+
+		volumeSliders[0].Value = vSet.MasterVolume;
+		volumeSliders[1].Value = vSet.MusicVolume;
+		volumeSliders[2].Value = vSet.SFXVolume;
 	}
 }

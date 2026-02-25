@@ -70,9 +70,19 @@ offset_bottom = 58.000015
 rotation = -0.29496065
 
 [node name="Area2D" type="Area2D" parent="Tripwire/Wire"]
+visible = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Tripwire/Wire/Area2D"]
 position = Vector2(6.5, 108.499985)
 shape = SubResource("RectangleShape2D_ka8ht")
+
+[node name="Wire" type="ColorRect" parent="Tripwire/Wire"]
+z_index = -1
+layout_mode = 0
+offset_left = -1.0
+offset_top = -1.0
+offset_right = 2.0
+offset_bottom = 218.0
+color = Color(0, 0, 0, 1)
 
 [connection signal="body_entered" from="Tripwire/Wire/Area2D" to="Tripwire" method="_OnBodyEnteredWire"]

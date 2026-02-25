@@ -1,6 +1,7 @@
 using Godot;
 using System;
 using System.Collections.Generic;
+using System.Text.Json;
 using Armordillo_Dash.Assets.Scripts;
 
 public partial class Settings : Node2D
@@ -18,6 +19,8 @@ public partial class Settings : Node2D
 	private List<PackedScene> commonObs = new List<PackedScene>();
 	private List<PackedScene> uncommonObs = new List<PackedScene>();
 	private List<PackedScene> rareObs = new List<PackedScene>();
+
+	public SettingsSave settingsSave;
 	
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
@@ -42,6 +45,9 @@ public partial class Settings : Node2D
 		levelEndSectionPath = sceneFolder + "EndLevelSection.tscn";
 
 		LoadObstacles();
+
+		LoadSettings();
+		
 		GD.Print("Loaded Settings");
 	}
 
@@ -123,4 +129,65 @@ public partial class Settings : Node2D
 		
 		return randomObstacle;
 	}
+
+	public void LoadSettings()
+	{
+		if (FileAccess.FileExists("user://settings.save"))
+		{
+
+			var settingsFile = FileAccess.Open("user://settings.save", Godot.FileAccess.ModeFlags.Read);
+
+			String jsonString = settingsFile.GetAsText();
+
+			var json = new Json();
+			var parseResult = json.Parse(jsonString);
+			if (parseResult != Error.Ok)
+			{
+				GD.PrintErr("Error parsing settings: " + json.GetErrorMessage() + " at line " +
+				            json.GetErrorLine());
+			}
+
+			settingsSave = JsonSerializer.Deserialize<SettingsSave>(jsonString);
+
+			settingsFile.Close();
+		}
+
+		if (settingsSave == null)
+		{
+			VolumeSettings defaultVolSet = new VolumeSettings();
+			defaultVolSet.MasterVolume = 0.7f;
+			defaultVolSet.MusicVolume = 0.7f;
+			defaultVolSet.SFXVolume = 0.7f;
+			settingsSave = new SettingsSave();
+			settingsSave.VolumeSettings = defaultVolSet;
+		}
+	}
+
+	public void SaveSettings()
+	{
+		var saveFile = FileAccess.Open("user://settings.save", FileAccess.ModeFlags.Write);
+
+		var jsonString = JsonSerializer.Serialize(settingsSave);
+
+		saveFile.StoreLine(jsonString);
+
+		saveFile.Close();
+
+		SettingsSave setSave = JsonSerializer.Deserialize<SettingsSave>(jsonString);
+	}
+}
+
+[Serializable]
+public class VolumeSettings
+{
+	public float MasterVolume { get; set; }
+	public float MusicVolume { get; set; }
+	public float SFXVolume { get; set; }
+}
+
+[Serializable]
+public class SettingsSave
+{
+	public VolumeSettings VolumeSettings { get; set; }
+	
 }

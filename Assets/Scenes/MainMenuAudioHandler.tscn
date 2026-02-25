@@ -1,0 +1,20 @@
+[gd_scene load_steps=4 format=3 uid="uid://l73do20wf24p"]
+
+[ext_resource type="Script" uid="uid://cgraife8ym6cx" path="res://Assets/Scenes/AudioHandler.cs" id="1_00v7g"]
+[ext_resource type="AudioStream" uid="uid://cf0hgthptu4fl" path="res://Assets/Audio/Soundeffects/UI/JDSherbert - Ultimate UI SFX Pack - Select - 1.mp3" id="2_7jpb0"]
+[ext_resource type="AudioStream" uid="uid://b2r64w5lovwvi" path="res://Assets/Audio/Soundeffects/UI/JDSherbert - Ultimate UI SFX Pack - Cancel - 1.mp3" id="3_2sfhv"]
+
+[node name="AudioHandler" type="Node2D"]
+script = ExtResource("1_00v7g")
+soundeffects = Dictionary[String, AudioStreamPlayer]({
+"Cancel": "CancelSFXPlayer",
+"Select": "SelectSFXPlayer"
+})
+
+[node name="SelectSFXPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("2_7jpb0")
+bus = &"Soundeffect"
+
+[node name="CancelSFXPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_2sfhv")
+bus = &"Soundeffect"
