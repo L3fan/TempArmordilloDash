@@ -4,6 +4,8 @@ using System.Xml.Linq;
 
 public partial class GameManager : Node
 {
+	public delegate void DemoToggleEvent();
+
 	public static GameManager Instance { get; private set; }
 	
 	[Export] public bool debugLevel = false;
@@ -18,10 +20,13 @@ public partial class GameManager : Node
 	private PackedScene levelPackedScene = null;
 
 	public bool demo = true;
+
+	public event DemoToggleEvent onToggleDemo;
 	
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
+		onToggleDemo += OnToggleDemo;
 		ProcessMode = ProcessModeEnum.Always;
 		Instance = this;
 
@@ -111,6 +116,23 @@ public partial class GameManager : Node
 	{
 		int busIndex = AudioServer.GetBusIndex(busName);
 		AudioServer.SetBusVolumeLinear(busIndex, volume);
+	}
+
+	public override void _Input(InputEvent @event)
+	{
+		if (@event is InputEventKey eventKey)
+		{
+			if (eventKey.Pressed && eventKey.Keycode == Key.X)
+			{
+				if (Input.IsKeyPressed(Key.Ctrl) && Input.IsKeyPressed(Key.Shift))
+					onToggleDemo?.Invoke();
+			}
+		}
+	}
+
+	private void OnToggleDemo()
+	{
+		demo = !demo;
 	}
 }
 

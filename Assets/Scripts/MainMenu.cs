@@ -18,7 +18,9 @@ public partial class MainMenu : Control
 	public override void _Ready()
 	{
 		if (GameManager.Instance.demo)
-			quitButton.Visible = false;
+			quitButton.Disabled = true;
+
+		GameManager.Instance.onToggleDemo += OnToggleDemo;
 		
 		Settings.Instance.LoadSettings();
 		VolumeSettings vSet = Settings.Instance.settingsSave.VolumeSettings;
@@ -128,5 +130,16 @@ public partial class MainMenu : Control
 		volumeSliders[0].Value = vSet.MasterVolume;
 		volumeSliders[1].Value = vSet.MusicVolume;
 		volumeSliders[2].Value = vSet.SFXVolume;
+	}
+
+	public void OnToggleDemo()
+	{
+		quitButton.Disabled = GameManager.Instance.demo;
+	}
+
+	public override void _ExitTree()
+	{
+		base._ExitTree();
+		GameManager.Instance.onToggleDemo -= OnToggleDemo;
 	}
 }
