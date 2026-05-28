@@ -4,9 +4,8 @@
 custom_solver_bias = 0.01
 size = Vector2(400, 400)
 
-[node name="Node2D" type="Node2D"]
-
-[node name="Wall" type="ColorRect" parent="."]
+[node name="Wall" type="ColorRect"]
+anchors_preset = -1
 offset_left = -200.0
 offset_top = -200.0
 offset_right = 200.0
@@ -17,6 +16,7 @@ pivot_offset = Vector2(200, 200)
 color = Color(0.5132329, 0.5132329, 0.5132329, 1)
 
 [node name="StaticBody2D" type="StaticBody2D" parent="."]
+position = Vector2(200, 200)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
 shape = SubResource("RectangleShape2D_oh6kn")

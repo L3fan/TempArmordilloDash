@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bj658oli0klj3"
-path="res://.godot/imported/tex_metal_fill.png-307d5ebcedc9e8c4f154a2c09687cb41.ctex"
+uid="uid://b5mwy17g4qqbc"
+path="res://.godot/imported/armadillo_roll_idle_2.png-f2bd3fc4c3acbe0f86dfbe1ed326b4ca.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://examples/sharp_corner_tapering/assets/tex_metal_fill.png"
-dest_files=["res://.godot/imported/tex_metal_fill.png-307d5ebcedc9e8c4f154a2c09687cb41.ctex"]
+source_file="res://Assets/Dylan/armadillo_roll_idle_2.png"
+dest_files=["res://.godot/imported/armadillo_roll_idle_2.png-f2bd3fc4c3acbe0f86dfbe1ed326b4ca.ctex"]
 
 [params]
 

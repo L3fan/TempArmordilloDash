@@ -19,7 +19,7 @@ public partial class GameManager : Node
 	private PackedScene mainMenuPackedScene = null;
 	private PackedScene levelPackedScene = null;
 
-	public bool demo = true;
+	public bool demo = false;
 
 	public event DemoToggleEvent onToggleDemo;
 	

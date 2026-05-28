@@ -17,7 +17,6 @@ ss2d/version="3.3.1"
 config/name="Armordillo_Dash"
 run/main_scene="uid://c4e38trnicacr"
 config/features=PackedStringArray("4.5", "C#", "GL Compatibility")
-config/icon="res://icon.svg"
 
 [audio]
 

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cdnfaf3bslk38"
-path="res://.godot/imported/tex_metal_taper_corner_right.png-75d13fe99bb8e540489390ee64c63ea5.ctex"
+uid="uid://ofjon1c74xa3"
+path="res://.godot/imported/armadillo_roll_idle_1.png-e5347ac29eafabec49d377645a443c1a.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://examples/sharp_corner_tapering/assets/tex_metal_taper_corner_right.png"
-dest_files=["res://.godot/imported/tex_metal_taper_corner_right.png-75d13fe99bb8e540489390ee64c63ea5.ctex"]
+source_file="res://Assets/Dylan/armadillo_roll_idle_1.png"
+dest_files=["res://.godot/imported/armadillo_roll_idle_1.png-e5347ac29eafabec49d377645a443c1a.ctex"]
 
 [params]
 
