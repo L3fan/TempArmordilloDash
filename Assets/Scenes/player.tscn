@@ -1,7 +1,7 @@
 [gd_scene load_steps=36 format=3 uid="uid://mdjyx11efd10"]
 
+[ext_resource type="PhysicsMaterial" path="res://Assets/PlayerPhysicsMat.tres" id="1_23lac"]
 [ext_resource type="Script" uid="uid://cfoxyrakflqib" path="res://Assets/Scripts/Player.cs" id="1_e5q2x"]
-[ext_resource type="PhysicsMaterial" uid="uid://cexo27xrthg6p" path="res://Assets/PlayerPhysicsMat.tres" id="1_mifcl"]
 [ext_resource type="Script" uid="uid://cbc6r3x84ejtj" path="res://addons/radial_progress/RadialProgress.gd" id="2_mifcl"]
 [ext_resource type="Shader" uid="uid://dmt6wsb40s7c6" path="res://Assets/Shaders/OutlineShader.tres" id="5_2thea"]
 [ext_resource type="Texture2D" uid="uid://bebk5tpe88rsw" path="res://Assets/Textures/Dylan/Armadillo_sprite_sheet.png" id="6_jqe1p"]
@@ -308,7 +308,7 @@ graph_offset = Vector2(-185, -70)
 
 [node name="Player" type="RigidBody2D" node_paths=PackedStringArray("radialProgress") groups=["Player"]]
 mass = 10.0
-physics_material_override = ExtResource("1_mifcl")
+physics_material_override = ExtResource("1_23lac")
 lock_rotation = true
 continuous_cd = 2
 contact_monitor = true

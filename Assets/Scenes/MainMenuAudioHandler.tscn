@@ -1,18 +1,11 @@
-[gd_scene load_steps=4 format=3 uid="uid://l73do20wf24p"]
+[gd_scene load_steps=2 format=3 uid="uid://l73do20wf24p"]
 
-[ext_resource type="Script" uid="uid://cgraife8ym6cx" path="res://Assets/Scenes/AudioHandler.cs" id="1_00v7g"]
-[ext_resource type="AudioStream" uid="uid://cf0hgthptu4fl" path="res://Assets/Audio/Soundeffects/UI/JDSherbert - Ultimate UI SFX Pack - Select - 1.mp3" id="2_7jpb0"]
-[ext_resource type="AudioStream" uid="uid://b2r64w5lovwvi" path="res://Assets/Audio/Soundeffects/UI/JDSherbert - Ultimate UI SFX Pack - Cancel - 1.mp3" id="3_2sfhv"]
+[ext_resource type="Script" uid="uid://cgraife8ym6cx" path="res://Assets/Scripts/AudioHandler.cs" id="1_00v7g"]
 
-[node name="AudioHandler" type="Node2D"]
+[node name="AudioHandler" type="Node2D" node_paths=PackedStringArray("soundeffectEvents")]
 script = ExtResource("1_00v7g")
-
-[node name="SelectSFXPlayer" type="AudioStreamPlayer" parent="."]
-stream = ExtResource("2_7jpb0")
-max_polyphony = 5
-bus = &"Soundeffect"
-
-[node name="CancelSFXPlayer" type="AudioStreamPlayer" parent="."]
-stream = ExtResource("3_2sfhv")
-max_polyphony = 5
-bus = &"Soundeffect"
+soundeffectPaths = Dictionary[String, String]({
+"Cancel": "event:/UICancel",
+"Confirm": "event:/UIConfirm"
+})
+soundeffectEvents = {}

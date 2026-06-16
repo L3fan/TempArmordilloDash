@@ -1,0 +1,7 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://cefpsh177nki1"]
+
+[ext_resource type="Shader" uid="uid://dbxsq7xjpuwgd" path="res://Assets/Shaders/FloorScrollingShader.tres" id="1_e3f56"]
+
+[resource]
+shader = ExtResource("1_e3f56")
+shader_parameter/Offset = 0.0

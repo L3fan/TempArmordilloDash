@@ -1,6 +1,6 @@
-[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://dkem4frih0jkr"]
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://bsxj35crhbfhn"]
 
-[ext_resource type="Shader" uid="uid://dbxsq7xjpuwgd" path="res://Assets/Scenes/FloorScrollingShader.tres" id="1_3xaip"]
+[ext_resource type="Shader" uid="uid://dbxsq7xjpuwgd" path="res://Assets/Shaders/FloorScrollingShader.tres" id="1_3xaip"]
 
 [resource]
 shader = ExtResource("1_3xaip")

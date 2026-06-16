@@ -1,6 +1,6 @@
 [gd_scene load_steps=54 format=4 uid="uid://ldkjvkn8vp48"]
 
-[ext_resource type="TileSet" uid="uid://dcou5kgogcpka" path="res://Assets/Scenes/CaveTiles.tres" id="1_68jkn"]
+[ext_resource type="TileSet" uid="uid://dcou5kgogcpka" path="res://Assets/Textures/CaveTiles.tres" id="1_68jkn"]
 [ext_resource type="Script" uid="uid://bnn64xyekpr5c" path="res://Assets/Scripts/LevelSection.cs" id="1_bf0w3"]
 [ext_resource type="Script" uid="uid://dhdc4b8yddyej" path="res://addons/rmsmartshape/shapes/shape.gd" id="2_6umj5"]
 [ext_resource type="Script" uid="uid://bwcf4pjgprn0k" path="res://addons/rmsmartshape/shapes/point.gd" id="3_p8ydy"]

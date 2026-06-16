@@ -1,4 +1,4 @@
-[gd_scene load_steps=59 format=4 uid="uid://cgs5nj5d584tx"]
+[gd_scene load_steps=58 format=4 uid="uid://cgs5nj5d584tx"]
 
 [ext_resource type="Script" uid="uid://4ejwxmemmskq" path="res://Assets/Scripts/LevelGenerator.cs" id="1_lmwb7"]
 [ext_resource type="Script" uid="uid://dhdc4b8yddyej" path="res://addons/rmsmartshape/shapes/shape.gd" id="2_i7dho"]
@@ -14,7 +14,6 @@
 [ext_resource type="Script" uid="uid://d0xjijisx1woh" path="res://addons/rmsmartshape/materials/edge_material.gd" id="10_24h34"]
 [ext_resource type="Script" uid="uid://d218yx0d1ilsn" path="res://addons/rmsmartshape/normal_range.gd" id="11_kb8c4"]
 [ext_resource type="PackedScene" uid="uid://duxf3nwudnn1e" path="res://Assets/Scenes/BackgroundParallax.tscn" id="17_v2qml"]
-[ext_resource type="AudioStream" uid="uid://b88qxh6bc62rv" path="res://Assets/Audio/Music/hurry_up_and_run.ogg" id="18_o2a3m"]
 
 [sub_resource type="Resource" id="Resource_jyc3m"]
 script = ExtResource("4_s1ab8")
@@ -401,9 +400,11 @@ polygon = PackedVector2Array(992, -1320, -1023.7367, -1320.1632, -1024, -248, -1
 [node name="ParallaxBackground" parent="." instance=ExtResource("17_v2qml")]
 z_index = -100
 
-[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
-process_mode = 3
-stream = ExtResource("18_o2a3m")
+[node name="FmodBankLoader" type="FmodBankLoader" parent="."]
+bank_paths = ["res://Assets/Audio/ArmordilloDashBank/Build/Desktop/Master.strings.bank", "res://Assets/Audio/ArmordilloDashBank/Build/Desktop/Master.bank"]
+
+[node name="FmodEventEmitter2D" type="FmodEventEmitter2D" parent="."]
+event_name = "event:/EnterLevel"
+event_guid = "{f46b17dd-31a3-4587-9179-3fe83f8b5132}"
 autoplay = true
-bus = &"Music"
-parameters/looping = true
+volume = 0.4

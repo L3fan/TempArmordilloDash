@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://c4e38trnicacr"]
+[gd_scene load_steps=15 format=3 uid="uid://c4e38trnicacr"]
 
 [ext_resource type="Script" uid="uid://blofsjafqy7vi" path="res://Assets/Scripts/MainMenu.cs" id="1_b37ua"]
 [ext_resource type="Texture2D" uid="uid://emt6necqoxu4" path="res://Assets/Textures/origbig.png" id="2_23ht4"]
@@ -6,7 +6,6 @@
 [ext_resource type="Theme" uid="uid://b1u83xngulxbq" path="res://Assets/Themes/PauseMenuTheme.tres" id="4_5powm"]
 [ext_resource type="PackedScene" uid="uid://kgexjxgug512" path="res://Assets/Scenes/FPSDisplay.tscn" id="5_b37ua"]
 [ext_resource type="PackedScene" uid="uid://l73do20wf24p" path="res://Assets/Scenes/MainMenuAudioHandler.tscn" id="6_23ht4"]
-[ext_resource type="AudioStream" uid="uid://b5jk7vdlit11v" path="res://Assets/Audio/Music/happywalking.ogg" id="7_t8wwc"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_x260n"]
 bg_color = Color(0.27752772, 0.27752775, 0.27752757, 1)
@@ -48,7 +47,7 @@ bg_color = Color(0.51985234, 0, 0.013529217, 1)
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_u77n8"]
 bg_color = Color(0.74607056, 4.4304357e-05, 0.025927361, 1)
 
-[node name="MainMenuScene" type="Control" node_paths=PackedStringArray("doubleCheck", "leaderboardDisplay", "nameEntry", "timeEntry", "settingsDisplay", "audioHandler", "quitButton")]
+[node name="MainMenuScene" type="Control" node_paths=PackedStringArray("doubleCheck", "leaderboardDisplay", "nameEntry", "timeEntry", "audioHandler", "settingsDisplay", "quitButton")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -60,8 +59,8 @@ doubleCheck = NodePath("Control/DoubleCheckWindow")
 leaderboardDisplay = NodePath("Control/Leaderboard")
 nameEntry = NodePath("Control/Leaderboard/Names")
 timeEntry = NodePath("Control/Leaderboard/Time")
-settingsDisplay = NodePath("Control/Settings")
 audioHandler = NodePath("AudioHandler")
+settingsDisplay = NodePath("Control/Settings")
 quitButton = NodePath("Control/GameButtons/EndGameButton")
 
 [node name="TextureRect" type="TextureRect" parent="."]
@@ -536,13 +535,19 @@ theme_override_styles/normal = SubResource("StyleBoxFlat_museo")
 theme_override_styles/hover = SubResource("StyleBoxFlat_u77n8")
 text = "CLOSE"
 
-[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
-stream = ExtResource("7_t8wwc")
-autoplay = true
-bus = &"Music"
-parameters/looping = true
+[node name="FmodBankLoader" type="FmodBankLoader" parent="."]
+bank_paths = ["res://Assets/Audio/ArmordilloDashBank/Build/Desktop/Master.strings.bank", "res://Assets/Audio/ArmordilloDashBank/Build/Desktop/Master.bank"]
 
-[node name="AudioHandler" parent="." instance=ExtResource("6_23ht4")]
+[node name="BGM" type="FmodEventEmitter2D" parent="."]
+event_name = "event:/EnterMainMenu"
+event_guid = "{87f18cf5-2516-45ea-84b8-973f6ba33ff7}"
+autoplay = true
+
+[node name="AudioHandler" parent="." node_paths=PackedStringArray("soundeffectEvents") instance=ExtResource("6_23ht4")]
+soundeffectEvents = {
+"Cancel": NodePath("CancelSFX"),
+"Confirm": NodePath("ConfirmSFX")
+}
 
 [connection signal="pressed" from="Control/GameButtons/StartButton" to="." method="_OnStartButtonPressed"]
 [connection signal="pressed" from="Control/GameButtons/LeaderboardButton" to="." method="_OnLeaderboardButtonPressed"]

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.03.00">
+	<object class="AudioFile" id="{98b23a61-89af-492a-8b5b-8569e9e7abcd}">
+		<property name="assetPath">
+			<value>BGM/happywalking.ogg</value>
+		</property>
+		<property name="isStreaming">
+			<value>true</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>48</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>103.39904166666666</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{dd9d4aaf-7db6-41e8-a1f8-74de3764e7fb}</destination>
+		</relationship>
+	</object>
+</objects>

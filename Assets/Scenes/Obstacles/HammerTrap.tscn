@@ -1,6 +1,6 @@
 [gd_scene load_steps=13 format=4 uid="uid://7gqmvc36hr2g"]
 
-[ext_resource type="TileSet" uid="uid://dcou5kgogcpka" path="res://Assets/Scenes/CaveTiles.tres" id="1_6fer2"]
+[ext_resource type="TileSet" uid="uid://dcou5kgogcpka" path="res://Assets/Textures/CaveTiles.tres" id="1_6fer2"]
 [ext_resource type="Script" uid="uid://c4nfbmei1shd" path="res://Assets/Scripts/HammerTrap.cs" id="2_6fer2"]
 [ext_resource type="Shader" uid="uid://dmt6wsb40s7c6" path="res://Assets/Shaders/OutlineShader.tres" id="2_7ce1b"]
 [ext_resource type="Script" uid="uid://cmyxlnxfcrfjh" path="res://Assets/Scripts/Tripwire.cs" id="3_o5gcf"]
@@ -18,6 +18,21 @@ size = Vector2(144, 288)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ka8ht"]
 size = Vector2(13, 217)
 
+[sub_resource type="Animation" id="Animation_li8sm"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+
 [sub_resource type="Animation" id="Animation_powlk"]
 resource_name = "cut_rope"
 length = 0.500005
@@ -33,21 +48,6 @@ tracks/0/keys = {
 "transitions": PackedFloat32Array(1, 1, 1, 1, 1),
 "update": 1,
 "values": [1, 2, 3, 4, 5]
-}
-
-[sub_resource type="Animation" id="Animation_li8sm"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [0]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_vjl1h"]

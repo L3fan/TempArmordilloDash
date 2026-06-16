@@ -2,7 +2,7 @@
 
 [ext_resource type="PhysicsMaterial" uid="uid://7bqaj4crhleg" path="res://Assets/Scenes/ObstaclePhysicsMat.tres" id="1_25mr2"]
 [ext_resource type="Script" uid="uid://dhta63jjmvire" path="res://Assets/Scripts/Spinner.cs" id="2_xwkv2"]
-[ext_resource type="TileSet" uid="uid://dcou5kgogcpka" path="res://Assets/Scenes/CaveTiles.tres" id="3_pto3c"]
+[ext_resource type="TileSet" uid="uid://dcou5kgogcpka" path="res://Assets/Textures/CaveTiles.tres" id="3_pto3c"]
 
 [sub_resource type="Animation" id="Animation_mtb7m"]
 length = 0.001

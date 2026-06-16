@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using FmodSharp;
 
 public partial class MainMenu : Control
 {
@@ -9,9 +10,11 @@ public partial class MainMenu : Control
 	[Export] public RichTextLabel nameEntry;
 	[Export] public RichTextLabel timeEntry;
 
-	[Export] public Control settingsDisplay;
-
 	[Export] public AudioHandler audioHandler;
+
+	[Export] public Control settingsDisplay;
+	
+	
 
 	[Export] private Button quitButton;
 	// Called when the node enters the scene tree for the first time.
@@ -34,45 +37,45 @@ public partial class MainMenu : Control
 
 	public void _OnStartButtonPressed()
 	{
-		audioHandler.Play(MainMenuSFXType.SELECT);
+		audioHandler.Play(MainMenuSFXType.Confirm);
 		GameManager.Instance.Load(SceneType.Level);
 	}
 
 	public void _OnEndGameButtonPressed()
 	{
-		audioHandler.Play(MainMenuSFXType.CANCEL);
+		audioHandler.Play(MainMenuSFXType.Cancel);
 		GetTree().Quit();
 	}
 
 	public void _OnResetButtonPressed()
 	{
-		audioHandler.Play(MainMenuSFXType.SELECT);
+		audioHandler.Play(MainMenuSFXType.Confirm);
 		doubleCheck.Visible = true;
 	}
 
 	public void _OnConfirmResetButtonPressed()
 	{
-		audioHandler.Play(MainMenuSFXType.SELECT);
+		audioHandler.Play(MainMenuSFXType.Confirm);
 		Save.Instance.DeleteLeaderboard();
 		doubleCheck.Visible = false;
 	}
 
 	public void _OnCancelResetButtonPressed()
 	{
-		audioHandler.Play(MainMenuSFXType.CANCEL);
+		audioHandler.Play(MainMenuSFXType.Cancel);
 		doubleCheck.Visible = false;
 	}
 
 	public void _OnLeaderboardButtonPressed()
 	{
-		audioHandler.Play(MainMenuSFXType.SELECT);
+		audioHandler.Play(MainMenuSFXType.Confirm);
 		leaderboardDisplay.Visible = true;
 		Save.Instance.ShowLeaderboard(nameEntry, timeEntry);
 	}
 	
 	public void _OnCloseLeaderboardButtonPressed()
 	{
-		audioHandler.Play(MainMenuSFXType.CANCEL);
+		audioHandler.Play(MainMenuSFXType.Cancel);
 		leaderboardDisplay.Visible = false;
 		nameEntry.Text = "Name";
 		timeEntry.Text = "Time";
@@ -98,13 +101,13 @@ public partial class MainMenu : Control
 
 	public void _OnSettingsButtonPressed()
 	{
-		audioHandler.Play(MainMenuSFXType.SELECT);
+		audioHandler.Play(MainMenuSFXType.Confirm);
 		settingsDisplay.Visible = true;
 	}
 
 	public void _OnCloseSettingsButtonPressed()
 	{
-		audioHandler.Play(MainMenuSFXType.CANCEL);
+		audioHandler.Play(MainMenuSFXType.Cancel);
 		Settings.Instance.SaveSettings();
 		settingsDisplay.Visible = false;
 	}

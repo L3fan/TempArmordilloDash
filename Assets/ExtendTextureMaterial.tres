@@ -1,6 +1,0 @@
-[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://c3yqu2r0xhqi"]
-
-[ext_resource type="Shader" uid="uid://ojhv7qxnflug" path="res://Assets/Shaders/ExtendTextureShader.tres" id="1_58voc"]
-
-[resource]
-shader = ExtResource("1_58voc")
