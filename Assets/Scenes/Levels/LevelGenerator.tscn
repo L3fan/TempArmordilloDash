@@ -402,9 +402,11 @@ z_index = -100
 
 [node name="FmodBankLoader" type="FmodBankLoader" parent="."]
 bank_paths = ["res://Assets/Audio/ArmordilloDashBank/Build/Desktop/Master.strings.bank", "res://Assets/Audio/ArmordilloDashBank/Build/Desktop/Master.bank"]
+process_mode = 3
 
 [node name="FmodEventEmitter2D" type="FmodEventEmitter2D" parent="."]
 event_name = "event:/EnterLevel"
 event_guid = "{f46b17dd-31a3-4587-9179-3fe83f8b5132}"
 autoplay = true
 volume = 0.4
+process_mode = 3

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.03.00">
+	<object class="AudioFile" id="{f07f13f2-6383-4263-975f-58e94e4dbf95}">
+		<property name="assetPath">
+			<value>SFX/743257__qubodup__short-grind-sound.wav</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>48</value>
+		</property>
+		<property name="channelCount">
+			<value>1</value>
+		</property>
+		<property name="length">
+			<value>0.36991666666666667</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{dd9d4aaf-7db6-41e8-a1f8-74de3764e7fb}</destination>
+		</relationship>
+	</object>
+</objects>

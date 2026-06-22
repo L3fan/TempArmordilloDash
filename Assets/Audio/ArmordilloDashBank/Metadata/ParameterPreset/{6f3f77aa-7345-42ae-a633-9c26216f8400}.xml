@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.03.00">
+	<object class="ParameterPreset" id="{6f3f77aa-7345-42ae-a633-9c26216f8400}">
+		<property name="name">
+			<value>Modulation</value>
+		</property>
+		<relationship name="folder">
+			<destination>{f8f9bf8e-29b9-420c-8a7e-5319e2e6c1db}</destination>
+		</relationship>
+		<relationship name="parameter">
+			<destination>{ed7d33de-f7df-460c-8af2-39a64518a097}</destination>
+		</relationship>
+	</object>
+	<object class="GameParameter" id="{ed7d33de-f7df-460c-8af2-39a64518a097}">
+		<property name="initialValue">
+			<value>0</value>
+		</property>
+	</object>
+</objects>

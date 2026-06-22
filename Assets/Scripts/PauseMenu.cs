@@ -1,6 +1,7 @@
 using Godot;
 using System;
 using System.Diagnostics;
+using FmodSharp;
 
 public partial class PauseMenu : ColorRect
 {
@@ -34,6 +35,7 @@ public partial class PauseMenu : ColorRect
 		GetTree().Paused = setPauseMenu;
 		Visible = setPauseMenu;
 		pauseMenuOpen = setPauseMenu;
+		
 	}
 
 	private void _OnResumeButtonPressed()

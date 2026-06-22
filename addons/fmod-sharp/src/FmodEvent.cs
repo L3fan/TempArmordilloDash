@@ -121,7 +121,7 @@ public partial class FmodEvent : Node
     public override void _Process(double delta)
     {
         if (!IsPlaying) return;
-
+        
         var parent = GetParent();
         if (parent is Node2D or Node3D)
         {

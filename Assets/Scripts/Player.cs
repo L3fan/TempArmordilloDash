@@ -2,6 +2,7 @@ using Godot;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using FmodSharp;
 using Vector2 = Godot.Vector2;
 
 public partial class Player : RigidBody2D
@@ -17,6 +18,7 @@ public partial class Player : RigidBody2D
     private Vector2 direction = new Vector2(1, 0);
     private Vector2 forwardDir = new Vector2(1, 0);
     private Vector2 lastVelocity = Vector2.Zero;
+    private Vector2 lastDirection = Vector2.Down;
     private List<Object> lastColliders = new List<Object>();
     private CollisionShape2D collisionShape;
     [Export] private bool isOnFloor = false;
@@ -60,11 +62,18 @@ public partial class Player : RigidBody2D
 
     [Export] private Control radialProgress;
 
+    [Export] private AudioHandler audioHandler;
+
     private EnvState envState = EnvState.DEFAULT;
 
     public Controls currentControls;
 
+    private Action onLandedOnFloor;
+    private Action onLeftFloor;
+
     private float drag = 1.0f;
+
+    private List<GodotObject> contactObjects = new List<GodotObject>();
 
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
@@ -76,6 +85,9 @@ public partial class Player : RigidBody2D
         animationTree = GetNode<AnimationTree>("SpritePixel/AnimationTree");
 
         respawnPoint = Position;
+
+        onLandedOnFloor += OnLandedOnFloor;
+        onLeftFloor += OnLeftFloor;
     }
 
     // Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -88,8 +100,13 @@ public partial class Player : RigidBody2D
         base._IntegrateForces(state);
 
         float delta = state.Step;
+        
+        if(lastVelocity != Vector2.Zero)
+            lastDirection = lastVelocity.Normalized();
 
-        isOnFloor = GetFloorState(state);
+        UpdateFloorState(state);
+
+        UpdateRollingSoundValue(state);
 
         velocityInfo = "";
         SlowdownCalc(delta);
@@ -125,19 +142,63 @@ public partial class Player : RigidBody2D
         UpdateSpriteValues(delta);
 
         lastVelocity = LinearVelocity;
-        
+
     }
 
-    private bool GetFloorState(PhysicsDirectBodyState2D state)
+    private void UpdateFloorState(PhysicsDirectBodyState2D state)
     {
+        bool wasOnFloor = isOnFloor;
+        isOnFloor =  false;
+
+        List<GodotObject> newContactObjects = new List<GodotObject>();
+        
+        //GD.Print("Checking for contacts...");
+        
         for (int i = 0; i < state.GetContactCount(); i++)
         {
-            Vector2 contactPosition = state.GetContactColliderPosition(i);
-            if (contactPosition.Y > Position.Y)
-                return true;
+            GodotObject currentContactObject = state.GetContactColliderObject(i);
+            newContactObjects.Add(currentContactObject);
+            if (!contactObjects.Contains(currentContactObject))
+            {
+
+                Vector2 contactNormal = state.GetContactLocalNormal(i);
+                if (RotationOfVectors(contactNormal, LinearVelocity) < 60 &&
+                    (LinearVelocity - lastVelocity).Length() > 100)
+                {
+                    lastDirection = contactNormal.Normalized();
+                    OnHitSurface();
+                }
+            }
+
+            if (!isOnFloor)
+            {
+                Vector2 contactPosition = state.GetContactColliderPosition(i);
+                //GD.Print("Checking Object" + currentContactObject + " with Point " + contactPosition);
+                if (contactPosition.Y > Position.Y)
+                {
+                    if (!wasOnFloor)
+                        onLandedOnFloor?.Invoke();
+                    isOnFloor = true;
+                }
+            }
         }
 
-        return false;
+        contactObjects = newContactObjects;
+
+        if(wasOnFloor && !isOnFloor)
+            onLeftFloor?.Invoke();
+        
+        //GD.Print("Is on floor: " + isOnFloor);
+    }
+    
+    private void UpdateRollingSoundValue(PhysicsDirectBodyState2D state)
+    {
+        if (!isOnFloor)
+            return;
+        
+        audioHandler.soundeffectEvents.TryGetValue("Rolling", out FmodEvent rollingEvent);
+        rollingEvent?.SetParameterByName("Speed", Mathf.Min(LinearVelocity.Length()/(maxSpeed*5), 1));
+        
     }
 
     private void DashCooldownCalc(float delta)
@@ -194,6 +255,9 @@ public partial class Player : RigidBody2D
         InputJumpCalc(delta);
 
         InputHorizontalCalc(delta);
+
+        if (isOnFloor)
+            LinearVelocity += Vector2.Down;
     }
 
     private void InputDash(float delta)
@@ -267,7 +331,7 @@ public partial class Player : RigidBody2D
 
             if (justLanded)
             {
-                slowdownForce += friction * delta * 0.5f;
+                //slowdownForce += friction * delta * 0.5f;
                 justLanded = false;
             }
 
@@ -394,7 +458,9 @@ public partial class Player : RigidBody2D
     public float RotationOfVectors(Vector2 vec1, Vector2 vec2)
     {
         float radiansAngle = Mathf.Acos(vec1.Dot(vec2) / (vec1.Length() * vec2.Length()));
-        return Mathf.Abs(radiansAngle * 180 / Mathf.Pi);
+        float degreesAngle = Mathf.Abs(radiansAngle * 180 / Mathf.Pi);
+        //GD.Print(degreesAngle);
+        return degreesAngle;
     }
 
     private void UpdateSpriteValues(float delta)
@@ -478,15 +544,6 @@ public partial class Player : RigidBody2D
         return lastVelocity;
     }
 
-    public static async void StartCoroutine(IEnumerable coroutine)
-    {
-        var mainLoopTree = Engine.GetMainLoop();
-        foreach (var _ in coroutine)
-        {
-            await mainLoopTree.ToSignal(mainLoopTree, SceneTree.SignalName.ProcessFrame);
-        }
-    }
-
     public void SetEnvState(EnvState state)
     {
         envState = state;
@@ -506,6 +563,22 @@ public partial class Player : RigidBody2D
                 GravityScale /= 3f;
                 break;
         }
+    }
+
+    private void OnLandedOnFloor()
+    {
+        audioHandler.PlayContinuous("Rolling");
+    }
+
+    private void OnLeftFloor()
+    {
+        GD.Print("Left Floor...");
+        audioHandler.Stop("Rolling");
+    }
+
+    private void OnHitSurface()
+    {
+        audioHandler.PlaySingle("Impact");
     }
 }
 

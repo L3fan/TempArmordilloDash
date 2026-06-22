@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.03.00">
+	<object class="AudioFile" id="{f28ecc03-e38c-4404-ae84-c55807e6d7ff}">
+		<property name="assetPath">
+			<value>SFX/743246__qubodup__move-stone-rune-4.wav</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>48</value>
+		</property>
+		<property name="channelCount">
+			<value>1</value>
+		</property>
+		<property name="length">
+			<value>0.21704166666666666</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{dd9d4aaf-7db6-41e8-a1f8-74de3764e7fb}</destination>
+		</relationship>
+	</object>
+</objects>

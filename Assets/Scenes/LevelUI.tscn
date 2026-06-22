@@ -15,12 +15,12 @@
 [ext_resource type="Texture2D" uid="uid://b0vsde0qd68by" path="res://Assets/Textures/UI Elements/SimpleKeys/Classic/Light/Spritesheets/S.png" id="12_hpckm"]
 [ext_resource type="Texture2D" uid="uid://brld20wd22m6q" path="res://Assets/Textures/Dylan/armadillo_sprite_sheet_pixel.png" id="12_hxwcs"]
 [ext_resource type="Texture2D" uid="uid://dd0xwpyxuhopc" path="res://Assets/Textures/UI Elements/SimpleKeys/Classic/Light/Spritesheets/D.png" id="13_s3pbp"]
-[ext_resource type="Material" path="res://Assets/FloorScrollingMat1.tres" id="14_5xvw5"]
+[ext_resource type="Material" uid="uid://diirx6gi3fpgu" path="res://Assets/FloorScrollingMat1.tres" id="14_5xvw5"]
 [ext_resource type="Shader" uid="uid://dmt6wsb40s7c6" path="res://Assets/Shaders/OutlineShader.tres" id="16_4ycha"]
 [ext_resource type="Texture2D" uid="uid://cf3tnlqgq0vsn" path="res://Assets/Textures/UI Elements/SimpleKeys/Classic/Light/Spritesheets/SPACE.png" id="17_s3pbp"]
-[ext_resource type="Material" path="res://Assets/FloorScrollingMat2.tres" id="18_6os6k"]
+[ext_resource type="Material" uid="uid://bpa377noqt2vg" path="res://Assets/FloorScrollingMat2.tres" id="18_6os6k"]
 [ext_resource type="Texture2D" uid="uid://d3yxrxss3cwpu" path="res://Assets/Textures/Spike.png" id="19_4ycha"]
-[ext_resource type="Material" path="res://Assets/FloorScrollingMat3.tres" id="20_6os6k"]
+[ext_resource type="Material" uid="uid://bsxj35crhbfhn" path="res://Assets/FloorScrollingMat3.tres" id="20_6os6k"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4eh7o"]
 bg_color = Color(0.18027332, 0.7212115, 7.70092e-07, 1)
@@ -689,6 +689,8 @@ blackScreen = NodePath("../CanvasLayer/Screens/BlackScreen")
 resultScreen = NodePath("../CanvasLayer/ResultScreen")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
+scale = Vector2(0.88, 0.88)
+transform = Transform2D(0.88, 0, 0, 0.88, 0, 0)
 
 [node name="Debug Screen" type="Control" parent="CanvasLayer" node_paths=PackedStringArray("velocityDisplay", "parameterDisplay")]
 visible = false
@@ -974,13 +976,11 @@ visible = false
 
 [node name="Tutorial Screen" type="Panel" parent="CanvasLayer" node_paths=PackedStringArray("pauseMenu")]
 z_index = 5
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = -10.0
-offset_top = -10.0
-offset_right = 10.0
-offset_bottom = 10.0
+anchors_preset = -1
+anchor_right = 1.136
+anchor_bottom = 1.1350001
+offset_right = 0.60791016
+offset_bottom = 0.14526367
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("9_hpckm")
@@ -1184,11 +1184,13 @@ hframes = 2
 
 [node name="Animation" type="Control" parent="CanvasLayer/Tutorial Screen/Dash"]
 clip_contents = true
-anchors_preset = 0
+layout_mode = 1
+anchor_right = 0.76900005
+anchor_bottom = 1.0
 offset_left = 1064.0
 offset_top = 42.0
-offset_right = 1448.0
-offset_bottom = 356.0
+offset_right = -0.3116455
+offset_bottom = 2.8879395
 
 [node name="FloorExample" type="Sprite2D" parent="CanvasLayer/Tutorial Screen/Dash/Animation"]
 texture_repeat = 2

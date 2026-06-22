@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using Godot;
 using FmodSharp;
 
-public partial class AudioHandler : Node2D
+public partial class AudioHandler : Node
 {
 	[Export] public Godot.Collections.Dictionary<string, string> soundeffectPaths;
 	[Export] public Godot.Collections.Dictionary<string, FmodEvent> soundeffectEvents;
@@ -26,19 +26,38 @@ public partial class AudioHandler : Node2D
 	{
 	}
 
-	public void Play(MainMenuSFXType type)
+	public void Play(string sfxName)
 	{
-		FmodEvent sfx = null;
-		switch (type)
-		{
-			case MainMenuSFXType.Confirm:
-				soundeffectEvents.TryGetValue("Confirm", out sfx);
-				break;
-			case MainMenuSFXType.Cancel:
-				soundeffectEvents.TryGetValue("Cancel", out sfx);
-				break;
-		}
+		FmodEvent sfx;
+		soundeffectEvents.TryGetValue(sfxName, out sfx);
 		sfx?.Start();
+	}
+
+	public void PlaySingle(string sfxName)
+	{
+		string sfxPath;
+		soundeffectPaths.TryGetValue(sfxName, out sfxPath);
+		if (sfxPath == null)
+			return;
+		FmodEvent sfx = FmodServerWrapper.CreateEventInstance(sfxPath);
+		sfx.ProcessMode = ProcessModeEnum.Pausable;
+		sfx?.Start();
+
+	}
+	
+	
+	public void PlayContinuous(string sfxName)
+	{
+		FmodEvent sfx;
+		soundeffectEvents.TryGetValue(sfxName, out sfx);
+		sfx?.Start();
+	}
+
+	public void Stop(string sfxName)
+	{
+		FmodEvent sfx;
+		soundeffectEvents.TryGetValue(sfxName, out sfx);
+		sfx?.Stop();
 	}
 }
 
