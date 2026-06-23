@@ -572,7 +572,6 @@ public partial class Player : RigidBody2D
 
     private void OnLeftFloor()
     {
-        GD.Print("Left Floor...");
         audioHandler.Stop("Rolling");
     }
 

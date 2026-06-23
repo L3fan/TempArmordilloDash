@@ -30,7 +30,7 @@ public partial class Settings : Node2D
 		
 		mainMenuScenePath = sceneFolder + "MainMenuScene.tscn";
 		
-		playerScenePath = sceneFolder + "Player.tscn";
+		playerScenePath = sceneFolder + "player.tscn";
 		
 		trailScenePath = sceneFolder + "DashTrail.tscn";
 
