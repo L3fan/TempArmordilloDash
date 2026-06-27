@@ -5,6 +5,9 @@ public partial class Tripwire : Node2D
 {
 	[Export] public HammerTrap hammerTrap;
 	[Export] public Sprite2D wire;
+	
+	[Signal]
+	public delegate void ActivateTrapEventHandler();
 
 	private bool activated = false;
 	// Called when the node enters the scene tree for the first time.
@@ -23,6 +26,7 @@ public partial class Tripwire : Node2D
 			return;
 		wire.GetNode<AnimationPlayer>("AnimationPlayer").Play("cut_rope");
 		activated = true;
-		hammerTrap.Activate();
+		hammerTrap.ActivateTrap();
+		EmitSignalActivateTrap();
 	}
 }

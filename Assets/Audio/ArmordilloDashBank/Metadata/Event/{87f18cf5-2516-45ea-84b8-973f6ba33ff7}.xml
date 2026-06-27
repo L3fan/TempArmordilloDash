@@ -2,13 +2,13 @@
 <objects serializationModel="Studio.02.03.00">
 	<object class="Event" id="{87f18cf5-2516-45ea-84b8-973f6ba33ff7}">
 		<property name="name">
-			<value>EnterMainMenu</value>
+			<value>MainMenu</value>
 		</property>
 		<property name="outputFormat">
 			<value>1</value>
 		</property>
 		<relationship name="folder">
-			<destination>{c5862349-ebc3-46cd-bdfa-9d171722f9af}</destination>
+			<destination>{834e73e5-7a07-4bc0-915d-1ed173711de7}</destination>
 		</relationship>
 		<relationship name="mixer">
 			<destination>{13e20dd5-947f-4da2-a05e-97b456824416}</destination>
@@ -32,7 +32,7 @@
 			<destination>{b2be613a-d5ef-451d-ba2f-f8ac502731f9}</destination>
 		</relationship>
 		<relationship name="banks">
-			<destination>{40b8e59e-bee0-455f-8bdb-b310ac6d01e8}</destination>
+			<destination>{60a87be0-f5de-4a83-b2c3-0730db95ef7a}</destination>
 		</relationship>
 	</object>
 	<object class="EventMixer" id="{13e20dd5-947f-4da2-a05e-97b456824416}">

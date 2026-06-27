@@ -1,3 +1,5 @@
+using System;
+using System.Threading.Tasks;
 using Godot;
 
 namespace Armordillo_Dash.Assets.Scripts;
@@ -10,6 +12,9 @@ public partial class Spinner : Obstacle
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
+		animationPlayer = GetNode<AnimationPlayer>("%AnimationPlayer");
+		animationPlayer.Pause();
+		PlayAfterSeconds(Random.Shared.Next(0, 1));
 	}
 
 	public override void _PhysicsProcess(double delta)
@@ -21,5 +26,11 @@ public partial class Spinner : Obstacle
 		base.Setup(spot);
 		animationPlayer = GetChild(1).GetNode<AnimationPlayer>("AnimationPlayer");
 		animationPlayer.CurrentAnimation = "Spin";
+	}
+
+	public async void PlayAfterSeconds(float seconds)
+	{
+		await Task.Delay(TimeSpan.FromSeconds(seconds));
+		animationPlayer.Play("Spin");
 	}
 }

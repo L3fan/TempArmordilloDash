@@ -62,8 +62,6 @@ public partial class Player : RigidBody2D
 
     [Export] private Control radialProgress;
 
-    [Export] private AudioHandler audioHandler;
-
     private EnvState envState = EnvState.DEFAULT;
 
     public Controls currentControls;
@@ -74,6 +72,12 @@ public partial class Player : RigidBody2D
     private float drag = 1.0f;
 
     private List<GodotObject> contactObjects = new List<GodotObject>();
+
+    [Export] public Node2D gdEventRoll;
+    public FmodEvent rollEvent;
+    
+    [Export] public Node2D gdEventImpact;
+    public FmodEvent impactEvent;
 
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
@@ -88,6 +92,9 @@ public partial class Player : RigidBody2D
 
         onLandedOnFloor += OnLandedOnFloor;
         onLeftFloor += OnLeftFloor;
+
+        rollEvent = new FmodEvent(gdEventRoll);
+        impactEvent = new FmodEvent(gdEventImpact);
     }
 
     // Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -196,8 +203,7 @@ public partial class Player : RigidBody2D
         if (!isOnFloor)
             return;
         
-        audioHandler.soundeffectEvents.TryGetValue("Rolling", out FmodEvent rollingEvent);
-        rollingEvent?.SetParameterByName("Speed", Mathf.Min(LinearVelocity.Length()/(maxSpeed*5), 1));
+        rollEvent.SetParameterByName("Speed", Mathf.Min(LinearVelocity.Length()/(maxSpeed*5), 1));
         
     }
 
@@ -567,18 +573,17 @@ public partial class Player : RigidBody2D
 
     private void OnLandedOnFloor()
     {
-        audioHandler.PlayContinuous("Rolling");
+        rollEvent.Start();
     }
 
     private void OnLeftFloor()
     {
-        GD.Print("Left Floor...");
-        audioHandler.Stop("Rolling");
+        rollEvent.Stop();
     }
 
     private void OnHitSurface()
     {
-        audioHandler.PlaySingle("Impact");
+        impactEvent.Start();
     }
 }
 

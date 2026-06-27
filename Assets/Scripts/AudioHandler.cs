@@ -4,20 +4,17 @@ using FmodSharp;
 
 public partial class AudioHandler : Node
 {
-	[Export] public Godot.Collections.Dictionary<string, string> soundeffectPaths;
-	[Export] public Godot.Collections.Dictionary<string, FmodEvent> soundeffectEvents;
+	[Export] public Godot.Collections.Dictionary<string, FmodEvent> events;
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
-		foreach (KeyValuePair<string, string> entry in soundeffectPaths)
+		foreach (var child in GetChildren())
 		{
-			FmodEvent sfxEvent = FmodServerWrapper.CreateEventInstance(entry.Value);
-			if(!soundeffectEvents.ContainsKey(entry.Key))
-				soundeffectEvents.Add(entry.Key, sfxEvent);
-			else
-			{
-				soundeffectEvents[entry.Key] = sfxEvent;
-			}
+			if (child is not FmodEvent)
+				return;
+			FmodEvent sfxEvent = (FmodEvent)child;
+			events.Add(child.Name, sfxEvent);
+			GD.Print("Added " + child.Name);
 		}
 	}
 
@@ -29,34 +26,14 @@ public partial class AudioHandler : Node
 	public void Play(string sfxName)
 	{
 		FmodEvent sfx;
-		soundeffectEvents.TryGetValue(sfxName, out sfx);
-		sfx?.Start();
-	}
-
-	public void PlaySingle(string sfxName)
-	{
-		string sfxPath;
-		soundeffectPaths.TryGetValue(sfxName, out sfxPath);
-		if (sfxPath == null)
-			return;
-		FmodEvent sfx = FmodServerWrapper.CreateEventInstance(sfxPath);
-		sfx.ProcessMode = ProcessModeEnum.Pausable;
-		sfx?.Start();
-
-	}
-	
-	
-	public void PlayContinuous(string sfxName)
-	{
-		FmodEvent sfx;
-		soundeffectEvents.TryGetValue(sfxName, out sfx);
+		events.TryGetValue(sfxName, out sfx);
 		sfx?.Start();
 	}
 
 	public void Stop(string sfxName)
 	{
 		FmodEvent sfx;
-		soundeffectEvents.TryGetValue(sfxName, out sfx);
+		events.TryGetValue(sfxName, out sfx);
 		sfx?.Stop();
 	}
 }

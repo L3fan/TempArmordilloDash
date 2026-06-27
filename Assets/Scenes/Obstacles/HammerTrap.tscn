@@ -49,6 +49,20 @@ tracks/0/keys = {
 "update": 1,
 "values": [1, 2, 3, 4, 5]
 }
+tracks/1/type = "method"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("FmodEventEmitter2D")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"play_one_shot"
+}]
+}
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_vjl1h"]
 _data = {
@@ -101,6 +115,11 @@ offset_right = 642.0
 offset_bottom = 146.0
 color = Color(0, 0, 0, 1)
 
+[node name="FmodEventEmitter2D" type="FmodEventEmitter2D" parent="Hammer"]
+event_name = "event:/SFX/Traps/HammerWhoosh"
+event_guid = "{ccd4c0a8-2c96-46b2-9a8d-9af7083301b6}"
+position = Vector2(568, 0)
+
 [node name="Tripwire" type="TileMapLayer" parent="." node_paths=PackedStringArray("hammerTrap", "wire")]
 texture_filter = 1
 scale = Vector2(2, 2)
@@ -129,6 +148,10 @@ libraries = {
 &"": SubResource("AnimationLibrary_vjl1h")
 }
 
+[node name="FmodEventEmitter2D" type="FmodEventEmitter2D" parent="Tripwire/Sprite2D"]
+event_name = "event:/SFX/Traps/RopeSnap"
+event_guid = "{7f1123f1-4142-4e17-93ea-bed56c364c4f}"
+
 [node name="ColorRect" type="ColorRect" parent="Tripwire"]
 z_index = -1
 offset_left = -17.0
@@ -136,4 +159,5 @@ offset_top = -161.0
 offset_right = 0.5
 color = Color(0, 0, 0, 1)
 
+[connection signal="ActivateTrap" from="Tripwire" to="Hammer/FmodEventEmitter2D" method="play_one_shot"]
 [connection signal="body_entered" from="Tripwire/Sprite2D/Area2D" to="Tripwire" method="_OnBodyEnteredWire"]

@@ -37,45 +37,45 @@ public partial class MainMenu : Control
 
 	public void _OnStartButtonPressed()
 	{
-		audioHandler.Play("Confirm");
+		audioHandler.Play("ConfirmSFX");
 		GameManager.Instance.Load(SceneType.Level);
 	}
 
 	public void _OnEndGameButtonPressed()
 	{
-		audioHandler.Play("Cancel");
+		audioHandler.Play("CancelSFX");
 		GetTree().Quit();
 	}
 
 	public void _OnResetButtonPressed()
 	{
-		audioHandler.Play("Confirm");
+		audioHandler.Play("ConfirmSFX");
 		doubleCheck.Visible = true;
 	}
 
 	public void _OnConfirmResetButtonPressed()
 	{
-		audioHandler.Play("Confirm");
+		audioHandler.Play("ConfirmSFX");
 		Save.Instance.DeleteLeaderboard();
 		doubleCheck.Visible = false;
 	}
 
 	public void _OnCancelResetButtonPressed()
 	{
-		audioHandler.Play("Cancel");
+		audioHandler.Play("CancelSFX");
 		doubleCheck.Visible = false;
 	}
 
 	public void _OnLeaderboardButtonPressed()
 	{
-		audioHandler.Play("Confirm");
+		audioHandler.Play("ConfirmSFX");
 		leaderboardDisplay.Visible = true;
 		Save.Instance.ShowLeaderboard(nameEntry, timeEntry);
 	}
 	
 	public void _OnCloseLeaderboardButtonPressed()
 	{
-		audioHandler.Play("Cancel");
+		audioHandler.Play("CancelSFX");
 		leaderboardDisplay.Visible = false;
 		nameEntry.Text = "Name";
 		timeEntry.Text = "Time";
@@ -101,13 +101,13 @@ public partial class MainMenu : Control
 
 	public void _OnSettingsButtonPressed()
 	{
-		audioHandler.Play("Confirm");
+		audioHandler.Play("ConfirmSFX");
 		settingsDisplay.Visible = true;
 	}
 
 	public void _OnCloseSettingsButtonPressed()
 	{
-		audioHandler.Play("Cancel");
+		audioHandler.Play("CancelSFX");
 		Settings.Instance.SaveSettings();
 		settingsDisplay.Visible = false;
 	}

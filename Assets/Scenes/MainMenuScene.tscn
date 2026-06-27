@@ -535,18 +535,15 @@ theme_override_styles/hover = SubResource("StyleBoxFlat_u77n8")
 text = "CLOSE"
 
 [node name="FmodBankLoader" type="FmodBankLoader" parent="."]
-bank_paths = ["res://Assets/Audio/ArmordilloDashBank/Build/Desktop/Master.strings.bank", "res://Assets/Audio/ArmordilloDashBank/Build/Desktop/Master.bank"]
+bank_paths = ["res://Assets/Audio/ArmordilloDashBank/Build/Desktop/Master.strings.bank", "res://Assets/Audio/ArmordilloDashBank/Build/Desktop/Master.bank", "res://Assets/Audio/ArmordilloDashBank/Build/Desktop/Player.bank", "res://Assets/Audio/ArmordilloDashBank/Build/Desktop/Traps.bank", "res://Assets/Audio/ArmordilloDashBank/Build/Desktop/UI.bank"]
 
 [node name="BGM" type="FmodEventEmitter2D" parent="."]
-event_name = "event:/EnterMainMenu"
+event_name = "event:/BGM/MainMenu"
 event_guid = "{87f18cf5-2516-45ea-84b8-973f6ba33ff7}"
 autoplay = true
 
-[node name="AudioHandler" parent="." node_paths=PackedStringArray("soundeffectEvents") instance=ExtResource("6_23ht4")]
-soundeffectEvents = {
-"Cancel": NodePath("CancelSFX"),
-"Confirm": NodePath("ConfirmSFX")
-}
+[node name="AudioHandler" parent="." node_paths=PackedStringArray("events") instance=ExtResource("6_23ht4")]
+events = {}
 
 [connection signal="pressed" from="Control/GameButtons/StartButton" to="." method="_OnStartButtonPressed"]
 [connection signal="pressed" from="Control/GameButtons/LeaderboardButton" to="." method="_OnLeaderboardButtonPressed"]

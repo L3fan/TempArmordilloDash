@@ -688,6 +688,8 @@ slowDownTint = NodePath("../CanvasLayer/Screens/SlowDownTint")
 blackScreen = NodePath("../CanvasLayer/Screens/BlackScreen")
 resultScreen = NodePath("../CanvasLayer/ResultScreen")
 
+[node name="FmodListener2D" type="FmodListener2D" parent="Camera2D"]
+
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 scale = Vector2(0.88, 0.88)
 transform = Transform2D(0.88, 0, 0, 0.88, 0, 0)

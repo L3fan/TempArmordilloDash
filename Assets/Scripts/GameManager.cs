@@ -1,6 +1,7 @@
 using Godot;
 using System;
 using System.Xml.Linq;
+using FmodSharp;
 
 public partial class GameManager : Node
 {
@@ -90,6 +91,7 @@ public partial class GameManager : Node
 				LoadLevel();
 				break;
 		}
+		FmodServerWrapper.GetAllBanks();
 		currentSceneType = sceneType;
 	}
 

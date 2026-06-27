@@ -35,6 +35,23 @@ tracks/0/keys = {
 "update": 0,
 "values": [0.0, -3.1415927, -3.1415927, -6.2831855, -6.2831855]
 }
+tracks/1/type = "method"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("FmodEventEmitter2D")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.75),
+"transitions": PackedFloat32Array(1, 1),
+"values": [{
+"args": [],
+"method": &"play_one_shot"
+}, {
+"args": [],
+"method": &"play_one_shot"
+}]
+}
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_xtyp0"]
 _data = {
@@ -69,8 +86,15 @@ tile_set = ExtResource("3_pto3c")
 polygon = PackedVector2Array(364, 32.00003, -364, 31.999968, -388, 0, -364, -32.00003, 364, -31.999968, 388, 3.3920038e-05)
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Spinner"]
+unique_name_in_owner = true
 root_node = NodePath("../..")
 root_motion_local = true
 libraries = {
 &"": SubResource("AnimationLibrary_xtyp0")
 }
+
+[node name="FmodEventEmitter2D" type="FmodEventEmitter2D" parent="."]
+event_name = "event:/SFX/Traps/SpinGrind"
+event_guid = "{a829de8d-50d7-4763-8dd5-d5db63c05eed}"
+auto_release = true
+volume = 0.25

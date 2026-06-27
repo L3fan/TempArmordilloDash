@@ -112,6 +112,12 @@ public partial class FmodEvent : Node
         FmodInstance = eventInstance ?? throw new ArgumentNullException(nameof(eventInstance));
         Name = "FmodEventInstance";
     }
+    
+    public FmodEvent()
+    {
+        FmodInstance = this;
+        Name = "FmodEventInstance";
+    }
 
     /// <summary>
     /// Update the event's position to follow the parent node every frame.
@@ -148,6 +154,10 @@ public partial class FmodEvent : Node
 
     public FMOD_STUDIO_PLAYBACK_STATE GetPlaybackState()
     {
+        if (FmodInstance == null)
+        {
+            return FMOD_STUDIO_PLAYBACK_STATE.FMOD_STUDIO_PLAYBACK_STOPPED;
+        }
         var result = FmodInstance.Call("get_playback_state");
         return (FMOD_STUDIO_PLAYBACK_STATE)result.AsInt32();
     }

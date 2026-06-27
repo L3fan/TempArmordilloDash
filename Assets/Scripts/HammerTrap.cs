@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using System.Threading.Tasks;
 
 public partial class HammerTrap : Obstacle
 {
@@ -22,7 +23,13 @@ public partial class HammerTrap : Obstacle
 	public override void _PhysicsProcess(double delta)
 	{
 		base._PhysicsProcess(delta);
-		if (activated && !finished)
+	}
+
+	public async void ActivateTrap()
+	{
+		float delta = 1 / 60f;
+		
+		while (!finished)
 		{
 			hammer.RotationDegrees += (float)delta * speed;
 			speed = Mathf.Min(300, speed * 2f);
@@ -33,12 +40,8 @@ public partial class HammerTrap : Obstacle
 				hammer.RotationDegrees = endRotation;
 				finished = true;
 			}
+			await Task.Delay(TimeSpan.FromSeconds(delta));
 		}
-	}
-
-	public void Activate()
-	{
-		activated = true;
 	}
 
 	public override void Setup(ObstacleSpot spot)

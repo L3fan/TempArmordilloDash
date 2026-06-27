@@ -1,11 +1,18 @@
-[gd_scene load_steps=2 format=3 uid="uid://l73do20wf24p"]
+[gd_scene load_steps=3 format=3 uid="uid://l73do20wf24p"]
 
 [ext_resource type="Script" uid="uid://cgraife8ym6cx" path="res://Assets/Scripts/AudioHandler.cs" id="1_00v7g"]
+[ext_resource type="Script" uid="uid://br23io0x0mqnl" path="res://addons/fmod-sharp/src/FmodEvent.cs" id="2_xhhjm"]
 
-[node name="AudioHandler" type="Node2D" node_paths=PackedStringArray("soundeffectEvents")]
+[node name="AudioHandler" type="Node2D" node_paths=PackedStringArray("events")]
 script = ExtResource("1_00v7g")
-soundeffectPaths = Dictionary[String, String]({
-"Cancel": "event:/UICancel",
-"Confirm": "event:/UIConfirm"
-})
-soundeffectEvents = {}
+events = {}
+
+[node name="ConfirmSFX" type="FmodEventEmitter2D" parent="."]
+event_name = "event:/SFX/Menu UI/UIConfirm"
+event_guid = "{fb6aa95e-1e98-457a-bafa-62acbd29a662}"
+script = ExtResource("2_xhhjm")
+
+[node name="CancelSFX" type="FmodEventEmitter2D" parent="."]
+event_name = "event:/SFX/Menu UI/UICancel"
+event_guid = "{2e32f185-269a-4c04-9705-f5f2daedb26a}"
+script = ExtResource("2_xhhjm")
