@@ -400,12 +400,8 @@ polygon = PackedVector2Array(992, -1320, -1023.7367, -1320.1632, -1024, -248, -1
 [node name="ParallaxBackground" parent="." instance=ExtResource("17_v2qml")]
 z_index = -100
 
-[node name="FmodBankLoader" type="FmodBankLoader" parent="."]
-bank_paths = ["res://Assets/Audio/ArmordilloDashBank/Build/Desktop/Master.strings.bank", "res://Assets/Audio/ArmordilloDashBank/Build/Desktop/Master.bank"]
-process_mode = 3
-
 [node name="FmodEventEmitter2D" type="FmodEventEmitter2D" parent="."]
-event_name = "event:/EnterLevel"
+event_name = "event:/BGM/Level"
 event_guid = "{f46b17dd-31a3-4587-9179-3fe83f8b5132}"
 autoplay = true
 volume = 0.4

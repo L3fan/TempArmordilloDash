@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using System.Collections.Generic;
 using System.Xml.Linq;
 using FmodSharp;
 
@@ -21,8 +22,9 @@ public partial class GameManager : Node
 	private PackedScene levelPackedScene = null;
 
 	public bool demo = false;
-
 	public event DemoToggleEvent onToggleDemo;
+	
+	private readonly List<FmodBank> _loadedBanks = [];
 	
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
@@ -51,10 +53,10 @@ public partial class GameManager : Node
 	public void GameOver()
 	{
 		//GD.Print("Game Over");
-		if(GetTree().GetCurrentScene() is not Level) return;
+		if(SceneManager.Instance.currentScene is not Level) return;
 		
 		GetTree().Paused = true;
-		Level level = (Level)GetTree().GetCurrentScene();
+		Level level = (Level)SceneManager.Instance.currentScene;
 		Node2D resultScreen = level.levelUI.camera.resultScreen;
 		resultScreen.Visible = true;
 		Label timeLabel = resultScreen.GetChild(0).GetChild<Label>(1);
@@ -98,19 +100,18 @@ public partial class GameManager : Node
 	public void LoadMainMenu()
 	{
 		GetTree().Paused = false;
-		mainMenuPackedScene = GD.Load<PackedScene>(Settings.Instance.mainMenuScenePath);
-		GetTree().ChangeSceneToPacked(mainMenuPackedScene);
+		SceneManager.Instance.LoadScene(Settings.Instance.mainMenuScenePath);
 	}
 
 	public void LoadLevel()
 	{
 		if (debugLevel)
 		{
-			GetTree().ChangeSceneToPacked(LevelManager.Instance.GetLevelScene(LevelType.Debug));
+			SceneManager.Instance.LoadScene(LevelManager.Instance.GetLevelScene(LevelType.Debug));
 		}
 		else
 		{
-			GetTree().ChangeSceneToPacked(LevelManager.Instance.GetLevelScene(LevelType.Default));
+			SceneManager.Instance.LoadScene(LevelManager.Instance.GetLevelScene(LevelType.Default));
 		}
 	}
 

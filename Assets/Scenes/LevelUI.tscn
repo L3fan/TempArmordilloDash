@@ -1242,7 +1242,7 @@ text = "Dash"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Button" type="Button" parent="CanvasLayer/Tutorial Screen"]
+[node name="GoButton" type="Button" parent="CanvasLayer/Tutorial Screen"]
 process_mode = 3
 layout_mode = 0
 offset_left = 1670.0
@@ -1262,4 +1262,4 @@ text = "GO!"
 [connection signal="pressed" from="CanvasLayer/ResultScreen/Leaderboard/FinishButton" to="CanvasLayer/ResultScreen" method="_OnFinishButtonPressed"]
 [connection signal="pressed" from="CanvasLayer/PauseMenu/Resume Button" to="CanvasLayer/PauseMenu" method="_OnResumeButtonPressed"]
 [connection signal="pressed" from="CanvasLayer/PauseMenu/Exit Level Button" to="CanvasLayer/PauseMenu" method="_OnExitLevelButtonPressed"]
-[connection signal="pressed" from="CanvasLayer/Tutorial Screen/Button" to="CanvasLayer/Tutorial Screen" method="_OnContinueButtonPressed"]
+[connection signal="pressed" from="CanvasLayer/Tutorial Screen/GoButton" to="CanvasLayer/Tutorial Screen" method="_OnContinueButtonPressed"]

@@ -1,0 +1,20 @@
+[gd_scene load_steps=3 format=3 uid="uid://ieixfee558oa"]
+
+[ext_resource type="Script" uid="uid://b3q8v2laa1ofd" path="res://Assets/Scripts/SceneManager.cs" id="1_r44vt"]
+[ext_resource type="PackedScene" uid="uid://c4e38trnicacr" path="res://Assets/Scenes/MainMenuScene.tscn" id="2_sev7q"]
+
+[node name="SceneManager" type="Control" node_paths=PackedStringArray("currentScene")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_r44vt")
+currentScene = NodePath("MainMenuScene")
+
+[node name="MainMenuScene" parent="." instance=ExtResource("2_sev7q")]
+layout_mode = 1
+
+[node name="FmodBankLoader" type="FmodBankLoader" parent="."]
+bank_paths = ["res://Assets/Audio/ArmordilloDashBank/Build/Desktop/Master.strings.bank", "res://Assets/Audio/ArmordilloDashBank/Build/Desktop/Master.bank", "res://Assets/Audio/ArmordilloDashBank/Build/Desktop/Player.strings.bank", "res://Assets/Audio/ArmordilloDashBank/Build/Desktop/Player.bank", "res://Assets/Audio/ArmordilloDashBank/Build/Desktop/Traps.strings.bank", "res://Assets/Audio/ArmordilloDashBank/Build/Desktop/Traps.bank", "res://Assets/Audio/ArmordilloDashBank/Build/Desktop/UI.strings.bank", "res://Assets/Audio/ArmordilloDashBank/Build/Desktop/UI.bank"]

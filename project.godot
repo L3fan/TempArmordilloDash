@@ -19,7 +19,7 @@ ss2d/version="3.3.1"
 [application]
 
 config/name="Armordillo_Dash"
-run/main_scene="uid://c4e38trnicacr"
+run/main_scene="uid://ieixfee558oa"
 config/features=PackedStringArray("4.5", "C#", "GL Compatibility")
 
 [audio]
@@ -28,8 +28,8 @@ buses/default_bus_layout="uid://dkuip5khy1q4d"
 
 [autoload]
 
-GameManager="*res://Assets/Scripts/GameManager.cs"
 Settings="*res://Assets/Scripts/Settings.cs"
+GameManager="*res://Assets/Scripts/GameManager.cs"
 LevelManager="*res://Assets/Scripts/LevelManager.cs"
 Save="*res://Assets/Scripts/Save.cs"
 FmodManager="*res://addons/fmod/FmodManager.gd"

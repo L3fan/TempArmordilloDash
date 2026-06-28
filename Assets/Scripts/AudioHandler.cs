@@ -1,20 +1,22 @@
-using System.Collections.Generic;
 using Godot;
 using FmodSharp;
+using Godot.Collections;
 
 public partial class AudioHandler : Node
 {
-	[Export] public Godot.Collections.Dictionary<string, FmodEvent> events;
+	[Export] public string[] eventPaths;
+
+	[Export] public Dictionary<string, FmodEvent> events;
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
-		foreach (var child in GetChildren())
+		foreach (string eventPath in eventPaths)
 		{
-			if (child is not FmodEvent)
-				return;
-			FmodEvent sfxEvent = (FmodEvent)child;
-			events.Add(child.Name, sfxEvent);
-			GD.Print("Added " + child.Name);
+			FmodEvent sfxEvent = FmodServerWrapper.CreateEventInstance(eventPath);
+			sfxEvent.Name = "Event(" + eventPath + ")";
+			AddChild(sfxEvent);
+			events.Add(eventPath, sfxEvent);
+			GD.Print("Added " + eventPath);
 		}
 	}
 
@@ -25,16 +27,35 @@ public partial class AudioHandler : Node
 
 	public void Play(string sfxName)
 	{
-		FmodEvent sfx;
-		events.TryGetValue(sfxName, out sfx);
-		sfx?.Start();
+		events.TryGetValue(sfxName, out FmodEvent sfx);
+		if (sfx == null)
+		{
+			events.Remove(sfxName);
+			events.Add(sfxName, FmodServerWrapper.CreateEventInstance(sfxName));
+		}
+		else
+		{
+			sfx.Start();
+		}
 	}
 
 	public void Stop(string sfxName)
 	{
-		FmodEvent sfx;
-		events.TryGetValue(sfxName, out sfx);
+		events.TryGetValue(sfxName, out FmodEvent sfx);
 		sfx?.Stop();
+	}
+
+	public void Pause(string sfxName)
+	{
+		events.TryGetValue(sfxName, out FmodEvent sfx);
+		if(sfx != null)
+			sfx.Paused = true;
+	}
+
+	public FmodEvent GetEvent(string sfxName)
+	{
+		events.TryGetValue(sfxName, out FmodEvent sfx);
+		return sfx;
 	}
 }
 

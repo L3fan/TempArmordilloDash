@@ -63,59 +63,30 @@ audioHandler = NodePath("AudioHandler")
 settingsDisplay = NodePath("Control/Settings")
 quitButton = NodePath("Control/GameButtons/EndGameButton")
 
-[node name="TextureRect" type="TextureRect" parent="."]
-z_index = -100
-texture_filter = 1
-layout_mode = 1
-anchors_preset = -1
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = -1.0
-offset_right = -1.0
-grow_horizontal = 2
-grow_vertical = 2
-texture = ExtResource("2_23ht4")
-expand_mode = 2
-stretch_mode = 6
-
-[node name="Control" type="Control" parent="."]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -960.5
-offset_top = -540.0
-offset_right = 959.5
-offset_bottom = 540.0
-grow_horizontal = 2
-grow_vertical = 2
+[node name="Control" type="CanvasLayer" parent="."]
 
 [node name="TextureRect2" type="TextureRect" parent="Control"]
 texture_filter = 1
-layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.32700002
 anchor_top = 0.11400001
 anchor_right = 0.675
 anchor_bottom = 0.423
-offset_left = -0.84002686
+offset_left = -0.5130615
 offset_top = -0.120010376
-offset_right = -1.0
-offset_bottom = 0.16000366
+offset_right = -0.6730957
+offset_bottom = 0.15997314
 texture = ExtResource("3_t8wwc")
 
 [node name="GameButtons" type="Panel" parent="Control"]
-layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.41000003
+anchor_left = 0.41400003
 anchor_top = 0.439
 anchor_right = 0.586
 anchor_bottom = 0.78000003
-offset_left = 6.7999268
+offset_left = 0.5258789
 offset_top = -0.120025635
-offset_right = 0.8800049
+offset_right = 1.2940063
 offset_bottom = -0.4000244
 grow_horizontal = 2
 grow_vertical = 2
@@ -124,13 +95,14 @@ grow_vertical = 2
 texture_repeat = 1
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.054
-anchor_top = 0.062000003
-anchor_right = 0.94600004
-anchor_bottom = 0.24100001
-offset_left = -0.053001404
-offset_right = 98.80298
-offset_bottom = 22.127998
+anchor_left = 0.034
+anchor_top = 0.051000003
+anchor_right = 0.96000004
+anchor_bottom = 0.257
+offset_left = -0.123910904
+offset_top = 0.12677193
+offset_right = 88.9281
+offset_bottom = 22.153214
 scale = Vector2(0.75, 0.75)
 theme = ExtResource("4_5powm")
 theme_override_constants/outline_size = 12
@@ -141,14 +113,14 @@ text = "START"
 texture_repeat = 1
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.054
-anchor_top = 0.291
-anchor_right = 0.94600004
-anchor_bottom = 0.47000003
-offset_left = -0.053001404
-offset_top = 0.009994507
-offset_right = 98.80298
-offset_bottom = 22.137985
+anchor_left = 0.037
+anchor_top = 0.289
+anchor_right = 0.96300006
+anchor_bottom = 0.47500002
+offset_left = 0.011025429
+offset_top = -0.09512329
+offset_right = 89.06302
+offset_bottom = 19.791046
 scale = Vector2(0.75, 0.75)
 theme = ExtResource("4_5powm")
 theme_override_constants/outline_size = 12
@@ -159,14 +131,14 @@ text = "LEADERBOARD"
 texture_repeat = 1
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.054
-anchor_top = 0.52000004
-anchor_right = 0.94600004
-anchor_bottom = 0.69900006
-offset_left = -0.053001404
-offset_top = 0.019989014
-offset_right = 98.79797
-offset_bottom = 22.14798
+anchor_left = 0.034
+anchor_top = 0.514
+anchor_right = 0.96000004
+anchor_bottom = 0.72
+offset_left = -0.12391853
+offset_top = -0.153656
+offset_right = 88.923096
+offset_bottom = 21.872772
 scale = Vector2(0.75, 0.75)
 theme = ExtResource("4_5powm")
 theme_override_constants/outline_size = 12
@@ -177,14 +149,14 @@ text = "SETTINGS"
 texture_repeat = 1
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.054
-anchor_top = 0.749
-anchor_right = 0.94600004
-anchor_bottom = 0.92800003
-offset_left = -0.053001404
-offset_top = 0.029968262
-offset_right = 98.80298
-offset_bottom = 22.15799
+anchor_left = 0.037
+anchor_top = 0.75100005
+anchor_right = 0.96300006
+anchor_bottom = 0.957
+offset_left = 0.011025429
+offset_top = -0.055267334
+offset_right = 89.06302
+offset_bottom = 21.971191
 scale = Vector2(0.75, 0.75)
 theme = ExtResource("4_5powm")
 theme_override_constants/outline_size = 12
@@ -193,19 +165,18 @@ text = "END"
 
 [node name="DoubleCheckWindow" type="Panel" parent="Control"]
 visible = false
-layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.354
 anchor_top = 0.44400004
 anchor_right = 0.634
 anchor_bottom = 0.75500005
-offset_left = -0.6799927
+offset_left = -0.32598877
 offset_top = -0.52005005
-offset_right = -1.2800293
+offset_right = -0.9260254
 offset_bottom = -0.40008545
 theme_override_styles/panel = SubResource("StyleBoxFlat_x260n")
 
-[node name="StartButton" type="Button" parent="Control/DoubleCheckWindow"]
+[node name="ConfirmButton" type="Button" parent="Control/DoubleCheckWindow"]
 texture_filter = 2
 texture_repeat = 1
 layout_mode = 1
@@ -222,7 +193,7 @@ scale = Vector2(0.4, 0.4)
 theme = ExtResource("4_5powm")
 text = "Confirm"
 
-[node name="EndGameButton" type="Button" parent="Control/DoubleCheckWindow"]
+[node name="CancelButton" type="Button" parent="Control/DoubleCheckWindow"]
 texture_filter = 2
 texture_repeat = 1
 layout_mode = 1
@@ -250,7 +221,7 @@ offset_bottom = 5.0639954
 theme = ExtResource("4_5powm")
 theme_type_variation = &"HeaderLarge"
 theme_override_constants/outline_size = 9
-theme_override_font_sizes/font_size = 48
+theme_override_font_sizes/font_size = 40
 text = "Are you sure you wish to remove the entire Leaderboard?"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -259,15 +230,14 @@ autowrap_mode = 2
 [node name="ResetButton" type="Button" parent="Control"]
 texture_repeat = 1
 layout_direction = 1
-layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.874
 anchor_top = 0.91800004
 anchor_right = 0.975
 anchor_bottom = 0.95800006
-offset_left = -1.0800781
+offset_left = -0.20605469
 offset_top = -0.44006348
-offset_right = 290.0
+offset_right = 290.87402
 offset_bottom = 66.359985
 scale = Vector2(0.4, 0.4)
 size_flags_horizontal = 8
@@ -278,16 +248,15 @@ text = "Reset Leaderboard"
 
 [node name="Leaderboard" type="Panel" parent="Control"]
 visible = false
-layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.499
 anchor_top = 0.5
 anchor_right = 0.499
 anchor_bottom = 0.5
-offset_left = -516.08
+offset_left = -515.58105
 offset_top = -443.0
-offset_right = 430.9201
-offset_bottom = 430.0
+offset_right = 533.17096
+offset_bottom = 375.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_b37ua")
 
 [node name="Title" type="Label" parent="Control/Leaderboard"]
@@ -319,7 +288,7 @@ offset_right = 0.1889801
 offset_bottom = -0.40008545
 theme_override_constants/line_spacing = 4
 theme_override_constants/outline_size = 10
-theme_override_font_sizes/font_size = 44
+theme_override_font_sizes/font_size = 40
 text = "Rank
 1.
 2.
@@ -334,25 +303,37 @@ text = "Rank
 horizontal_alignment = 2
 
 [node name="Names" type="RichTextLabel" parent="Control/Leaderboard"]
-layout_mode = 0
-offset_left = 146.00002
-offset_top = 154.0
-offset_right = 474.0
-offset_bottom = 870.0
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.15400001
+anchor_top = 0.17600001
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = 0.1619873
+offset_top = 0.35198975
+offset_right = 0.49996948
+offset_bottom = -3.0
 theme_override_constants/outline_size = 10
-theme_override_font_sizes/normal_font_size = 43
+theme_override_font_sizes/normal_font_size = 38
 text = "Name"
 scroll_active = false
 horizontal_alignment = 1
 
 [node name="Time" type="RichTextLabel" parent="Control/Leaderboard"]
-layout_mode = 0
-offset_left = 472.0
-offset_top = 151.0
-offset_right = 936.0
-offset_bottom = 865.0
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.17300001
+anchor_right = 0.98800004
+anchor_bottom = 0.99100006
+offset_left = -1.5000305
+offset_top = -0.029006958
+offset_right = 0.3638916
+offset_bottom = -0.1430664
+grow_horizontal = 2
+grow_vertical = 2
 theme_override_constants/outline_size = 10
-theme_override_font_sizes/normal_font_size = 43
+theme_override_font_sizes/normal_font_size = 38
 text = "Time"
 scroll_active = false
 horizontal_alignment = 1
@@ -377,22 +358,20 @@ text = "CLOSE"
 
 [node name="FpsDisplay" parent="Control" instance=ExtResource("5_b37ua")]
 visible = false
-layout_mode = 0
 offset_right = 107.0
 offset_bottom = 67.0
 
 [node name="Settings" type="Panel" parent="Control"]
 visible = false
-layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.319
-anchor_top = 0.148
+anchor_top = 0.29500002
 anchor_right = 0.68500006
-anchor_bottom = 0.76900005
-offset_left = 0.52001953
-offset_top = 162.16
-offset_right = 0.79992676
-offset_bottom = 40.47992
+anchor_bottom = 0.78700006
+offset_left = 0.83898926
+offset_top = -0.020019531
+offset_right = 1.1188965
+offset_bottom = -0.44006348
 theme_override_styles/panel = SubResource("StyleBoxFlat_4jnjk")
 
 [node name="Title" type="Label" parent="Control/Settings"]
@@ -522,20 +501,37 @@ max_value = 1.0
 step = 0.01
 value = 0.7
 
-[node name="Button" type="Button" parent="Control/Settings"]
-layout_mode = 0
-offset_left = 266.0
-offset_top = 465.0
-offset_right = 449.0
-offset_bottom = 531.0
+[node name="CloseButton" type="Button" parent="Control/Settings"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.50100005
+anchor_top = 1.0170001
+anchor_right = 0.50100005
+anchor_bottom = 1.0170001
+offset_left = -91.61627
+offset_top = -0.19503784
+offset_right = 91.38373
+offset_bottom = 65.80496
 theme_override_constants/outline_size = 10
 theme_override_font_sizes/font_size = 40
 theme_override_styles/normal = SubResource("StyleBoxFlat_museo")
 theme_override_styles/hover = SubResource("StyleBoxFlat_u77n8")
 text = "CLOSE"
 
-[node name="FmodBankLoader" type="FmodBankLoader" parent="."]
-bank_paths = ["res://Assets/Audio/ArmordilloDashBank/Build/Desktop/Master.strings.bank", "res://Assets/Audio/ArmordilloDashBank/Build/Desktop/Master.bank", "res://Assets/Audio/ArmordilloDashBank/Build/Desktop/Player.bank", "res://Assets/Audio/ArmordilloDashBank/Build/Desktop/Traps.bank", "res://Assets/Audio/ArmordilloDashBank/Build/Desktop/UI.bank"]
+[node name="TextureRect" type="TextureRect" parent="."]
+z_index = -100
+texture_filter = 1
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 0.9990001
+anchor_bottom = 1.0
+offset_left = -1.0
+offset_right = 0.671875
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_23ht4")
+expand_mode = 2
+stretch_mode = 6
 
 [node name="BGM" type="FmodEventEmitter2D" parent="."]
 event_name = "event:/BGM/MainMenu"
@@ -546,14 +542,22 @@ autoplay = true
 events = {}
 
 [connection signal="pressed" from="Control/GameButtons/StartButton" to="." method="_OnStartButtonPressed"]
+[connection signal="pressed" from="Control/GameButtons/StartButton" to="." method="_PlayConfirmSFX"]
 [connection signal="pressed" from="Control/GameButtons/LeaderboardButton" to="." method="_OnLeaderboardButtonPressed"]
+[connection signal="pressed" from="Control/GameButtons/LeaderboardButton" to="." method="_PlayConfirmSFX"]
 [connection signal="pressed" from="Control/GameButtons/SettingsButton" to="." method="_OnSettingsButtonPressed"]
+[connection signal="pressed" from="Control/GameButtons/SettingsButton" to="." method="_PlayConfirmSFX"]
 [connection signal="pressed" from="Control/GameButtons/EndGameButton" to="." method="_OnEndGameButtonPressed"]
-[connection signal="pressed" from="Control/DoubleCheckWindow/StartButton" to="." method="_OnConfirmResetButtonPressed"]
-[connection signal="pressed" from="Control/DoubleCheckWindow/EndGameButton" to="." method="_OnCancelResetButtonPressed"]
+[connection signal="pressed" from="Control/DoubleCheckWindow/ConfirmButton" to="." method="_OnConfirmResetButtonPressed"]
+[connection signal="pressed" from="Control/DoubleCheckWindow/ConfirmButton" to="." method="_PlayConfirmSFX"]
+[connection signal="pressed" from="Control/DoubleCheckWindow/CancelButton" to="." method="_PlayCancelSFX"]
+[connection signal="pressed" from="Control/DoubleCheckWindow/CancelButton" to="." method="_OnCancelResetButtonPressed"]
+[connection signal="pressed" from="Control/ResetButton" to="." method="_PlayConfirmSFX"]
 [connection signal="pressed" from="Control/ResetButton" to="." method="_OnResetButtonPressed"]
 [connection signal="pressed" from="Control/Leaderboard/CloseLeaderboardButton" to="." method="_OnCloseLeaderboardButtonPressed"]
+[connection signal="pressed" from="Control/Leaderboard/CloseLeaderboardButton" to="." method="_PlayCancelSFX"]
 [connection signal="value_changed" from="Control/Settings/MasterVolume/VolumeSlider" to="." method="_OnMasterVolumeUpdate"]
 [connection signal="value_changed" from="Control/Settings/MusicVolume/VolumeSlider" to="." method="_OnMusicVolumeUpdate"]
 [connection signal="value_changed" from="Control/Settings/SFX/VolumeSlider" to="." method="_OnSFXVolumeUpdate"]
-[connection signal="pressed" from="Control/Settings/Button" to="." method="_OnCloseSettingsButtonPressed"]
+[connection signal="pressed" from="Control/Settings/CloseButton" to="." method="_OnCloseSettingsButtonPressed"]
+[connection signal="pressed" from="Control/Settings/CloseButton" to="." method="_PlayCancelSFX"]

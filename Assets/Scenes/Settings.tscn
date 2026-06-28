@@ -4,3 +4,6 @@
 
 [node name="Settings" type="Node2D"]
 script = ExtResource("1_4hxq3")
+
+[node name="FmodBankLoader" type="FmodBankLoader" parent="."]
+bank_paths = ["res://Assets/Audio/ArmordilloDashBank/Build/Desktop/Master.strings.bank", "res://Assets/Audio/ArmordilloDashBank/Build/Desktop/Master.bank", "res://Assets/Audio/ArmordilloDashBank/Build/Desktop/Player.strings.bank", "res://Assets/Audio/ArmordilloDashBank/Build/Desktop/Player.bank", "res://Assets/Audio/ArmordilloDashBank/Build/Desktop/Traps.strings.bank", "res://Assets/Audio/ArmordilloDashBank/Build/Desktop/Traps.bank", "res://Assets/Audio/ArmordilloDashBank/Build/Desktop/UI.strings.bank", "res://Assets/Audio/ArmordilloDashBank/Build/Desktop/UI.bank"]

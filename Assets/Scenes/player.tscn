@@ -1,10 +1,11 @@
-[gd_scene load_steps=36 format=3 uid="uid://mdjyx11efd10"]
+[gd_scene load_steps=37 format=3 uid="uid://mdjyx11efd10"]
 
 [ext_resource type="PhysicsMaterial" uid="uid://cexo27xrthg6p" path="res://Assets/PlayerPhysicsMat.tres" id="1_23lac"]
 [ext_resource type="Script" uid="uid://cfoxyrakflqib" path="res://Assets/Scripts/Player.cs" id="1_e5q2x"]
 [ext_resource type="Script" uid="uid://cbc6r3x84ejtj" path="res://addons/radial_progress/RadialProgress.gd" id="2_mifcl"]
 [ext_resource type="Shader" uid="uid://dmt6wsb40s7c6" path="res://Assets/Shaders/OutlineShader.tres" id="5_2thea"]
 [ext_resource type="Texture2D" uid="uid://bebk5tpe88rsw" path="res://Assets/Textures/Dylan/Armadillo_sprite_sheet.png" id="6_jqe1p"]
+[ext_resource type="Script" uid="uid://cgraife8ym6cx" path="res://Assets/Scripts/AudioHandler.cs" id="6_w3t24"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_wtcfe"]
 radius = 64.0
@@ -306,7 +307,7 @@ states/unroll/position = Vector2(544, 27)
 transitions = ["Start", "Idle", SubResource("AnimationNodeStateMachineTransition_2thea"), "Idle", "unroll", SubResource("AnimationNodeStateMachineTransition_jqe1p"), "unroll", "idle_2", SubResource("AnimationNodeStateMachineTransition_n6g26"), "idle_2", "roll_up", SubResource("AnimationNodeStateMachineTransition_twodr"), "Idle", "Roll", SubResource("AnimationNodeStateMachineTransition_jjopo"), "Roll", "Idle", SubResource("AnimationNodeStateMachineTransition_evjpc"), "Roll2", "Roll", SubResource("AnimationNodeStateMachineTransition_o5e1w"), "Roll", "Roll2", SubResource("AnimationNodeStateMachineTransition_6t18s"), "roll_up", "Roll", SubResource("AnimationNodeStateMachineTransition_mifcl")]
 graph_offset = Vector2(-185, -70)
 
-[node name="Player" type="RigidBody2D" node_paths=PackedStringArray("radialProgress") groups=["Player"]]
+[node name="Player" type="RigidBody2D" node_paths=PackedStringArray("radialProgress", "audioHandler") groups=["Player"]]
 mass = 10.0
 physics_material_override = ExtResource("1_23lac")
 lock_rotation = true
@@ -316,6 +317,7 @@ max_contacts_reported = 100
 script = ExtResource("1_e5q2x")
 mass = 10.0
 radialProgress = NodePath("RadialProgress")
+audioHandler = NodePath("Audiohandler")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_wtcfe")
@@ -357,13 +359,7 @@ parameters/conditions/idling = false
 parameters/Roll/TimeScale/scale = 1.0
 parameters/Roll2/TimeScale/scale = 1.0
 
-[node name="ImpactSFX" type="FmodEventEmitter2D" parent="."]
-event_name = "event:/SFX/Player/ImpactSurface"
-event_guid = "{e2716083-9adf-4b2f-843c-a76338b9dc0c}"
-
-[node name="RollSFX" type="FmodEventEmitter2D" parent="."]
-event_name = "event:/SFX/Player/Rolling"
-event_guid = "{c4c67043-054b-4f44-9a9a-0393723741f1}"
-fmod_parameters/Speed/id = 6372303591497610599
-fmod_parameters/Speed = 0.0
-fmod_parameters/Speed/variant_type = 3
+[node name="Audiohandler" type="Node" parent="." node_paths=PackedStringArray("events")]
+script = ExtResource("6_w3t24")
+eventPaths = PackedStringArray("event:/SFX/Player/ImpactSurface", "event:/SFX/Player/Rolling")
+events = {}

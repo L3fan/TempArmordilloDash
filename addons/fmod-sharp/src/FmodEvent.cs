@@ -112,12 +112,6 @@ public partial class FmodEvent : Node
         FmodInstance = eventInstance ?? throw new ArgumentNullException(nameof(eventInstance));
         Name = "FmodEventInstance";
     }
-    
-    public FmodEvent()
-    {
-        FmodInstance = this;
-        Name = "FmodEventInstance";
-    }
 
     /// <summary>
     /// Update the event's position to follow the parent node every frame.

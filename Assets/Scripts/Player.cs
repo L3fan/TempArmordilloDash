@@ -75,12 +75,6 @@ public partial class Player : RigidBody2D
 
     private List<GodotObject> contactObjects = new List<GodotObject>();
 
-    [Export] public Node2D gdEventRoll;
-    public FmodEvent rollEvent;
-    
-    [Export] public Node2D gdEventImpact;
-    public FmodEvent impactEvent;
-
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
     {
@@ -201,8 +195,9 @@ public partial class Player : RigidBody2D
     {
         if (!isOnFloor)
             return;
-        
-        rollEvent.SetParameterByName("Speed", Mathf.Min(LinearVelocity.Length()/(maxSpeed*5), 1));
+
+        FmodEvent rollingSFX = audioHandler.GetEvent("event:/SFX/Player/Rolling");
+        rollingSFX?.SetParameterByName("speed", Mathf.Min(LinearVelocity.Length()/(maxSpeed*5), 1));
         
     }
 
@@ -572,17 +567,17 @@ public partial class Player : RigidBody2D
 
     private void OnLandedOnFloor()
     {
-        rollEvent.Start();
+        audioHandler.Play("event:/SFX/Player/Rolling");
     }
 
     private void OnLeftFloor()
     {
-        rollEvent.Stop();
+        audioHandler.Stop("event:/SFX/Player/Rolling");
     }
 
     private void OnHitSurface()
     {
-        impactEvent.Start();
+        audioHandler.Play("event:/SFX/Player/ImpactSurface");
     }
 }
 
