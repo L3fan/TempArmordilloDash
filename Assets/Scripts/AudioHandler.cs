@@ -16,7 +16,6 @@ public partial class AudioHandler : Node
 			sfxEvent.Name = "Event(" + eventPath + ")";
 			AddChild(sfxEvent);
 			events.Add(eventPath, sfxEvent);
-			GD.Print("Added " + eventPath);
 		}
 	}
 
@@ -31,12 +30,10 @@ public partial class AudioHandler : Node
 		if (sfx == null)
 		{
 			events.Remove(sfxName);
-			events.Add(sfxName, FmodServerWrapper.CreateEventInstance(sfxName));
+			sfx = FmodServerWrapper.CreateEventInstance(sfxName);
+			events.Add(sfxName, sfx);
 		}
-		else
-		{
-			sfx.Start();
-		}
+		sfx?.Start();
 	}
 
 	public void Stop(string sfxName)

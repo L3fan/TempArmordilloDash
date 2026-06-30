@@ -76,19 +76,19 @@ public partial class MainMenu : Control
 
 	public void _OnMasterVolumeUpdate(float value)
 	{
-		GameManager.Instance.UpdateVolume(value, "Master");
+		GameManager.Instance.UpdateVolume(value, "bus:/");
 		Settings.Instance.settingsSave.VolumeSettings.MasterVolume = value;
 	}
 
 	public void _OnMusicVolumeUpdate(float value)
 	{
-		GameManager.Instance.UpdateVolume(value, "Music");
+		GameManager.Instance.UpdateVolume(value, "bus:/BGM");
 		Settings.Instance.settingsSave.VolumeSettings.MusicVolume = value;
 	}
 
 	public void _OnSFXVolumeUpdate(float value)
 	{
-		GameManager.Instance.UpdateVolume(value, "Soundeffect");
+		GameManager.Instance.UpdateVolume(value, "bus:/SFX");
 		Settings.Instance.settingsSave.VolumeSettings.SFXVolume = value;
 	}
 

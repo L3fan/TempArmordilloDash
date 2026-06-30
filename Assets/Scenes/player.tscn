@@ -361,5 +361,5 @@ parameters/Roll2/TimeScale/scale = 1.0
 
 [node name="Audiohandler" type="Node" parent="." node_paths=PackedStringArray("events")]
 script = ExtResource("6_w3t24")
-eventPaths = PackedStringArray("event:/SFX/Player/ImpactSurface", "event:/SFX/Player/Rolling")
+eventPaths = PackedStringArray("event:/SFX/Player/ImpactSurface", "event:/SFX/Player/Rolling", "event:/SFX/Player/Dash")
 events = {}

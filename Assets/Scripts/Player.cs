@@ -395,6 +395,7 @@ public partial class Player : RigidBody2D
                 startDash = false;
                 isDashing = true;
                 dashSlowdown = true;
+                audioHandler.Play("event:/SFX/Player/Dash");
             }
         }
     }

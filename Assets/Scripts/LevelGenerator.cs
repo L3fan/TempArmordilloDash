@@ -27,6 +27,8 @@ public partial class LevelGenerator : Level
 	private float currentHeight = 0;
 
 	private List<ObstacleSpot> obstacleSpots = new List<ObstacleSpot>();
+
+	private AudioHandler audioHandler;
 	
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
@@ -37,6 +39,8 @@ public partial class LevelGenerator : Level
 		sectionFolderPath = Settings.Instance.levelSectionsFolderPath;
 
 		endSectionPath = Settings.Instance.levelEndSectionPath;
+
+		audioHandler = GetNode<AudioHandler>("%AudioHandler");
 		
 		GetSectionPaths();
 
@@ -67,6 +71,8 @@ public partial class LevelGenerator : Level
 		LevelSection endSectionScene = endSection.Instantiate() as LevelSection;
 		endSectionScene.Position = currentStartPoint - endSectionScene.startPointNode.Position;
 		AddChild(endSectionScene);
+		
+		audioHandler.Play("event:/BGM/Level");
 	}
 
 	private void CreateObstacles()

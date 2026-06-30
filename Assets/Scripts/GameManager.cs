@@ -23,8 +23,8 @@ public partial class GameManager : Node
 
 	public bool demo = false;
 	public event DemoToggleEvent onToggleDemo;
-	
-	private readonly List<FmodBank> _loadedBanks = [];
+
+	private bool wasPaused = false;
 	
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
@@ -38,9 +38,17 @@ public partial class GameManager : Node
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
-	public override void _Process(double delta)
+	public override void _PhysicsProcess(double delta)
 	{
-		
+		if (GetTree().IsPaused() && !wasPaused)
+		{
+			FmodServerWrapper.PauseAllEvents();
+		} else if (!GetTree().IsPaused() && wasPaused)
+		{
+			FmodServerWrapper.UnpauseAllEvents();
+		}
+
+		wasPaused = GetTree().IsPaused();
 	}
 
 	public void StartTimer()
@@ -117,8 +125,10 @@ public partial class GameManager : Node
 
 	public void UpdateVolume(float volume, string busName)
 	{
-		int busIndex = AudioServer.GetBusIndex(busName);
-		AudioServer.SetBusVolumeLinear(busIndex, volume);
+		//int busIndex = AudioServer.GetBusIndex(busName);
+		//AudioServer.SetBusVolumeLinear(busIndex, volume);
+		if(FmodServerWrapper.GetBus(busName) != null)
+			FmodServerWrapper.GetBus(busName).Volume = volume;
 	}
 
 	public override void _Input(InputEvent @event)
